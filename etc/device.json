@@ -1,0 +1,24 @@
+[
+  {
+    "deviceId": 1,
+    "model": "E103",
+    "version": 1.0,
+    "macAddress": "00:00:00:00:00:01",
+    "ipAddress": "192.168.1.100",
+    "consumeNumber": 5302,
+    "oldNumber": 5043,
+    "status": 0,
+    "lastUpdate": "Aug 22, 2016 11:04 PM"
+  },
+  {
+    "deviceId": 2,
+    "model": "E103",
+    "version": 1.0,
+    "macAddress": "00:00:00:00:00:02",
+    "ipAddress": "192.168.1.101",
+    "consumeNumber": 4302,
+    "oldNumber": 3943,
+    "status": 0,
+    "lastUpdate": "Aug 21, 2016 11:00 PM"
+  }
+]
