@@ -1,0 +1,12 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-4.3.xsd">
+	<!-- Account -->
+	<bean id="accountDao" class="com.ntk.epcm.data.AccountDAO">
+		<constructor-arg ref="sessionFactory" />
+	</bean>
+	<bean id="accountService" class="com.ntk.epcm.service.AccountService">
+		<constructor-arg ref="accountDao" />
+	</bean>
+</beans>
