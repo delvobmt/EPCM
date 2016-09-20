@@ -13,15 +13,15 @@
 		<p:panelGrid>
 			<f:facet name="header">
 				<p:row>
-					<p:column colspan="4"><p:outputLabel value="#{registrationView.getTitle()"/></p:column>
+					<p:column colspan="4"><p:outputLabel value="#{registrationView.getTitle()}"/></p:column>
 				</p:row>
 			</f:facet>
 			<p:row>
-				<p:column><p:outputLabel for="username" value="Username"></p:outputLabel></p:column>
+				<p:column><p:outputLabel for="username" value="Username"/></p:column>
 				<p:column><p:inputText id="username"/><p:message for="username"/></p:column>
 			</p:row>
 			<p:row>
-				<p:column><p:outputLabel for="password" values="Password"/></p:column>
+				<p:column><p:outputLabel for="password" value="Password"/></p:column>
 				<p:column><p:password id="password"/><p:message for="password"/></p:column>
 			</p:row>
 			<p:row>
@@ -30,7 +30,7 @@
 			</p:row>
 			<f:facet name="footer"/>
 			<p:row>
-				<p:column><p:commandButton value="Sign Up" ajax="true" validateClient="true"/></p:column>
+				<p:column colspan="4"><p:commandButton value="Sign Up" ajax="true" validateClient="true"/></p:column>
 			</p:row>
 		</p:panelGrid>
 	</h:form>
