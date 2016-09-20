@@ -1,0 +1,38 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+
+</h:head>
+
+<h:body>
+
+	<h:form>
+		<p:panelGrid>
+			<f:facet name="header">
+				<p:row>
+					<p:column colspan="4"><p:outputLabel value="#{registrationView.getTitle()"/></p:column>
+				</p:row>
+			</f:facet>
+			<p:row>
+				<p:column><p:outputLabel for="username" value="Username"></p:outputLabel></p:column>
+				<p:column><p:inputText id="username"/><p:message for="username"/></p:column>
+			</p:row>
+			<p:row>
+				<p:column><p:outputLabel for="password" values="Password"/></p:column>
+				<p:column><p:password id="password"/><p:message for="password"/></p:column>
+			</p:row>
+			<p:row>
+				<p:column><p:outputLabel for="retype-password" value="Retype your Password"/></p:column>
+				<p:column><p:password id="retype-password"/><p:message for="retype-password"/></p:column>
+			</p:row>
+			<f:facet name="footer"/>
+			<p:row>
+				<p:column><p:commandButton value="Sign Up" ajax="true" validateClient="true"/></p:column>
+			</p:row>
+		</p:panelGrid>
+	</h:form>
+</h:body>
+</html>

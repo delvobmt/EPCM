@@ -3,10 +3,12 @@ package com.ntk.epcm.data;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.ntk.epcm.model.Account;
 
 public class AccountDAO implements IAccountDAO {
+	@Autowired
 	SessionFactory factory;
 	
 	public AccountDAO(SessionFactory factory) {

@@ -14,8 +14,6 @@ public class Account {
 	}
 	
 	public Account() {
-		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	/**
