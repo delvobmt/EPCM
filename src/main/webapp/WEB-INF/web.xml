@@ -4,6 +4,10 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
     http://java.sun.com/xml/ns/javaee/web-app_3_1.xsd"
 	version="3.1">
+	
+	<welcome-file-list>
+		<welcome-file>index.xhtml</welcome-file>
+	</welcome-file-list>
 
 	<display-name>Spring MVC Application</display-name>
 	<!-- The listener class ties the spring framework entry points to the servlet 

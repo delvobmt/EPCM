@@ -1,16 +1,20 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.org/ui">
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 
 <h:head>
-
+	<h:outputStylesheet library="css" name="style.css"/>
 </h:head>
 
 <h:body>
 
 	<h:form>
 		<p:menubar>
+			<p:menuitem>
+				<p:outputLabel value="EPCM"/>
+			</p:menuitem>
 			<f:facet name="options">
 				<p:inputText style="margin-right:10px" placeholder="Username or email" />
 				<p:password style="margin-right:10px" placeholder="Password" />
@@ -18,6 +22,8 @@
 			</f:facet>
 		</p:menubar>
 	</h:form>
-
+<div  style="float:right; margin-right:10px">
+	<ui:include src="account/registration.xhtml"/>
+</div>
 </h:body>
 </html>
