@@ -10,31 +10,33 @@
 <h:body>
 
 	<h:form>
-		<p:panelGrid>
-			<f:facet name="header">
-					<p:column colspan="4"><p:outputLabel value="Regiastration"/></p:column>
-			</f:facet>
-			<p:row>
-				<p:column><p:outputLabel for="username" value="Username"/></p:column>
-				<p:column><p:inputText id="username"/><p:message for="username" display="icon"/></p:column>
-			</p:row>
+		<p:panel header="Registration form">
+			<h:panelGrid columns="3" cellpadding="5">
 			
-			<p:row>
-				<p:column><p:outputLabel for="email" value="Email"/></p:column>
-				<p:column><p:inputText id="email" placeholder="sample@mail.com"/></p:column>
-			</p:row>
-			<p:row>
-				<p:column><p:outputLabel for="password" value="Password"/></p:column>
-				<p:column><p:password id="password"/><p:message for="password"/></p:column>
-			</p:row>
-			<p:row>
-				<p:column><p:outputLabel for="retype-password" value="Retype your Password"/></p:column>
-				<p:column><p:password id="retype-password"/><p:message for="retype-password"/></p:column>
-			</p:row>
-			<f:facet name="footer">
-				<p:column colspan="4" style="text-align:center"><p:commandButton value="Sign Up" ajax="true" validateClient="true"/></p:column>
-			</f:facet>
-		</p:panelGrid>
+				<p:outputLabel for="username" value="Username"/>
+				<p:inputText id="username" value="#{RegistrationView.username}" placeholder="SampleUser"/>
+				<p:message for="username" display="icon"/>
+						
+				<p:outputLabel for="name" value="Name"/>
+				<p:inputText id="name" value="#{RegistrationView.name}" placeholder="mr.Sample"/>
+				<p:message for="name"/>
+						
+				<p:outputLabel for="email" value="Email"/>
+				<p:inputText id="email" value="#{RegistrationView.email}" placeholder="sample@mail.com"/>
+				<p:message for="email"/>
+						
+				<p:outputLabel for="password" value="Password"/>
+				<p:password id="password" value="#{RegistrationView.password}" placeholder="password"/>
+				<p:message for="password"/>
+			
+				<p:outputLabel for="retype-password" value="Retype your Password"/>
+				<p:password id="retype-password" placeholder="password"/>
+				<p:message for="retype-password"/>
+			
+				<p:commandButton value="Sign Up" action="registration" ajax="true" validateClient="true"/>
+	
+			</h:panelGrid>
+		</p:panel>
 	</h:form>
 </h:body>
 </html>
