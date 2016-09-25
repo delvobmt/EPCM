@@ -8,6 +8,14 @@
 		<tag-name>authorize</tag-name>
 		<handler-class>org.springframework.faces.security.FaceletsAuthorizeTagHandler</handler-class>
 	</tag>
+	<tag>
+		<tag-name>csrfInput</tag-name>
+		<handler-class>org.springframework.security.taglibs.csrf.CsrfInputTag</handler-class>
+	</tag>
+	<tag>
+		<tag-name>csrfMetaTags</tag-name>
+		<handler-class>org.springframework.security.taglibs.csrf.CsrfMetaTagsTag</handler-class>
+	</tag>
 	<function>
 		<function-name>areAllGranted</function-name>
 		<function-class>org.springframework.faces.security.FaceletsAuthorizeTagUtils</function-class>

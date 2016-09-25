@@ -2,7 +2,6 @@ package com.ntk.epcm.data;
 
 import java.util.List;
 
-import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -67,7 +66,8 @@ public class AccountDAO implements IAccountDAO {
 	public Account findAccountByEmail(String email) {
 		Session session = factory.openSession();
 		session.getTransaction().begin();
-		List<Account> list = session.createCriteria(Account.class).add(Restrictions.eq("email", email)).setMaxResults(1).list();
+		List<Account> list = session.createCriteria(Account.class)
+				.add(Restrictions.eq("email", email)).setMaxResults(1).list();
 		if(!list.isEmpty()){
 			return list.get(0);
 		}
