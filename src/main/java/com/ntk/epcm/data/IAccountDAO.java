@@ -1,5 +1,7 @@
 package com.ntk.epcm.data;
 
+import com.ntk.epcm.model.Account;
+
 public interface IAccountDAO {
 	/**
 	 * create new user
@@ -27,4 +29,19 @@ public interface IAccountDAO {
 	 * @return count of user removed
 	 */
 	int remove(int id);
+	
+	/**
+	 * find Account with specified id
+	 * @param id
+	 * @return Account 
+	 */
+	Account findAccountById(int id);
+
+	/**
+	 * find account with specified email
+	 * @param email
+	 * @return Account
+	 */
+	Account findAccountByEmail(String email);
+
 }
