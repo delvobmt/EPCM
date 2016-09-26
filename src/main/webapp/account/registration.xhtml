@@ -18,7 +18,10 @@
 			
 				<p:outputLabel for="username" value="Username:"/>
 				<p:inputText id="username" value="#{registrationView.username}" placeholder="SampleUser"
-				required="true"/>
+				required="true" requiredMessage="username is required">
+					<f:validateLength minimum="4" maximum="32"/>
+					<p:ajax event="keyup"/>
+				</p:inputText>
 				<p:message for="username"/>
 				<h:outputText value="#{registration.username}"/>
 						
