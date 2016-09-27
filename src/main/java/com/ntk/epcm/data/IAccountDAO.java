@@ -8,9 +8,11 @@ public interface IAccountDAO {
 	 * 
 	 * @param username
 	 * @param password
+	 * @param name
+	 * @param email
 	 * @return id of user
 	 */
-	int insert(String username, String password);
+	int insert(String username, String password, String name, String email);
 
 	/**
 	 * save new information of user
@@ -44,4 +46,10 @@ public interface IAccountDAO {
 	 */
 	Account findAccountByEmail(String email);
 
+	/**
+	 * check existence of username
+	 * @param username
+	 * @return true if username is existed
+	 */
+	Account findAccountByUsername(String username); 
 }

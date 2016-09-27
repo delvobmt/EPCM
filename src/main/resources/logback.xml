@@ -40,9 +40,10 @@
 		<appender-ref ref="STDOUT" />
 		<appender-ref ref="FILE-AUDIT" />
 	</logger>
-
+	
 	<root level="error">
 		<appender-ref ref="STDOUT" />
+		<appender-ref ref="FILE-AUDIT" />
 	</root>
 
 </configuration>

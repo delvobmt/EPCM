@@ -2,16 +2,17 @@ package com.ntk.epcm.data;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.ntk.epcm.model.Account;
 
 public class AccountDAO implements IAccountDAO {
-	@Autowired
+	@Inject
 	SessionFactory factory;
 	
 	public AccountDAO(SessionFactory factory) {
@@ -20,12 +21,14 @@ public class AccountDAO implements IAccountDAO {
 	}
 
 	@Override
-	public int insert(String username, String password) {
+	public int insert(String username, String password, String name, String email) {
 		Session session = factory.openSession();
 		session.getTransaction().begin();
 		int id = -1;
 		try {
 			Account account = new Account(username, password);
+			account.setEmail(email);
+			account.setName(name);
 			id = (int) session.save(account);
 			session.getTransaction().commit();
 			
@@ -68,11 +71,18 @@ public class AccountDAO implements IAccountDAO {
 		session.getTransaction().begin();
 		List<Account> list = session.createCriteria(Account.class)
 				.add(Restrictions.eq("email", email)).setMaxResults(1).list();
-		if(!list.isEmpty()){
-			return list.get(0);
-		}
 		session.close();
-		return null;
+		return list.isEmpty()? null: list.get(0);
+	}
+
+	@Override
+	public Account findAccountByUsername(String username) {
+		Session session = factory.openSession();
+		session.getTransaction().begin();
+		List<Account> list = session.createCriteria(Account.class)
+				.add(Restrictions.eq("username", username)).setMaxResults(1).list();
+		session.close();
+		return list.isEmpty()? null: list.get(0);
 	}
 
 	

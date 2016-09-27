@@ -1,24 +1,21 @@
 package com.ntk.epcm.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.inject.Inject;
+
 import org.springframework.stereotype.Service;
 
-import com.ntk.epcm.data.IAccountDAO;
+import com.ntk.epcm.data.AccountDAO;
 import com.ntk.epcm.model.Account;
 
 @Service
 public class AccountService implements IAccountService{
 
-	@Autowired
-	IAccountDAO accountDAO;
-	
-	public AccountService(IAccountDAO accountDAO) {
-		this.accountDAO = accountDAO;
-	}
+	@Inject
+	AccountDAO accountDAO;
 
 	@Override
-	public int insert(String username, String password) {
-		return accountDAO.insert(username, password);
+	public int insert(String username, String password, String name, String email) {
+		return accountDAO.insert(username, password, name, email);
 	}
 
 	@Override
@@ -40,6 +37,10 @@ public class AccountService implements IAccountService{
 	public Account findAccountByEmail(String email) {
 		return accountDAO.findAccountByEmail(email);
 	}
-	
-	
+
+	@Override
+	public Account findAccountByUsername(String username) {
+		return accountDAO.findAccountByUsername(username);
+	}
+
 }

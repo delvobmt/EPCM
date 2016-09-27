@@ -3,18 +3,21 @@ package com.ntk.epcm.view.account;
 import java.io.Serializable;
 
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
 import javax.inject.Inject;
 
-import org.springframework.stereotype.Service;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import com.ntk.epcm.model.Account;
 import com.ntk.epcm.service.AccountService;
 
 @ManagedBean
-@SessionScoped
-@Service
+@Scope("request")
+@Component
 public class RegistrationView implements Serializable {
+	private final Logger LOGGER = LoggerFactory.getLogger(getClass());
 
 	private static final long serialVersionUID = -5746869699117671009L;
 
@@ -25,7 +28,6 @@ public class RegistrationView implements Serializable {
 
 	private String name;
 
-	// \\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,}\\b
 	private String email;
 
 	private String password;
@@ -34,9 +36,11 @@ public class RegistrationView implements Serializable {
 		Account account = accountService.findAccountByEmail(email);
 		if (account != null) {
 			// account is existed
+			LOGGER.debug("account is existed");
 			return "";
 		} else {
-			accountService.insert(username, password);
+			LOGGER.debug("insert account with {}", username);
+			accountService.insert(username, password, name, email);
 			return "account/detail";
 		}
 	}
