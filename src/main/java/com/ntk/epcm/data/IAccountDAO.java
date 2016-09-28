@@ -31,16 +31,18 @@ public interface IAccountDAO {
 	 * @return count of user removed
 	 */
 	int remove(int id);
-	
+
 	/**
 	 * find Account with specified id
+	 * 
 	 * @param id
-	 * @return Account 
+	 * @return Account
 	 */
 	Account findAccountById(int id);
 
 	/**
 	 * find account with specified email
+	 * 
 	 * @param email
 	 * @return Account
 	 */
@@ -48,8 +50,24 @@ public interface IAccountDAO {
 
 	/**
 	 * check existence of username
+	 * 
 	 * @param username
 	 * @return true if username is existed
 	 */
-	Account findAccountByUsername(String username); 
+	Account findAccountByUsername(String username);
+
+	/**
+	 * check existence of email
+	 * 
+	 * @param email
+	 * @return true when email is used
+	 */
+	boolean checkExistenceEmail(String email);
+
+	/**
+	 * check existence of Username
+	 * @param username
+	 * @return true when username is existed
+	 */
+	boolean checkExistenceUsername(String username);
 }

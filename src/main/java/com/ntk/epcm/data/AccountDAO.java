@@ -1,12 +1,12 @@
 package com.ntk.epcm.data;
 
-import java.util.List;
-
 import javax.inject.Inject;
 
+import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
 import com.ntk.epcm.model.Account;
@@ -14,7 +14,7 @@ import com.ntk.epcm.model.Account;
 public class AccountDAO implements IAccountDAO {
 	@Inject
 	SessionFactory factory;
-	
+
 	public AccountDAO(SessionFactory factory) {
 		super();
 		this.factory = factory;
@@ -31,7 +31,7 @@ public class AccountDAO implements IAccountDAO {
 			account.setName(name);
 			id = (int) session.save(account);
 			session.getTransaction().commit();
-			
+
 		} catch (HibernateException e) {
 			session.getTransaction().rollback();
 		}
@@ -41,7 +41,7 @@ public class AccountDAO implements IAccountDAO {
 
 	@Override
 	public int save(int id, String username, String password) {
-		//TODO edit account infomation
+		// TODO edit account infomation
 		return 0;
 	}
 
@@ -69,21 +69,48 @@ public class AccountDAO implements IAccountDAO {
 	public Account findAccountByEmail(String email) {
 		Session session = factory.openSession();
 		session.getTransaction().begin();
-		List<Account> list = session.createCriteria(Account.class)
-				.add(Restrictions.eq("email", email)).setMaxResults(1).list();
+		Criteria criteria = session.createCriteria(Account.class);
+		criteria.add(Restrictions.eq("email", email)).setMaxResults(1);
+		Object account = criteria.uniqueResult();
+		session.getTransaction().commit();
 		session.close();
-		return list.isEmpty()? null: list.get(0);
+		return account == null ? null : (Account) account;
 	}
 
 	@Override
 	public Account findAccountByUsername(String username) {
 		Session session = factory.openSession();
 		session.getTransaction().begin();
-		List<Account> list = session.createCriteria(Account.class)
-				.add(Restrictions.eq("username", username)).setMaxResults(1).list();
+		Criteria criteria = session.createCriteria(Account.class);
+		criteria.add(Restrictions.eq("username", username)).setMaxResults(1);
+		Object account = criteria.uniqueResult();
+		session.getTransaction().commit();
 		session.close();
-		return list.isEmpty()? null: list.get(0);
+		return account == null ? null : (Account) account;
 	}
 
-	
+	@Override
+	public boolean checkExistenceEmail(String email) {
+		Session session = factory.openSession();
+		session.getTransaction().begin();
+		Criteria criteria = session.createCriteria(Account.class);
+		criteria.add(Restrictions.eq("email", email)).setProjection(Projections.rowCount());
+		Long count = (Long) criteria.uniqueResult();
+		session.getTransaction().commit();
+		session.close();
+		return count != 0;
+	}
+
+	@Override
+	public boolean checkExistenceUsername(String username) {
+		Session session = factory.openSession();
+		session.getTransaction().begin();
+		Criteria criteria = session.createCriteria(Account.class);
+		criteria.add(Restrictions.eq("username", username)).setProjection(Projections.rowCount());
+		Long count = (Long) criteria.uniqueResult();
+		session.getTransaction().commit();
+		session.close();
+		return count != 0;
+	}
+
 }

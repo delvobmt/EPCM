@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
-import com.ntk.epcm.service.AccountService;
+import com.ntk.epcm.service.IAccountService;
 
 @Component
 @Scope("session")
@@ -21,7 +21,7 @@ public class UsernameValidator implements Validator {
 	final Logger LOGGER = LoggerFactory.getLogger(getClass());
 
 	@Inject
-	AccountService accountService;
+	IAccountService accountService;
 
 	@Override
 	public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
@@ -34,8 +34,8 @@ public class UsernameValidator implements Validator {
 			summary = "Username is too long";
 		} else {
 			try {
-				LOGGER.debug("account service is {}",accountService);
-				if (accountService.findAccountByUsername(username) != null)
+				LOGGER.debug("account service is {}", accountService);
+				if (accountService.checkExistenceUsername(username))
 					summary = "Username is existed";
 			} catch (Exception e) {
 				LOGGER.error("error with validate username", e);

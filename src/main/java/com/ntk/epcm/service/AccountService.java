@@ -4,14 +4,14 @@ import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
 
-import com.ntk.epcm.data.AccountDAO;
+import com.ntk.epcm.data.IAccountDAO;
 import com.ntk.epcm.model.Account;
 
 @Service
 public class AccountService implements IAccountService{
 
 	@Inject
-	AccountDAO accountDAO;
+	IAccountDAO accountDAO;
 
 	@Override
 	public int insert(String username, String password, String name, String email) {
@@ -41,6 +41,16 @@ public class AccountService implements IAccountService{
 	@Override
 	public Account findAccountByUsername(String username) {
 		return accountDAO.findAccountByUsername(username);
+	}
+
+	@Override
+	public boolean checkExistenceUsername(String username) {
+		return accountDAO.checkExistenceUsername(username);
+	}
+
+	@Override
+	public boolean checkExistenceEmail(String email) {
+		return accountDAO.checkExistenceEmail(email);
 	}
 
 }

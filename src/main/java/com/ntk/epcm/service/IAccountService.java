@@ -2,6 +2,10 @@ package com.ntk.epcm.service;
 
 import com.ntk.epcm.model.Account;
 
+/**
+ * @author nguyentienkhoa
+ *
+ */
 public interface IAccountService {
 
 	/**
@@ -48,9 +52,23 @@ public interface IAccountService {
 	Account findAccountByEmail(String email);
 
 	/**
+	 * find account with specified username
+	 * @param username
+	 * @return
+	 */
+	Account findAccountByUsername(String username);
+	
+	/**
 	 * check existence of username
 	 * @param username
 	 * @return true if username is existed
 	 */
-	Account findAccountByUsername(String username);
+	boolean checkExistenceUsername(String username);
+	
+	/**
+	 * check existence of email
+	 * @param email
+	 * @return true if email is used
+	 */
+	boolean checkExistenceEmail(String email);
 }

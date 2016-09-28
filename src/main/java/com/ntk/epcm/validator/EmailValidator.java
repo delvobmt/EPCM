@@ -15,7 +15,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
-import com.ntk.epcm.service.AccountService;
+import com.ntk.epcm.service.IAccountService;
 
 @Component
 @Scope("session")
@@ -23,7 +23,7 @@ public class EmailValidator implements Validator {
 	final Logger LOGGER = LoggerFactory.getLogger(getClass());
 
 	@Inject
-	AccountService accountService;
+	IAccountService accountService;
 
 	Pattern pattern = Pattern
 			.compile("^[_A-Za-z0-9-]+(\\." + "[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
@@ -38,7 +38,7 @@ public class EmailValidator implements Validator {
 		}else {
 			try {
 				LOGGER.debug("account service is {}", accountService);
-				if (accountService.findAccountByEmail(email) != null)
+				if (accountService.checkExistenceEmail(email))
 					summary = "Email is used by another";
 			} catch (Exception e) {
 				LOGGER.error("error with validate username", e);

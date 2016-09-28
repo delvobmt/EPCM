@@ -10,8 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import com.ntk.epcm.model.Account;
-import com.ntk.epcm.service.AccountService;
+import com.ntk.epcm.service.IAccountService;
 
 @ManagedBean
 @Scope("request")
@@ -22,7 +21,7 @@ public class RegistrationView implements Serializable {
 	private static final long serialVersionUID = -5746869699117671009L;
 
 	@Inject
-	AccountService accountService;
+	IAccountService accountService;
 
 	private String username;
 
@@ -33,16 +32,9 @@ public class RegistrationView implements Serializable {
 	private String password;
 
 	public String register() {
-		Account account = accountService.findAccountByEmail(email);
-		if (account != null) {
-			// account is existed
-			LOGGER.debug("account is existed");
-			return "";
-		} else {
-			LOGGER.debug("insert account with {}", username);
-			accountService.insert(username, password, name, email);
-			return "account/detail";
-		}
+		LOGGER.debug("insert account with {}", username);
+		accountService.insert(username, password, name, email);
+		return "account/detail";
 	}
 
 	public String getUsername() {
