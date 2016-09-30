@@ -4,6 +4,7 @@ import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
 
+import com.ntk.epcm.constant.RespondCode;
 import com.ntk.epcm.data.IAccountDAO;
 import com.ntk.epcm.model.Account;
 
@@ -51,6 +52,11 @@ public class AccountService implements IAccountService{
 	@Override
 	public boolean checkExistenceEmail(String email) {
 		return accountDAO.checkExistenceEmail(email);
+	}
+
+	@Override
+	public RespondCode doLogin(String username, String password) {
+		return accountDAO.doLogin(username, password);
 	}
 
 }

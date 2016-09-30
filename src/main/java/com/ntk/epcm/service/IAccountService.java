@@ -1,5 +1,6 @@
 package com.ntk.epcm.service;
 
+import com.ntk.epcm.constant.RespondCode;
 import com.ntk.epcm.model.Account;
 
 /**
@@ -71,4 +72,6 @@ public interface IAccountService {
 	 * @return true if email is used
 	 */
 	boolean checkExistenceEmail(String email);
+
+	RespondCode doLogin(String username, String password);
 }

@@ -1,5 +1,6 @@
 package com.ntk.epcm.data;
 
+import com.ntk.epcm.constant.RespondCode;
 import com.ntk.epcm.model.Account;
 
 public interface IAccountDAO {
@@ -70,4 +71,6 @@ public interface IAccountDAO {
 	 * @return true when username is existed
 	 */
 	boolean checkExistenceUsername(String username);
+
+	RespondCode doLogin(String username, String password);
 }

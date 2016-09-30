@@ -9,7 +9,9 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
+import com.ntk.epcm.constant.RespondCode;
 import com.ntk.epcm.model.Account;
+import com.ntk.epcm.model.vo.AccountLoginVO;
 
 public class AccountDAO implements IAccountDAO {
 	@Inject
@@ -111,6 +113,34 @@ public class AccountDAO implements IAccountDAO {
 		session.getTransaction().commit();
 		session.close();
 		return count != 0;
+	}
+
+	@Override
+	public RespondCode doLogin(String username, String password) {
+		RespondCode code = RespondCode.ERROR;
+		Session session = factory.openSession();
+		session.getTransaction().begin();
+		Criteria criteria = session.createCriteria(Account.class);
+		criteria.add(Restrictions.and(
+				Restrictions.or(Restrictions.eq("username", username),
+						Restrictions.eq("email", username)),
+				Restrictions.eq("password", password)))
+				.setProjection(Projections.projectionList()
+						.add(Projections.rowCount())
+						.add(Projections.property("status")));
+		
+		try {
+			AccountLoginVO result = (AccountLoginVO) criteria.uniqueResult();
+			code = result.getCount()==0?RespondCode.FAIL:
+				result.getStatus().equals("inactive")?RespondCode.INACTIVE:
+					RespondCode.SUCCES;
+		} catch (HibernateException e) {
+			code = RespondCode.ERROR;
+		}
+		session.getTransaction().commit();
+		session.close();
+		
+		return code;
 	}
 
 }
