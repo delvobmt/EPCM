@@ -9,17 +9,26 @@
 </h:head>
 
 <h:body>
-	<h:form>
+	<h:form id="loginForm">
 		<p:menubar>
 			<p:menuitem>
 				<p:outputLabel value="EPCM" />
 			</p:menuitem>
 			<f:facet name="options">
-				<ui:include src="account/login.xhtml" />
-	<ui:include src="account/registration.xhtml" />
+				<p:growl sticky=""/>
+				<p:inputText id="username" value="#{accountBean.username}"
+					style="margin-right:10px" placeholder="Username or email"
+					required="true" requiredMessage="Username/email is required" />
+				<p:password id="password" value="#{accountBean.password}"
+					style="margin-right:10px" placeholder="Password" required="true"
+					requiredMessage="Password is required" />
+				<p:commandButton actionListener="#{accountBean.login}" value="Login"
+					ajax="true" update="loginForm" />
 			</f:facet>
 		</p:menubar>
+
 	</h:form>
+	<ui:include src="account/registration.xhtml" />
 
 </h:body>
 </html>

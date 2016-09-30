@@ -20,13 +20,13 @@ public class AccountService implements IAccountService{
 	}
 
 	@Override
-	public int save(int id, String username, String password) {
-		return accountDAO.save(id, username, password);
+	public void save(int id, String username, String password,String name, String email) {
+		accountDAO.save(id, username, password, name, email);
 	}
 
 	@Override
-	public int remove(int id) {
-		return accountDAO.remove(id);
+	public void remove(int id) {
+		accountDAO.remove(id);
 	}
 
 	@Override

@@ -15,5 +15,6 @@
 		<property name="password" column="password" type="string"/>		
 		<property name="email" column="email" type="string"/>		
 		<property name="name" column="name" type="string"/>		
+		<property name="status" column="status" type="string"/>		
 	</class>
 </hibernate-mapping>
