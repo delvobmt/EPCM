@@ -1,34 +1,35 @@
-<html xmlns="http://www.w3.org/1999/xhtml"
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.org/ui"
-	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+	xmlns:sec="http://www.springframework.org/security/tags"
+	xmlns:p="http://primefaces.org/ui">
 
-<h:head>
-	<h:outputStylesheet library="css" name="style.css" />
-</h:head>
+	<h:head>
+		<h:outputStylesheet library="css" name="style.css" />
+	</h:head>
 
-<h:body>
-	<h:form id="loginForm">
-		<p:menubar>
-			<p:menuitem>
-				<p:outputLabel value="EPCM" />
-			</p:menuitem>
-			<f:facet name="options">
-				<p:growl sticky=""/>
-				<p:inputText id="username" value="#{accountBean.username}"
-					style="margin-right:10px" placeholder="Username or email"
-					required="true" requiredMessage="Username/email is required" />
-				<p:password id="password" value="#{accountBean.password}"
-					style="margin-right:10px" placeholder="Password" required="true"
-					requiredMessage="Password is required" />
-				<p:commandButton actionListener="#{accountBean.login}" value="Login"
-					ajax="true" update="loginForm" />
-			</f:facet>
-		</p:menubar>
+	<h:body>
+		<h:form id="loginForm">
+			<p:menubar>
+				<p:menuitem>
+					<p:outputLabel value="EPCM" />
+				</p:menuitem>
+				<f:facet name="options">
+					<p:growl sticky="" />
+					<p:inputText id="username" value="#{accountBean.username}"
+						style="margin-right:10px" placeholder="Username or email"
+						required="true" requiredMessage="Username/email is required" />
+					<p:password id="password" value="#{accountBean.password}"
+						style="margin-right:10px" placeholder="Password" required="true"
+						requiredMessage="Password is required" />
+					<p:commandButton actionListener="#{accountBean.login}"
+						value="Login" ajax="true" update="loginForm" />
+				</f:facet>
+			</p:menubar>
 
-	</h:form>
-	<ui:include src="account/registration.xhtml" />
+		</h:form>
+		<ui:include src="account/registration.xhtml" />
 
-</h:body>
-</html>
+	</h:body>
+</ui:composition>
