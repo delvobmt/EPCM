@@ -1,0 +1,31 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:sec="http://www.springframework.org/security/tags"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:head></h:head>
+
+	<h:body style="text-align:center">
+		<h:panelGrid style="display:inline-block" columns="2">
+			<p:outputLabel for="ussername" value="Username/email" />
+			<p:inputText id="username" value="#{accountBean.username}"
+				style="margin-right:10px" placeholder="Username or email"
+				required="true" requiredMessage="Username/email is required" />
+			<p:spacer />
+			<p:message for="username" />
+
+			<p:outputLabel for="password" value="Password"/>
+			<p:password id="password" value="#{accountBean.password}"
+				style="margin-right:10px" placeholder="Password" required="true"
+				requiredMessage="Password is required" />
+			<p:spacer />
+			<p:message for="password"/>
+			
+			<p:commandButton actionListener="#{accountBean.login}" value="Login"
+				ajax="true" update="loginForm" />
+			<p:spacer />
+		</h:panelGrid>
+	</h:body>
+</ui:composition>
