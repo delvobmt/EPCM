@@ -26,6 +26,7 @@
 		<property name="mappingResources">
 			<list>
 				<value>account.hbm.xml</value>
+				<value>account_role.hbm.xml</value>
 			</list>
 		</property>
 

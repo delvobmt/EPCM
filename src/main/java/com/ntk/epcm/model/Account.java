@@ -1,5 +1,8 @@
 package com.ntk.epcm.model;
 
+import java.util.Collections;
+import java.util.Set;
+
 public class Account {
 	private int id;
 	private String username;
@@ -7,6 +10,7 @@ public class Account {
 	private String email;
 	private String name;
 	private String status;
+	private Set<AccountRole> roles = Collections.emptySet();
 	
 	public Account(int id) {
 		this.id = id;
@@ -71,5 +75,13 @@ public class Account {
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public Set<AccountRole> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(Set<AccountRole> roles) {
+		this.roles = roles;
 	}
 }

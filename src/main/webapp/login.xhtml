@@ -8,24 +8,28 @@
 	<h:head></h:head>
 
 	<h:body style="text-align:center">
-		<h:panelGrid style="display:inline-block" columns="2">
-			<p:outputLabel for="ussername" value="Username/email" />
-			<p:inputText id="username" value="#{accountBean.username}"
-				style="margin-right:10px" placeholder="Username or email"
-				required="true" requiredMessage="Username/email is required" />
-			<p:spacer />
-			<p:message for="username" />
+		<h:form>
+			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+			<p:outputLabel value="${SPRING_SECURITY_LAST_EXCEPTION.message}"/>
+			<h:panelGrid style="display:inline-block" columns="2">
+				<p:outputLabel for="j_username" value="Username/email" />
+				<p:inputText id="j_username" name="j_username"
+					style="margin-right:10px" placeholder="Username or email"
+					required="true" requiredMessage="Username/email is required" />
+				<p:spacer />
+				<p:message for="j_username" />
 
-			<p:outputLabel for="password" value="Password"/>
-			<p:password id="password" value="#{accountBean.password}"
-				style="margin-right:10px" placeholder="Password" required="true"
-				requiredMessage="Password is required" />
-			<p:spacer />
-			<p:message for="password"/>
-			
-			<p:commandButton actionListener="#{accountBean.login}" value="Login"
-				ajax="true" update="loginForm" />
-			<p:spacer />
-		</h:panelGrid>
+				<p:outputLabel for="j_password" value="Password" />
+				<p:password id="j_password" name="j_password"
+					style="margin-right:10px" placeholder="Password" required="true"
+					requiredMessage="Password is required" />
+				<p:spacer />
+				<p:message for="j_password" />
+
+				<p:commandButton type="submit" value="Login" 
+					ajax="true" update="@form"/>
+				<p:spacer />
+			</h:panelGrid>
+		</h:form>
 	</h:body>
 </ui:composition>

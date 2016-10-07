@@ -5,7 +5,7 @@
 <hibernate-mapping>
 	<class name="com.ntk.epcm.model.Account" table="Account">
 		<meta attribute="class-description">
-			This class contains account auth information
+			This class contains account authentication information
 		</meta>
 		
 		<id name="id" type="int" column="account_id">
@@ -15,6 +15,12 @@
 		<property name="password" column="password" type="string"/>		
 		<property name="email" column="email" type="string"/>		
 		<property name="name" column="name" type="string"/>		
-		<property name="status" column="status" type="string"/>		
+		<property name="status" column="status" type="string"/>
+		<set name="roles" table="Account_Role" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id"/>
+            </key>
+            <one-to-many class="com.ntk.epcm.model.AccountRole" />
+        </set>		
 	</class>
 </hibernate-mapping>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+ "-//Hibernate/Hibernate Mapping DTD//EN"
+ "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.ntk.epcm.model.AccountRole" table="Account_Role">
+		<meta attribute="class-description">
+			This class contains account authority information
+		</meta>
+
+		<id name="role" type="string" column="role">
+			<generator class="native" />
+		</id>
+		<many-to-one name="account" class="com.ntk.epcm.model.Account"
+			fetch="select">
+			<column name="account_id" />
+		</many-to-one>
+		<property name="expireAt" column="expireAt" type="date" />
+	</class>
+</hibernate-mapping>

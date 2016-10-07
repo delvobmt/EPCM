@@ -13,45 +13,38 @@
 
 	<h:form>
 		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-		<p:panel id="registerForm" header="Registration form">
-			<h:panelGrid columns="4" cellpadding="5">
+		<p:panel id="registerForm" header="Registration">
+			<h:panelGrid columns="3" cellpadding="5">
 			
 				<p:outputLabel for="username" value="Username:"/>
 				<p:inputText id="username" label="Username" value="#{accountBean.username}" placeholder="SampleUser"
 				required="true" requiredMessage="Username is required">
 					<f:validator binding="#{usernameValidator}"/>
-					<p:ajax event="keyup"/>
 				</p:inputText>
 				<p:message for="username"/>
-				<h:outputText value="#{registration.username}"/>
 						
 				<p:outputLabel for="name" value="Name"/>
 				<p:inputText id="name" label="Name" value="#{accountBean.name}" placeholder="mr.Sample"/>
 				<p:message for="name"/>
-				<h:outputText value="#{registration.name}"/>
 						
 				<p:outputLabel for="email" value="Email:"/>
 				<p:inputText id="email" value="#{accountBean.email}" placeholder="sample@mail.com"
 				required="true" requiredMessage="Email is required">
 					<f:validator binding="#{emailValidator}"/>
-					<p:ajax event="keyup"/>
 				</p:inputText>
 				<p:message for="email"/>
-				<h:outputText value="#{registration.email}"/>
 						
 				<p:outputLabel for="password" value="Password:"/>
 				<p:password id="password" value="#{accountBean.password}" placeholder="password" feedback="true"
 				required="true" requiredMessage="Password is required" match="retype-password"/>
 				<p:message for="password"/>
-				<h:outputText value="#{registration.password}"/>
 				
 				<p:outputLabel for="retype-password" value="Retype your Password"/>
 				<p:password id="retype-password" value="#{accountBean.password}" placeholder="password"
 				required="true" requiredMessage="Please re-type your password"/>
 				<p:message for="retype-password"/>
-				<h:outputText value="#{registration.password}"/>
 				
-				<p:commandButton value="Sign Up" actionListener="#{accountBean.test}" ajax="true" update="registerForm"/>
+				<p:commandButton value="Sign Up" action="#{accountBean.register}" ajax="false"/>
 	
 			</h:panelGrid>
 		</p:panel>

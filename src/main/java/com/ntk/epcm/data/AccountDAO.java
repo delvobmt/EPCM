@@ -35,6 +35,7 @@ public class AccountDAO implements IAccountDAO {
 			Account account = new Account(username, password);
 			account.setEmail(email);
 			account.setName(name);
+			account.setStatus("inactive");
 			id = (int) session.save(account);
 			session.getTransaction().commit();
 

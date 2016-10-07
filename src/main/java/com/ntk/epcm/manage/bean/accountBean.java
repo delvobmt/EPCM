@@ -1,16 +1,22 @@
 package com.ntk.epcm.manage.bean;
 
+import java.io.IOException;
 import java.io.Serializable;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.faces.validator.ValidatorException;
 import javax.inject.Inject;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import com.ntk.epcm.constant.RespondCode;
@@ -26,6 +32,9 @@ public class accountBean implements Serializable {
 
 	@Inject
 	IAccountService accountService;
+	
+	@Inject
+	BCryptPasswordEncoder encoder;
 
 	private String username;
 
@@ -37,43 +46,58 @@ public class accountBean implements Serializable {
 
 	public String register() {
 		LOGGER.debug("insert account with {}", username);
-		accountService.insert(username, password, name, email);
-		return "account/registerSuccess";
+		accountService.insert(username, encoder.encode(password), name, email);
+		return "user/register_success.xhtml";
 	}
 
 	public String login() {
-		LOGGER.debug("account {} request login", username);
-		RespondCode code = accountService.doLogin(username, password);
-		switch (code) {
-		case FAIL: {
-			LOGGER.debug("login fail");
-			String summary = "Username/Email or Password is inccorrect";
-			String detail = null;
-			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, detail);
-			FacesContext.getCurrentInstance().addMessage(null, msg);
-			break;
+		try {
+			ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
+			HttpServletRequest request = ((HttpServletRequest) context.getRequest());
+
+			ServletResponse resposnse = ((ServletResponse) context.getResponse());
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/login");
+			dispatcher.forward(request, resposnse);
+			FacesContext.getCurrentInstance().responseComplete();
+		} catch (ServletException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		case ERROR: {
-			LOGGER.debug("login error");
-			String summary = "Service is error";
-			String detail = null;
-			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, detail);
-			FacesContext.getCurrentInstance().addMessage(null, msg);
-			break;
-		}
-		case INACTIVE: {
-			LOGGER.debug("{} is inactive");
-			String summary = String.format("%s is inactive", username);
-			String detail = null;
-			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, detail);
-			FacesContext.getCurrentInstance().addMessage(null, msg);
-			break;
-		}
-		case SUCCES: {
-			LOGGER.debug("{} login success", username);
-			return "account/dashboard";
-		}
-		}
+		// LOGGER.debug("account {} request login", username);
+		// RespondCode code = accountService.doLogin(username, password);
+		// switch (code) {
+		// case FAIL: {
+		// LOGGER.debug("login fail");
+		// String summary = "Username/Email or Password is inccorrect";
+		// String detail = null;
+		// FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,
+		// summary, detail);
+		// FacesContext.getCurrentInstance().addMessage(null, msg);
+		// break;
+		// }
+		// case ERROR: {
+		// LOGGER.debug("login error");
+		// String summary = "Service is error";
+		// String detail = null;
+		// FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,
+		// summary, detail);
+		// FacesContext.getCurrentInstance().addMessage(null, msg);
+		// break;
+		// }
+		// case INACTIVE: {
+		// LOGGER.debug("{} is inactive");
+		// String summary = String.format("%s is inactive", username);
+		// String detail = null;
+		// FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,
+		// summary, detail);
+		// FacesContext.getCurrentInstance().addMessage(null, msg);
+		// break;
+		// }
+		// case SUCCES: {
+		// LOGGER.debug("{} login success", username);
+		// return "account/dashboard";
+		// }
+		// }
 		return null;
 
 	}

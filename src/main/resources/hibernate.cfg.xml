@@ -21,6 +21,7 @@
         <property name="hibernate.show_sql">true</property>
         <!-- Referring Mapping File -->
         <mapping resource="account.hbm.xml"/>
+        <mapping resource="account_role.hbm.xml"/>
     </session-factory>
 
 </hibernate-configuration>

@@ -11,6 +11,7 @@
 
 	<h:body>
 		<h:form id="loginForm">
+			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 			<p:menubar>
 				<p:menuitem>
 					<p:outputLabel value="EPCM" />
