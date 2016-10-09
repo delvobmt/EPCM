@@ -49,6 +49,10 @@ public class accountBean implements Serializable {
 		accountService.insert(username, encoder.encode(password), name, email);
 		return "user/register_success.xhtml";
 	}
+	
+	public String name() {
+		return null;
+	}
 
 	public String login() {
 		try {

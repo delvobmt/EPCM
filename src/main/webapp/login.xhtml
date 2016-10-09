@@ -26,8 +26,8 @@
 				<p:spacer />
 				<p:message for="j_password" />
 
-				<p:commandButton type="submit" value="Login" 
-					ajax="true" update="@form"/>
+				<p:commandButton type="submit" value="Login" action="#{accountBean.name}"
+					ajax="false" update="@form"/>
 				<p:spacer />
 			</h:panelGrid>
 		</h:form>
