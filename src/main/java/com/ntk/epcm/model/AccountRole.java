@@ -4,8 +4,36 @@ import java.sql.Date;
 
 public class AccountRole {
 	private String role;
-	private Account account;
+	private int account_id;
 	private Date expireAt;
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + account_id;
+		result = prime * result + ((role == null) ? 0 : role.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		AccountRole other = (AccountRole) obj;
+		if (account_id != other.account_id)
+			return false;
+		if (role == null) {
+			if (other.role != null)
+				return false;
+		} else if (!role.equals(other.role))
+			return false;
+		return true;
+	}
 
 	public String getRole() {
 		return role;
@@ -15,12 +43,12 @@ public class AccountRole {
 		this.role = role;
 	}
 
-	public Account getAccount() {
-		return account;
+	public int getAccount_id() {
+		return account_id;
 	}
 
-	public void setAccount(Account account) {
-		this.account = account;
+	public void setAccount_id(int account_id) {
+		this.account_id = account_id;
 	}
 
 	public Date getExpireAt() {
@@ -30,4 +58,5 @@ public class AccountRole {
 	public void setExpireAt(Date expireAt) {
 		this.expireAt = expireAt;
 	}
+
 }
