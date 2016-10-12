@@ -9,6 +9,7 @@
 	</h:head>
 
 	<h:body>
+	
 		<h:form id="loginForm">
 			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 			<p:menubar>
@@ -16,15 +17,14 @@
 					<p:outputLabel value="EPCM" />
 				</p:menuitem>
 				<f:facet name="options">
-					<p:growl sticky="" />
-					<p:inputText id="username" value="#{accountBean.username}"
+					<p:inputText id="username" name="username"
 						style="margin-right:10px" placeholder="Username or email"
-						required="true" requiredMessage="Username/email is required" />
-					<p:password id="password" value="#{accountBean.password}"
+						required="true" requiredMessage="" />
+					<p:password id="password" name="password"
 						style="margin-right:10px" placeholder="Password" required="true"
-						requiredMessage="Password is required" />
-					<p:commandButton actionListener="#{accountBean.login}"
-						value="Login" ajax="true" update="loginForm" />
+						requiredMessage="" />
+					<p:commandButton action="#{accountBean.forwardLogin}"
+						value="Login" ajax="false"/>
 				</f:facet>
 			</p:menubar>
 

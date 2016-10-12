@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS `Account_Role`(
 	`role` VARCHAR(10) DEFAULT 'user', 
 	`account_id` INT REFERENCES `Account`(`account_id`),
     `expireAt` DATETIME,
-    PRIMARY KEY(`role`)
+    PRIMARY KEY(`role`, `account_id`)
 );
 
 DROP TABLE IF EXISTS `Device`;

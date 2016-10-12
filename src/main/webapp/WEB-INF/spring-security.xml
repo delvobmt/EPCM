@@ -9,8 +9,8 @@
 			login-page="/login.xhtml"
 			login-processing-url="/login.xhtml"
 			authentication-failure-forward-url="/login.xhtml"
-			username-parameter="j_idt3:username"
-			password-parameter="j_idt3:password" 
+			username-parameter="loginForm:username"
+			password-parameter="lofinForm:password" 
 			authentication-success-forward-url="/user/dashboard.xhtml"/>
 		<logout logout-url="/login.xhtml?logout" logout-success-url="/index.xhtml"
 			delete-cookies="account_id" />
