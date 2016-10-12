@@ -6,28 +6,33 @@
 	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
 	xmlns:p="http://primefaces.org/ui">
 
-	<h:head></h:head>
+	<h:head>
+		<h:outputStylesheet library="css" name="style.css" />
+	</h:head>
 
 	<h:body style="text-align:center">
-		<h:form >
-			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-			<p:panelGrid style="display:inline-block;" columns="2" >
+		<h:form>
+			<input type="hidden" name="${_csrf.parameterName}"
+				value="${_csrf.token}" />
+			<p:panelGrid style="display:inline-block;" columns="2">
 				<p:outputLabel for="username" value="Username/email" />
-				<p:inputText id="username" name="username"
-					style="margin-right:10px" placeholder="Username or email"
-					required="true" requiredMessage="Username/email is required" />
+				<p:inputText id="username" name="username" style="margin-right:10px"
+					placeholder="Username or email" required="true"
+					requiredMessage="Username/email is required" />
 				<p:spacer />
 				<p:message for="username" />
 
 				<p:outputLabel for="password" value="Password" />
-				<p:password id="password" name="password"
-					style="margin-right:10px" placeholder="Password" required="true"
+				<p:password id="password" name="password" style="margin-right:10px"
+					placeholder="Password" required="true"
 					requiredMessage="Password is required" />
 				<p:spacer />
 				<p:message for="password" />
 				<p:commandButton type="submit" style="width:100%" value="Login"
-					ajax="false" update="@form"/>
-				<p:outputLabel renered="${SPRING_SECURITY_LAST_EXCEPTION.message}" value="Login fail" style="color:red; display:block; text-align:center"/>
+					ajax="false" update="@form" />
+				<p:outputLabel renered="${SPRING_SECURITY_LAST_EXCEPTION.message}"
+					value="Login fail"
+					style="color:red; display:block; text-align:center" />
 			</p:panelGrid>
 		</h:form>
 	</h:body>

@@ -7,7 +7,6 @@ form{
 	margin-bottom:0
 }
 
-.companyHeaderGrid.ui-panelgrid>*>tr,
-.companyHeaderGrid.ui-panelgrid .ui-panelgrid-cell {
-    border: none;
+.ui-panelgrid .ui-panelgrid-cell .ui-widget-content{
+	border-style: inherit;
 }
