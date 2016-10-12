@@ -101,6 +101,10 @@ public class accountBean implements Serializable {
 		return null;
 
 	}
+	
+	public String doNothing(){
+		return null;
+	}
 
 	public String getUsername() {
 		return username;

@@ -11,10 +11,7 @@
 		<id name="role" type="string" column="role">
 			<generator class="native" />
 		</id>
-		<many-to-one name="account" class="com.ntk.epcm.model.Account"
-			fetch="select">
-			<column name="account_id" />
-		</many-to-one>
+		<property name="account_id" type="int"/>
 		<property name="expireAt" column="expireAt" type="date" />
 	</class>
 </hibernate-mapping>

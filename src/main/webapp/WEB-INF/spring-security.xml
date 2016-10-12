@@ -5,9 +5,11 @@
 	<http auto-config="true" use-expressions="true">
 		<intercept-url pattern="/admin/*" access="hasRole('admin')" />
 		<intercept-url pattern="/user/*" access="hasRole('user')" />
-		<form-login login-page="/login.xhtml" login-processing-url="/login"
-			authentication-failure-forward-url="/login.xhtml" username-parameter="username"
-			password-parameter="password" />
+		<form-login
+			authentication-failure-forward-url="/login.xhtml"
+			username-parameter="j_idt3:username"
+			password-parameter="j_idt3:password" 
+			authentication-success-forward-url="/user/dashboard.xhtml"/>
 		<logout logout-url="/login.xhtml?logout" logout-success-url="/index.xhtml"
 			delete-cookies="account_id" />
 		<!-- csrf protection -->

@@ -12,22 +12,23 @@
 			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 			<p:outputLabel value="${SPRING_SECURITY_LAST_EXCEPTION.message}"/>
 			<h:panelGrid style="display:inline-block" columns="2">
-				<p:outputLabel for="j_username" value="Username/email" />
-				<p:inputText id="j_username" name="j_username"
+				<p:outputLabel for="username" value="Username/email" />
+				<p:inputText id="username" name="username"
 					style="margin-right:10px" placeholder="Username or email"
 					required="true" requiredMessage="Username/email is required" />
 				<p:spacer />
-				<p:message for="j_username" />
+				<p:message for="username" />
 
-				<p:outputLabel for="j_password" value="Password" />
-				<p:password id="j_password" name="j_password"
+				<p:outputLabel for="password" value="Password" />
+				<p:password id="password" name="password"
 					style="margin-right:10px" placeholder="Password" required="true"
 					requiredMessage="Password is required" />
 				<p:spacer />
-				<p:message for="j_password" />
+				<p:message for="password" />
 
-				<p:commandButton type="submit" value="Login" 
-					ajax="true" update="@form"/>
+				<p:spacer />
+				<p:commandButton type="submit" style="width:100%" value="Login" action="#{accountBean.login}"
+					ajax="false" update="@form"/>
 				<p:spacer />
 			</h:panelGrid>
 		</h:form>
