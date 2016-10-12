@@ -6,6 +6,8 @@
 		<intercept-url pattern="/admin/*" access="hasRole('admin')" />
 		<intercept-url pattern="/user/*" access="hasRole('user')" />
 		<form-login
+			login-page="/login.xhtml"
+			login-processing-url="/login.xhtml"
 			authentication-failure-forward-url="/login.xhtml"
 			username-parameter="j_idt3:username"
 			password-parameter="j_idt3:password" 

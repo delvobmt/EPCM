@@ -50,62 +50,6 @@ public class accountBean implements Serializable {
 		return "user/register_success.xhtml";
 	}
 
-	public String login() {
-		try {
-			ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
-			HttpServletRequest request = ((HttpServletRequest) context.getRequest());
-
-			ServletResponse resposnse = ((ServletResponse) context.getResponse());
-			RequestDispatcher dispatcher = request.getRequestDispatcher("/login");
-			dispatcher.forward(request, resposnse);
-			FacesContext.getCurrentInstance().responseComplete();
-		} catch (ServletException | IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		// LOGGER.debug("account {} request login", username);
-		// RespondCode code = accountService.doLogin(username, password);
-		// switch (code) {
-		// case FAIL: {
-		// LOGGER.debug("login fail");
-		// String summary = "Username/Email or Password is inccorrect";
-		// String detail = null;
-		// FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,
-		// summary, detail);
-		// FacesContext.getCurrentInstance().addMessage(null, msg);
-		// break;
-		// }
-		// case ERROR: {
-		// LOGGER.debug("login error");
-		// String summary = "Service is error";
-		// String detail = null;
-		// FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,
-		// summary, detail);
-		// FacesContext.getCurrentInstance().addMessage(null, msg);
-		// break;
-		// }
-		// case INACTIVE: {
-		// LOGGER.debug("{} is inactive");
-		// String summary = String.format("%s is inactive", username);
-		// String detail = null;
-		// FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,
-		// summary, detail);
-		// FacesContext.getCurrentInstance().addMessage(null, msg);
-		// break;
-		// }
-		// case SUCCES: {
-		// LOGGER.debug("{} login success", username);
-		// return "account/dashboard";
-		// }
-		// }
-		return null;
-
-	}
-	
-	public String doNothing(){
-		return null;
-	}
-
 	public String getUsername() {
 		return username;
 	}

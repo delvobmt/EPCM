@@ -6,3 +6,8 @@ body{
 form{
 	margin-bottom:0
 }
+
+.companyHeaderGrid.ui-panelgrid>*>tr,
+.companyHeaderGrid.ui-panelgrid .ui-panelgrid-cell {
+    border: none;
+}
