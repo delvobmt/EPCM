@@ -1,5 +1,8 @@
 package com.ntk.epcm.data;
 
+import java.sql.Date;
+import java.util.Calendar;
+
 import javax.inject.Inject;
 
 import org.hibernate.Criteria;
@@ -14,6 +17,7 @@ import org.springframework.util.StringUtils;
 
 import com.ntk.epcm.constant.RespondCode;
 import com.ntk.epcm.model.Account;
+import com.ntk.epcm.model.AccountRole;
 
 public class AccountDAO implements IAccountDAO {
 	private final Logger LOGGER = LoggerFactory.getLogger(getClass());
@@ -35,10 +39,19 @@ public class AccountDAO implements IAccountDAO {
 			Account account = new Account(username, password);
 			account.setEmail(email);
 			account.setName(name);
-			account.setStatus("inactive");
+			account.setStatus("active");
 			id = (int) session.save(account);
+			
+			//add role user as default for this user
+			AccountRole role = new AccountRole();
+			role.setAccount_id(id);
+			role.setRole("user");
+			Calendar date = Calendar.getInstance();
+			date.add(Calendar.MONTH, 3);
+			role.setExpireAt(new Date(date.getTimeInMillis()));
+			
+			session.save(role);
 			session.getTransaction().commit();
-
 		} catch (HibernateException e) {
 			LOGGER.error("error while insert new account", e);
 			session.getTransaction().rollback();

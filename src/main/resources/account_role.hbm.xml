@@ -7,11 +7,10 @@
 		<meta attribute="class-description">
 			This class contains account authority information
 		</meta>
-
-		<id name="role" type="string" column="role">
-			<generator class="native" />
-		</id>
-		<property name="account_id" type="int"/>
+		<composite-id>
+			<key-property name="role" type="string" column="role" />
+			<key-property name="account_id" type="int" column="account_id"/>
+		</composite-id>
 		<property name="expireAt" column="expireAt" type="date" />
 	</class>
 </hibernate-mapping>

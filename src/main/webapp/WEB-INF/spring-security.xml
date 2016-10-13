@@ -5,12 +5,13 @@
 	<http auto-config="true" use-expressions="true">
 		<intercept-url pattern="/admin/*" access="hasRole('admin')" />
 		<intercept-url pattern="/user/*" access="hasRole('user')" />
+		<access-denied-handler error-page="/403.xhtml"/>
 		<form-login
 			login-page="/login.xhtml"
 			login-processing-url="/login.xhtml"
 			authentication-failure-forward-url="/login.xhtml"
 			username-parameter="loginForm:username"
-			password-parameter="lofinForm:password" 
+			password-parameter="loginForm:password" 
 			authentication-success-forward-url="/user/dashboard.xhtml"/>
 		<logout logout-url="/login.xhtml?logout" logout-success-url="/index.xhtml"
 			delete-cookies="account_id" />

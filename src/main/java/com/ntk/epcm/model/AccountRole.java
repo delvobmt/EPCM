@@ -1,8 +1,12 @@
 package com.ntk.epcm.model;
 
+import java.io.Serializable;
 import java.sql.Date;
 
-public class AccountRole {
+public class AccountRole implements Serializable{
+	
+	private static final long serialVersionUID = 1990164532435298134L;
+	
 	private String role;
 	private int account_id;
 	private Date expireAt;

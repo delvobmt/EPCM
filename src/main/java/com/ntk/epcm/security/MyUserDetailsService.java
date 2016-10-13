@@ -1,7 +1,7 @@
 package com.ntk.epcm.security;
 
+import java.sql.Date;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -48,18 +48,23 @@ public class MyUserDetailsService implements UserDetailsService {
 	}
 
 	private UserDetails buildUserForAuthentication(Account account, List<GrantedAuthority> authorities) {
-		return new User(account.getUsername(), account.getPassword(), account.getStatus().equals("active"), true, true,
-				true, authorities);
+		boolean active = account.getStatus().equals("active");
+		boolean nonExpired = !authorities.isEmpty();
+		boolean credentialsNonExpired = true;
+		boolean nonLocked = true;
+		return new User(account.getUsername(), account.getPassword(), active, nonExpired , credentialsNonExpired ,
+				nonLocked, authorities);
 	}
 
 	private List<GrantedAuthority> buildAuthorities(Set<AccountRole> roles) {
-		Set<GrantedAuthority> setAuths = new HashSet<GrantedAuthority>();
-
-		for (AccountRole userRole : roles) {
-			setAuths.add(new SimpleGrantedAuthority(userRole.getRole()));
+		ArrayList<GrantedAuthority> setAuths = new ArrayList<GrantedAuthority>();
+		Date now = new Date(System.currentTimeMillis());
+		for (AccountRole role : roles) {
+			if(now.before(role.getExpireAt())) {
+				setAuths.add(new SimpleGrantedAuthority(role.getRole()));
+			}
 		}
-
-		return new ArrayList<GrantedAuthority>(setAuths);
+		return setAuths;
 	}
 
 }
