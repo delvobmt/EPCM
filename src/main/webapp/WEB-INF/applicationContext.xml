@@ -15,8 +15,7 @@
 	<mvc:resources location="/" mapping="/resources/**" />
 	<faces:resources />
 	
-	<mvc:view-controller path="/login"/>
-	<mvc:view-controller path="/registration"/>
+	<mvc:view-controller path="/home"/>
 
 	<import resource="hibernate.xml" />
 	<import resource="data-beans.xml" />
