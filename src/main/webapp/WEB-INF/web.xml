@@ -5,66 +5,107 @@
     http://java.sun.com/xml/ns/javaee/web-app_3_1.xsd"
 	version="3.1">
 
+	<display-name>Spring MVC Application</display-name>
 	<welcome-file-list>
-		<welcome-file>index.xhtml</welcome-file>
+		<welcome-file>index.html</welcome-file>
 	</welcome-file-list>
 
-	<display-name>Spring MVC Application</display-name>
-	<!-- The listener class ties the spring framework entry points to the servlet 
-		context -->
+	<!-- 
+		Spring context 
+	-->
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>/WEB-INF/root-context.xml</param-value>
+	</context-param>
 	<listener>
 		<listener-class>
 			org.springframework.web.context.ContextLoaderListener
 		</listener-class>
 	</listener>
-	<listener>
-		<listener-class>
-			org.springframework.web.context.request.RequestContextListener
-		</listener-class>
-	</listener>
-
-	<!-- Context configuration -->
-	<context-param>
-		<param-name>javax.faces.PROJECT_STAGE</param-name>
-		<param-value>Development</param-value>
-	</context-param>
-
-	<context-param>
-		<param-name>contextConfigLocation</param-name>
-		<param-value>/WEB-INF/applicationContext.xml</param-value>
-	</context-param>
-
-	<context-param>
-		<param-name>javax.faces.FACELETS_LIBRARIES</param-name>
-		<param-value>/WEB-INF/springsecurity.taglib.xml</param-value>
-	</context-param>
 	
-	<!-- Spring Security -->
+	<!-- 
+		Spring Security 
+	-->
 	<filter>
 		<filter-name>springSecurityFilterChain</filter-name>
 		<filter-class>org.springframework.web.filter.DelegatingFilterProxy
 		</filter-class>
 	</filter>
-
+	
 	<filter-mapping>
 		<filter-name>springSecurityFilterChain</filter-name>
-		<url-pattern>/*</url-pattern>
+		<servlet-name>Spring MVC Servlet</servlet-name>
 	</filter-mapping>
 	
-	<!-- faces servlet -->
+	<!-- Spring Security Facelets tag library declaration -->
+	<context-param>
+		<param-name>javax.faces.FACELETS_LIBRARIES</param-name>
+		<param-value>/WEB-INF/springsecurity.taglib.xml</param-value>
+	</context-param>
+	
+	<!-- Enables special Facelets debug output during development -->
+	<context-param>
+		<param-name>javax.faces.PROJECT_STAGE</param-name>
+		<param-value>Development</param-value>
+	</context-param>
+	
+	<!-- Use JSF view templates saved as *.xhtml, for use with Facelets -->
+	<context-param>
+		<param-name>javax.faces.DEFAULT_SUFFIX</param-name>
+		<param-value>.xhtml</param-value>
+	</context-param>
+	
+	<!-- Causes Facelets to refresh templates during development -->
+  	<context-param>
+  		<param-name>javax.faces.FACELETS_REFRESH_PERIOD</param-name>
+  		<param-value>1</param-value>
+  	</context-param>
+
+	<!-- 
+		Faces servlet 
+	-->
 
 	<servlet>
 		<servlet-name>Faces Servlet</servlet-name>
 		<servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
-	<servlet-mapping>
-		<servlet-name>Faces Servlet</servlet-name>
-		<url-pattern>/faces/*</url-pattern>
-	</servlet-mapping>
+	
 	<servlet-mapping>
 		<servlet-name>Faces Servlet</servlet-name>
 		<url-pattern>*.xhtml</url-pattern>
 	</servlet-mapping>
+	
+	<!-- 
+		SPRING MVC
+	-->
+
+	<servlet>
+		<servlet-name>Spring MVC Servlet</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>/WEB-INF/applicationContext.xml</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+		
+	<servlet-mapping>
+		<servlet-name>Spring MVC Servlet</servlet-name>
+		<url-pattern>/*</url-pattern>
+	</servlet-mapping>
+
+	<!-- 
+		PrimeFaces FileUpload 
+	-->
+	<filter>
+		<filter-name>PrimeFaces FileUpload Filter</filter-name>
+		<filter-class>org.primefaces.webapp.filter.FileUploadFilter</filter-class>
+	</filter>
+	
+	<filter-mapping>
+		<filter-name>PrimeFaces FileUpload Filter</filter-name>
+		<servlet-name>Spring MVC Servlet</servlet-name>
+	</filter-mapping>
 
 </web-app>
