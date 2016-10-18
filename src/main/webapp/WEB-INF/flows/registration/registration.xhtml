@@ -1,0 +1,110 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:sec="http://www.springframework.org/security/tags"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:head>
+		<h:outputStylesheet library="css" name="style.css" />
+	</h:head>
+
+	<h:body>
+
+		<h:form>
+			<input type="hidden" name="${_csrf.parameterName}"
+				value="${_csrf.token}" />
+			<p:panel id="registerForm" header="Registration">
+				<p:panelGrid style="display:inline-block;" class="centered">
+					<p:row>
+						<p:column>
+							<p:outputLabel for="username" value="Username:" />
+						</p:column>
+						<p:column>
+							<p:inputText id="username" label="Username"
+								value="#{accountBean.username}" placeholder="SampleUser"
+								required="true" requiredMessage="Username is required">
+							</p:inputText>
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column colspan="2">
+							<p:message for="username" />
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column>
+							<p:outputLabel for="name" value="Name" />
+						</p:column>
+						<p:column>
+							<p:inputText id="name" label="Name" value="#{accountBean.name}"
+								placeholder="mr.Sample" />
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column colspan="2">
+							<p:message for="name" />
+						</p:column>
+					</p:row>
+
+					<p:row>
+						<p:column>
+							<p:outputLabel for="email" value="Email:" />
+						</p:column>
+						<p:column>
+							<p:inputText id="email" value="#{accountBean.email}"
+								placeholder="sample@mail.com" required="true"
+								requiredMessage="Email is required">
+							</p:inputText>
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column colspan="2">
+							<p:message for="email" />
+						</p:column>
+					</p:row>
+
+					<p:row>
+						<p:column>
+							<p:outputLabel for="password" value="Password:" />
+						</p:column>
+						<p:column>
+							<p:password id="password" value="#{accountBean.password}"
+								placeholder="password" feedback="true" required="true"
+								requiredMessage="Password is required" match="retype-password" />
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column colspan="2">
+							<p:message for="password" />
+						</p:column>
+					</p:row>
+
+					<p:row>
+						<p:column>
+							<p:outputLabel for="retype-password" value="Retype your Password" />
+						</p:column>
+						<p:column>
+							<p:password id="retype-password" value="#{accountBean.password}"
+								placeholder="password" required="true"
+								requiredMessage="Please re-type your password" />
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column colspan="2">
+							<p:message for="retype-password" />
+						</p:column>
+					</p:row>
+
+					<p:row>
+						<p:column colspan="2">
+							<p:commandButton value="Sign Up" action="#{accountBean.register}"
+								ajax="false" />
+						</p:column>
+					</p:row>
+
+					</p:panelGrid>
+			</p:panel>
+		</h:form>
+	</h:body>
+</ui:composition>
