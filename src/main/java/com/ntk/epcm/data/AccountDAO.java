@@ -13,12 +13,14 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import com.ntk.epcm.constant.RespondCode;
 import com.ntk.epcm.model.Account;
 import com.ntk.epcm.model.AccountRole;
 
+@Component
 public class AccountDAO implements IAccountDAO {
 	private final Logger LOGGER = LoggerFactory.getLogger(getClass());
 

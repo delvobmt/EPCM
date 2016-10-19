@@ -18,7 +18,6 @@
 	<mvc:view-controller path="/home"/>
 
 	<import resource="hibernate.xml" />
-	<import resource="data-beans.xml" />
 	
 	<import resource="webflow.xml" />
 

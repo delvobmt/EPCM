@@ -10,14 +10,14 @@ import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
+import org.springframework.web.context.annotation.RequestScope;
 
 import com.ntk.epcm.service.IAccountService;
 
 @Component
-@Scope("session")
+@RequestScope
 @FacesValidator
 public class UsernameValidator implements Validator {
 	final Logger LOGGER = LoggerFactory.getLogger(getClass());

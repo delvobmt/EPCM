@@ -32,7 +32,7 @@
 
 	</appender>
 
-	<logger name="org.springframework" level="debug" additivity="false">
+	<logger name="org.springframework.beans.factory.annotation" level="debug" additivity="false">
 		<appender-ref ref="STDOUT" />
 	</logger>
 
@@ -48,7 +48,7 @@
 		<appender-ref ref="STDOUT" />
 	</logger>
 
-	<logger name="com.ntk.service" level="debug" additivity="false">
+	<logger name="com.ntk.epcm" level="debug" additivity="false">
 		<appender-ref ref="STDOUT" />
 		<appender-ref ref="FILE-AUDIT" />
 	</logger>
