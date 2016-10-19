@@ -3,6 +3,7 @@ package com.ntk.epcm.validator;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.faces.validator.FacesValidator;
 import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
 import javax.inject.Inject;
@@ -17,12 +18,13 @@ import com.ntk.epcm.service.IAccountService;
 
 @Component
 @Scope("session")
+@FacesValidator
 public class UsernameValidator implements Validator {
 	final Logger LOGGER = LoggerFactory.getLogger(getClass());
 
 	@Inject
 	IAccountService accountService;
-
+	
 	@Override
 	public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
 		String username = value.toString();

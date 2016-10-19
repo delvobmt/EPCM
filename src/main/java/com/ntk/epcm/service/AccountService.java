@@ -13,7 +13,7 @@ public class AccountService implements IAccountService{
 
 	@Inject
 	IAccountDAO accountDAO;
-
+	
 	@Override
 	public int insert(String username, String password, String name, String email) {
 		return accountDAO.insert(username, password, name, email);

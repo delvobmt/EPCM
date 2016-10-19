@@ -14,8 +14,8 @@
 		<h:form>
 			<input type="hidden" name="${_csrf.parameterName}"
 				value="${_csrf.token}" />
-			<p:panel id="registerForm" header="Registration">
-				<p:panelGrid style="display:inline-block;" class="centered">
+			<p:panel id="registerForm" style="display:inline-block;" class="centered" header="Registration">
+				<p:panelGrid>
 					<p:row>
 						<p:column>
 							<p:outputLabel for="username" value="Username:" />
@@ -24,6 +24,7 @@
 							<p:inputText id="username" label="Username"
 								value="#{accountBean.username}" placeholder="SampleUser"
 								required="true" requiredMessage="Username is required">
+								<f:validator validatorId="usernameValidator"/>
 							</p:inputText>
 						</p:column>
 					</p:row>
@@ -55,6 +56,7 @@
 							<p:inputText id="email" value="#{accountBean.email}"
 								placeholder="sample@mail.com" required="true"
 								requiredMessage="Email is required">
+								<f:validator validatorId="emailValidator"/>
 							</p:inputText>
 						</p:column>
 					</p:row>
@@ -98,10 +100,16 @@
 
 					<p:row>
 						<p:column colspan="2">
-							<p:commandButton value="Sign Up" action="#{accountBean.register}"
+							<p:commandButton value="Sign Up" action="#{accountBean.register}" style="width:100%"
 								ajax="false" />
 						</p:column>
 					</p:row>
+					<p:row>
+						<p:column colspan="2">
+							<p:commandLink value="Login" action="login" immediate="true" update="@form"/>
+						</p:column>
+					</p:row>
+					
 
 					</p:panelGrid>
 			</p:panel>

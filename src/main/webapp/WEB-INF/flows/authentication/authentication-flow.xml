@@ -5,10 +5,12 @@
 
 	<secured attributes="ROLE_ANONYMOUS" />
 
-
 	<view-state id="login">
 		<transition on="registration" to="registration" />
 	</view-state>
+	
+	<view-state id="registration">
+		<transition on="login" to="login"/>
+	</view-state>
 
-	<end-state id="registration" view="externalRedirect:servletRelative:/login" />
 </flow>

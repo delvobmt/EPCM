@@ -119,6 +119,7 @@
 			<version>${jstl.version}</version>
 		</dependency>
 
+		<!-- JSR 303 validation -->
 		<dependency>
 			<groupId>javax.validation</groupId>
 			<artifactId>validation-api</artifactId>
@@ -160,6 +161,12 @@
 					<artifactId>el-api</artifactId>
 				</exclusion>
 			</exclusions>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<version>${hibernate.version}</version>
 		</dependency>
 
 		<!-- primefaces -->

@@ -44,8 +44,8 @@ public class accountBean implements Serializable {
 
 	public String register() {
 		LOGGER.debug("insert account with {}", username);
-		accountService.insert(username, encoder.encode(password), name, email);
-		return "user/register_success.xhtml";
+		int insert = accountService.insert(username, encoder.encode(password), name, email);
+		return insert!=-1?"success":"fail";
 	}
 
 	public String forwardLogin() {
