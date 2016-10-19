@@ -14,56 +14,62 @@
 		<h:form id="loginForm" >
 			<input type="hidden" name="${_csrf.parameterName}"
 				value="${_csrf.token}" />
-			<p:panelGrid style="display:inline-block;" class="centered">
-				<p:row>
-					<p:column>
-						<p:outputLabel for="username" />
-					</p:column>
-					<p:column>
-						<p:inputText id="username" name="username"
-							style="margin-right:10px" placeholder="Username or email"
-							required="true" requiredMessage="Username/email is required" />
-					</p:column>
-				</p:row>
-				<p:row>
-					<p:column colspan="2">
-						<p:message for="username" />
-					</p:column>
-				</p:row>
-				<p:row>
-					<p:column>
-						<p:outputLabel for="password" />
-					</p:column>
-					<p:column>
-						<p:password id="password" name="password"
-							style="margin-right:10px" placeholder="Password" required="true"
-							requiredMessage="Password is required" />
-					</p:column>
-				</p:row>
-				<p:row>
-					<p:column colspan="2">
-						<p:message for="password"  />
-					</p:column>
-				</p:row>
-				<p:row>
-					<p:column colspan="2">
-						<p:commandButton type="submit" style="width:100%" value="Login"
-							ajax="false"/>
-					</p:column>
-				</p:row>
-				<p:row>
-					<p:column colspan="2">
-						<p:outputLabel renered="${SPRING_SECURITY_LAST_EXCEPTION.message}"
-							value="${SPRING_SECURITY_LAST_EXCEPTION.message}"
-							style="color:red; display:block; text-align:center" />
-					</p:column>
-				</p:row>
-				<p:row>
-					<p:column>
-							<p:commandLink value="Sign up" action="registration" update="@form" immediate="true"/>
-					</p:column>
-				</p:row>
-			</p:panelGrid>
+			<h:panelGrid style="display:inline-block;text-align:center" class="centered">
+				<h:outputText rendered="#{param.register==success}"
+					value="#{param.register==success}Thank you for registering account on our system, please check your email for activation!" />
+				<p:panelGrid style="display:inline-block;padding:40px" >
+					<p:row>
+						<p:column>
+							<p:outputLabel for="username" />
+						</p:column>
+						<p:column>
+							<p:inputText id="username" name="username"
+								style="margin-right:10px" placeholder="Username or email"
+								required="true" requiredMessage="Username/email is required" />
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column colspan="2">
+							<p:message for="username" />
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column>
+							<p:outputLabel for="password" />
+						</p:column>
+						<p:column>
+							<p:password id="password" name="password"
+								style="margin-right:10px" placeholder="Password" required="true"
+								requiredMessage="Password is required" />
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column colspan="2">
+							<p:message for="password" />
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column colspan="2">
+							<p:commandButton type="submit" style="width:100%" value="Login"
+								ajax="false" />
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column colspan="2">
+							<p:outputLabel
+								renered="${SPRING_SECURITY_LAST_EXCEPTION.message}"
+								value="${SPRING_SECURITY_LAST_EXCEPTION.message}"
+								style="color:red; display:block; text-align:center" />
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column colspan="2">
+							<p:commandLink value="Sign up" action="registration"
+								update="@form" immediate="true" />
+						</p:column>
+					</p:row>
+				</p:panelGrid>
+			</h:panelGrid>
 		</h:form>
 	</h:body>
 </ui:composition>

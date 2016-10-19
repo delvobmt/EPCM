@@ -15,8 +15,6 @@
 	<mvc:resources location="/" mapping="/resources/**" />
 	<faces:resources />
 	
-	<mvc:view-controller path="/home"/>
-
 	<import resource="hibernate.xml" />
 	
 	<import resource="webflow.xml" />

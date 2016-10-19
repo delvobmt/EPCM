@@ -5,12 +5,17 @@
 
 	<secured attributes="ROLE_ANONYMOUS" />
 
+	<input name="register"/>
 	<view-state id="login">
 		<transition on="registration" to="registration" />
 	</view-state>
 	
 	<view-state id="registration">
 		<transition on="login" to="login"/>
+		<transition on="success" to="welcome"/>
+		<transition on="fail"/>
 	</view-state>
+	
+	<end-state id="welcome" view="externalRedirect:/authentication?register=success"/>
 
 </flow>
