@@ -15,8 +15,8 @@
 			<input type="hidden" name="${_csrf.parameterName}"
 				value="${_csrf.token}" />
 			<h:panelGrid style="display:inline-block;text-align:center" class="centered">
-				<h:outputText rendered="#{param.register==success}"
-					value="#{param.register==success}Thank you for registering account on our system, please check your email for activation!" />
+				<h:outputText
+					value="#{flow} Thank you for registering account on our system, please check your email for activation!" />
 				<p:panelGrid style="display:inline-block;padding:40px" >
 					<p:row>
 						<p:column>
@@ -64,8 +64,7 @@
 					</p:row>
 					<p:row>
 						<p:column colspan="2">
-							<p:commandLink value="Sign up" action="registration"
-								update="@form" immediate="true" />
+							<p:commandLink value="Sign up" action="registration" immediate="true" />
 						</p:column>
 					</p:row>
 				</p:panelGrid>
