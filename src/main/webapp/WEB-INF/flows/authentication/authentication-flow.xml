@@ -4,18 +4,17 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/webflow http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
 
 	<secured attributes="ROLE_ANONYMOUS" />
-
+	
 	<view-state id="login">
 		<transition on="registration" to="registration" />
 	</view-state>
 	
-	<view-state id="registration">
-		<transition on="login" to="login"/>
-		<transition on="performRegistration" >
-			<evaluate expression="accountBean.register()"/>
-		</transition>
+	<subflow-state id="registration" subflow="authentication/registration">
+		<output name="register"/>
 		<transition on="success" to="login">
+			<set name="flashScope.register" value="'success'"/>
 		</transition>
 		<transition on="fail"/>
-	</view-state>
+		<transition on="login" to="login"/>
+	</subflow-state>
 </flow>

@@ -9,10 +9,10 @@
 		<intercept-url pattern="/user/*" access="hasRole('user')" />
 		<access-denied-handler error-page="/403.xhtml"/>
 		<form-login
-			login-page="/login"
-			login-processing-url="/loginProcess"
+			login-page="/app/login"
+			login-processing-url="/app/loginProcess"
 			authentication-failure-forward-url="/login?error=1"
-			default-target-url="/login"
+			default-target-url="/app/login"
 			username-parameter="loginForm:username"
 			password-parameter="loginForm:password" 
 			authentication-success-forward-url="/user/dashboard.xhtml"/>

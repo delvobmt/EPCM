@@ -11,12 +11,12 @@
 	</h:head>
 
 	<h:body>
-		<h:form id="loginForm" >
+		<h:form id="loginForm" onsubmit="document.getElementById('loginForm').action='loginProccess'">
 			<input type="hidden" name="${_csrf.parameterName}"
 				value="${_csrf.token}" />
 			<h:panelGrid style="display:inline-block;text-align:center" class="centered">
-				<h:outputText
-					value="#{flow} Thank you for registering account on our system, please check your email for activation!" />
+				<h:outputText rendered="#{register=='success'}"
+					value="Thank you for registering account on our system, please check your email for activation!" />
 				<p:panelGrid style="display:inline-block;padding:40px" >
 					<p:row>
 						<p:column>

@@ -16,7 +16,7 @@
 	<faces:resources />
 	
 	<import resource="hibernate.xml" />
-	
+	<import resource="spring-security.xml"/>
 	<import resource="webflow.xml" />
 
 </beans>
