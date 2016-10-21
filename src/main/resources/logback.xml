@@ -11,7 +11,7 @@
 	    </layout>
 	</appender>
 	
-	<appender name="FILE-AUDIT"
+	<appender name="DEBUG-FILE"
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<file>${DEV_HOME}/debug.log</file>
 		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
@@ -23,6 +23,27 @@
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
 			<!-- rollover daily -->
 			<fileNamePattern>${DEV_HOME}/archived/debug.%d{yyyy-MM-dd}.%i.log
+                        </fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>10MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+
+	</appender>
+	
+	<appender name="SECURITY-FILE"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${DEV_HOME}/security.log</file>
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<Pattern>
+				%d{yyyy-MM-dd HH:mm:ss} %-5level %logger{36} - %msg%n
+			</Pattern>
+		</encoder>
+
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- rollover daily -->
+			<fileNamePattern>${DEV_HOME}/archived/security.%d{yyyy-MM-dd}.%i.log
                         </fileNamePattern>
 			<timeBasedFileNamingAndTriggeringPolicy
 				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
@@ -44,18 +65,18 @@
 		<appender-ref ref="STDOUT" />
 	</logger>
 
-	<logger name="org.springframework.security" level="info" additivity="false">
-		<appender-ref ref="STDOUT" />
+	<logger name="org.springframework.security" level="debug|info" additivity="false">
+		<appender-ref ref="SECURITY-FILE" />
 	</logger>
 
 	<logger name="com.ntk.epcm" level="debug" additivity="false">
 		<appender-ref ref="STDOUT" />
-		<appender-ref ref="FILE-AUDIT" />
+		<appender-ref ref="DEBUG-FILE" />
 	</logger>
 	
 	<root level="error">
 		<appender-ref ref="STDOUT" />
-		<appender-ref ref="FILE-AUDIT" />
+		<appender-ref ref="DEBUG-FILE" />
 	</root>
 
 </configuration>

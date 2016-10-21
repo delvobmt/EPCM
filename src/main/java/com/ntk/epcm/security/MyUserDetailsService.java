@@ -15,12 +15,14 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import com.ntk.epcm.data.IAccountDAO;
 import com.ntk.epcm.model.Account;
 import com.ntk.epcm.model.AccountRole;
 
+@Service
 public class MyUserDetailsService implements UserDetailsService {
 	final Logger LOGGER = LoggerFactory.getLogger(getClass());
 
@@ -33,6 +35,7 @@ public class MyUserDetailsService implements UserDetailsService {
 			LOGGER.error("{} is empty while load account", username);
 			throw new UsernameNotFoundException(null);
 		}
+		LOGGER.error("accountDAO is {}",accountDAO);
 		Account account = accountDAO.findAccountByUsername(username);
 		if (account == null) {
 			account = accountDAO.findAccountByEmail(username);

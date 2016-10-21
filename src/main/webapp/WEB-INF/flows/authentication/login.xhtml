@@ -11,12 +11,13 @@
 	</h:head>
 
 	<h:body>
-		<h:form id="loginForm" onsubmit="document.getElementById('loginForm').action='loginProccess'">
-			<input type="hidden" name="${_csrf.parameterName}"
+		<h:form id="loginForm" onsubmit="document.getElementById('loginForm').action='loginProcess'">
+			<input type="hidden" name="#{_csrf.parameterName}"
 				value="${_csrf.token}" />
 			<h:panelGrid style="display:inline-block;text-align:center" class="centered">
+			<h:outputText value="#{currentUser.name}"/>
 				<h:outputText rendered="#{register=='success'}"
-					value="Thank you for registering account on our system, please check your email for activation!" />
+					value="#{currentUser.name} Thank you for registering account on our system, please check your email for activation!" />
 				<p:panelGrid style="display:inline-block;padding:40px" >
 					<p:row>
 						<p:column>
@@ -57,8 +58,7 @@
 					<p:row>
 						<p:column colspan="2">
 							<p:outputLabel
-								renered="${SPRING_SECURITY_LAST_EXCEPTION.message}"
-								value="${SPRING_SECURITY_LAST_EXCEPTION.message}"
+								value="#{SPRING_SECURITY_LAST_EXCEPTION.message}"
 								style="color:red; display:block; text-align:center" />
 						</p:column>
 					</p:row>

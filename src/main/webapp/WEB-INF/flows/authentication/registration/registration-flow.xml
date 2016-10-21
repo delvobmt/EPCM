@@ -12,7 +12,6 @@
 	</view-state>
 	
 	<end-state id="login" view="/authentication">
-		<output name="register" value="'success'"/>
 	</end-state>
 	<end-state id="success" view="/authentication">
 		<output name="register" value="'success'"/>
