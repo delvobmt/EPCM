@@ -32,10 +32,9 @@ public class MyUserDetailsService implements UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		if (StringUtils.isEmpty(username)) {
-			LOGGER.error("{} is empty while load account", username);
+			LOGGER.error("username is empty while load account");
 			throw new UsernameNotFoundException(null);
 		}
-		LOGGER.error("accountDAO is {}",accountDAO);
 		Account account = accountDAO.findAccountByUsername(username);
 		if (account == null) {
 			account = accountDAO.findAccountByEmail(username);

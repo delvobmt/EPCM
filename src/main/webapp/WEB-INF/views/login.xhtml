@@ -1,0 +1,53 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:sec="http://www.springframework.org/security/tags"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:head>
+		<h:outputStylesheet library="css" name="style.css" />
+	</h:head>
+
+	<h:body>
+		<form action="${request.contextPath}/app/loginProcess" method="post">
+			<h:panelGrid style="display:inline-block;text-align:center"
+				class="centered">
+				<h:outputText rendered="#{param.register=='success'}"
+					value="#{currentUser.name} Thank you for registering account on our system, please check your email for activation!" />
+				<p:panelGrid style="display:inline-block;padding:40px">
+					<p:row>
+						<p:column>
+							<input type="text" name="username" placeholder="Username/Email" 
+							class="ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all"/>
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column>
+							<input type="password" name="password" placeholder="Password"
+							class="ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all"/>
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column colspan="2">
+							<button class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" style="width:100%" 
+							type="submit" role="button" aria-disabled="false">
+								<span class="ui-button-text ui-c">Login</span>
+							</button>
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column colspan="2">
+							<p:outputLabel
+								rendered="#{param.error!=null}"
+								value="Login fail"
+								style="color:red; display:block; text-align:center" />
+						</p:column>
+					</p:row>
+				</p:panelGrid>
+				<h:outputLink value="#{externalRedirect}#{servletRelative}registration" > Resigter your new account</h:outputLink>
+			</h:panelGrid>
+		</form>
+	</h:body>
+</ui:composition>
