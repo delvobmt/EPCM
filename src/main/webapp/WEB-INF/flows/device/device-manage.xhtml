@@ -8,5 +8,10 @@
 	template="/WEB-INF/layout/standard.xhtml">
 
 	<ui:define name="content">
+		<p:dataTable var="device" value="DeviceBean">
+			<p:column>
+				<h:outputText value="#{device.device_id}"/>
+			</p:column>
+		</p:dataTable>
 	</ui:define>
 </ui:composition>
