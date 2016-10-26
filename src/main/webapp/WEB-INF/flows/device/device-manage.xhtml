@@ -9,17 +9,10 @@
 
 	<ui:define name="content">
 		<h:form id="f">
-			<p:commandButton value="Add new Device" type="button" onclick="PF('addDialog').show();" icon="ui-icon-plusthick"/>
 			<p:commandButton value="Edit" icon="ui-icon-pencil"/>
 			<p:commandButton value="Delete" icon="ui-icon-trash"/>
 			<p:commandButton value="Refresh" icon="ui-icon-arrowrefresh-1-n"/>
 		</h:form>
-		<p:dialog header="Add new Device" widgetVar="addDialog">
-			<h:form>
-				<p:inputMask mask="**:**:**:**:**:**"/>
-				<p:commandButton value=""/>
-			</h:form>
-		</p:dialog>
 		<p:dataTable var="device" value="#{DeviceBean.getAll()}" >
 			<p:column>
 				<h:outputText value="#{device.device_id}"/>
