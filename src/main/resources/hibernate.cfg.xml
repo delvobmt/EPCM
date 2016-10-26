@@ -22,6 +22,7 @@
         <!-- Referring Mapping File -->
         <mapping resource="account.hbm.xml"/>
         <mapping resource="account_role.hbm.xml"/>
+        <mapping resource="device.hbm.xml"/>
     </session-factory>
 
 </hibernate-configuration>

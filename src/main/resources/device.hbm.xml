@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+ "-//Hibernate/Hibernate Mapping DTD//EN"
+ "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.ntk.epcm.model.Device" table="Device">
+		<meta attribute="class-description">
+			This class contains device information
+		</meta>
+		<id name="device_id" column="device_id" type="int">
+			<generator class="native"></generator>
+		</id>
+		<property name="model" column="model" type="string"/>
+		<property name="version" column="version" type="string"/>
+		<property name="macAddress" column="macAddress" type="string"/>
+		<property name="consumeNumber" column="consumeNumber" type="long"/>
+		<property name="oldNumber" column="oldNumber" type="long"/>
+		<property name="status" column="status" type="boolean"/>
+		<property name="location" column="location" type="string"/>
+		<property name="lastUpdate" column="lastUpdate" type="date"/>
+		
+	</class>
+</hibernate-mapping>
