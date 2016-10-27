@@ -3,6 +3,9 @@ package com.ntk.epcm.model;
 import java.io.Serializable;
 import java.sql.Date;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
+@JsonTypeInfo(use=JsonTypeInfo.Id.CLASS, include=JsonTypeInfo.As.WRAPPER_OBJECT)
 public class Device implements Serializable{
 	private static final long serialVersionUID = -3629350960312361263L;
 
@@ -117,6 +120,13 @@ public class Device implements Serializable{
 		} else if (!model.equals(other.model))
 			return false;
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "Device [device_id=" + device_id + ", model=" + model + ", version=" + version + ", macAddress="
+				+ macAddress + ", consumeNumber=" + consumeNumber + ", oldNumber=" + oldNumber + ", status=" + status
+				+ ", location=" + location + ", lastUpdate=" + lastUpdate + "]";
 	}
 	
 }
