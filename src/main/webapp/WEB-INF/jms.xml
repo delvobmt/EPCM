@@ -4,11 +4,13 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
 	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-	<!-- Root Context: defines shared resources visible to all other web components -->
-	<context:annotation-config />
-	<context:component-scan base-package="com.ntk.epcm" />
-	<import resource="hibernate.xml" />
-	<import resource="spring-security.xml" />
-	<import resource="jms.xml" />
+	<bean id="connectionFactory" class="org.apache.activemq.spring.ActiveMQConnectionFactory">
+		<property name="brokerURL" value="tcp://localhost:61616" />
+	</bean>
+
+	<bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
+		<constructor-arg name="connectionFactory" ref="connectionFactory"></constructor-arg>
+		<property name="defaultDestinationName" value="myqueue"></property>
+	</bean>
 
 </beans>
