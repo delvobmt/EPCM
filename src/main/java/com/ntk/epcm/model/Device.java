@@ -4,8 +4,8 @@ import java.io.Serializable;
 import java.sql.Date;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
-@JsonTypeInfo(use=JsonTypeInfo.Id.CLASS, include=JsonTypeInfo.As.WRAPPER_OBJECT)
 public class Device implements Serializable{
 	private static final long serialVersionUID = -3629350960312361263L;
 
@@ -18,6 +18,9 @@ public class Device implements Serializable{
 	boolean status;
 	String location;
 	Date lastUpdate;
+	
+	public Device() {
+	}
 	
 	public Device(int device_id, String model, String version, String macAddress, long consumeNumber, long oldNumber,
 			boolean status, String location, Date lastUpdate) {
