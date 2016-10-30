@@ -66,11 +66,13 @@
 	</logger>
 
 	<logger name="org.springframework.security" level="debug|info" additivity="false">
-		<appender-ref ref="SECURITY-FILE" />
 	</logger>
 
 	<logger name="com.ntk.epcm" level="debug" additivity="false">
 		<appender-ref ref="STDOUT" />
+	</logger>
+	
+	<logger name="org.hibernate" level="debug|info" additivity="false">
 		<appender-ref ref="DEBUG-FILE" />
 	</logger>
 	

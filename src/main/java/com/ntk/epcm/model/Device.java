@@ -1,18 +1,14 @@
 package com.ntk.epcm.model;
 
-import java.io.Serializable;
 import java.sql.Date;
 
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-
-public class Device implements Serializable{
-	private static final long serialVersionUID = -3629350960312361263L;
+public class Device{
 
 	int device_id;
 	String model;
 	String version;
 	String macAddress;
+	String ipAddress;
 	long consumeNumber;
 	long oldNumber;
 	boolean status;
@@ -60,6 +56,14 @@ public class Device implements Serializable{
 	public void setMacAddress(String macAddress) {
 		this.macAddress = macAddress;
 	}
+	public String getIpAddress() {
+		return ipAddress;
+	}
+
+	public void setIpAddress(String ipAddress) {
+		this.ipAddress = ipAddress;
+	}
+
 	public long getConsumeNumber() {
 		return consumeNumber;
 	}
@@ -91,45 +95,4 @@ public class Device implements Serializable{
 		this.lastUpdate = lastUpdate;
 	}
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + device_id;
-		result = prime * result + ((macAddress == null) ? 0 : macAddress.hashCode());
-		result = prime * result + ((model == null) ? 0 : model.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Device other = (Device) obj;
-		if (device_id != other.device_id)
-			return false;
-		if (macAddress == null) {
-			if (other.macAddress != null)
-				return false;
-		} else if (!macAddress.equals(other.macAddress))
-			return false;
-		if (model == null) {
-			if (other.model != null)
-				return false;
-		} else if (!model.equals(other.model))
-			return false;
-		return true;
-	}
-
-	@Override
-	public String toString() {
-		return "Device [device_id=" + device_id + ", model=" + model + ", version=" + version + ", macAddress="
-				+ macAddress + ", consumeNumber=" + consumeNumber + ", oldNumber=" + oldNumber + ", status=" + status
-				+ ", location=" + location + ", lastUpdate=" + lastUpdate + "]";
-	}
-	
 }

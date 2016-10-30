@@ -1,16 +1,8 @@
 package com.ntk.epcm.manage.bean;
 
-import java.io.IOException;
 import java.io.Serializable;
 
-import javax.faces.bean.ManagedBean;
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
 import javax.inject.Inject;
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,10 +12,9 @@ import org.springframework.stereotype.Component;
 
 import com.ntk.epcm.service.IAccountService;
 
-@ManagedBean
 @Scope("request")
 @Component
-public class accountBean implements Serializable {
+public class AccountBean implements Serializable {
 	private final Logger LOGGER = LoggerFactory.getLogger(getClass());
 
 	private static final long serialVersionUID = 5746869699117671009L;

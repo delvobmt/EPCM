@@ -36,19 +36,11 @@ public class DeviceSimulator {
 	public static void main(String[] args) throws Exception {
 		
 		//test serialize and deserialize object
-		Device device = new DeviceBuilder().build();
-		ObjectMapper mapper = new ObjectMapper();
-		mapper.enableDefaultTyping(DefaultTyping.NON_FINAL);
-		String json = mapper.writeValueAsString(device);
-		System.out.println(json);
-		System.out.println();
-		Device object = mapper.readValue(json, Device.class);
-		System.out.println(object);
 		
-//		DeviceSimulator simulator = new DeviceSimulator();
-//		simulator.init();
-//		simulator.start();
-//		simulator.destroy();
+		DeviceSimulator simulator = new DeviceSimulator();
+		simulator.init();
+		simulator.start();
+		simulator.destroy();
 
 	}
 
@@ -80,6 +72,7 @@ public class DeviceSimulator {
 				}break;
 				case 0:
 					System.out.println("bye");
+					scanner.close();
 					break;
 				default:
 				{

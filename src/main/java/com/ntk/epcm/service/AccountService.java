@@ -4,7 +4,6 @@ import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
 
-import com.ntk.epcm.constant.RespondCode;
 import com.ntk.epcm.data.IAccountDAO;
 import com.ntk.epcm.model.Account;
 
@@ -22,11 +21,6 @@ public class AccountService implements IAccountService{
 	@Override
 	public void save(int id, String username, String password,String name, String email) {
 		accountDAO.save(id, username, password, name, email);
-	}
-
-	@Override
-	public void remove(int id) {
-		accountDAO.remove(id);
 	}
 
 	@Override
@@ -53,10 +47,4 @@ public class AccountService implements IAccountService{
 	public boolean checkExistenceEmail(String email) {
 		return accountDAO.checkExistenceEmail(email);
 	}
-
-	@Override
-	public RespondCode doLogin(String username, String password) {
-		return accountDAO.doLogin(username, password);
-	}
-
 }
