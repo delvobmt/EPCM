@@ -15,19 +15,18 @@
 
 			<p:dataTable id="deviceView" style="padding:5px" var="device"
 				value="#{deviceBean.list}" selection="#{deviceBean.listSelected}"
-				rowKey="#{device.device_id}">
+				rowKey="#{device.device_id}" tableStyle="table-layout: auto;">
 				<f:facet name="header">
 					<h:outputText value="Devices Information" />
 				</f:facet>
-				<p:column selectionMode="multiple"
-					style="width:16px;text-align:center" />
-				<p:column style="width:160px;text-align:center">
-					<p:commandButton icon="ui-icon-search" process="deviceView" update=":f:deviceInfo" oncomplete="PF('deviceInfoDialog').show()" >
+				<p:column selectionMode="multiple" style="width:1em"/>
+				<p:column style="text-align:center;width:8em">
+					<p:commandButton icon="ui-icon-pencil" process="deviceView" update=":f:deviceInfo" oncomplete="PF('deviceInfoDialog').show()" >
 						<f:setPropertyActionListener value="#{device}" target="#{viewingDevice}"/>
 					</p:commandButton>
-					<p:commandButton icon="ui-icon-pencil" />
+					<p:commandButton value="Poll" icon="ui-icon-carat-1-e" style="text-size:0.8em"/>
 				</p:column>
-				<p:column headerText="Id">
+				<p:column headerText="Id" style="width:1em">
 					<h:outputText value="#{device.device_id}" />
 				</p:column>
 				<p:column headerText="Model">
@@ -36,14 +35,15 @@
 				<p:column headerText="Version">
 					<h:outputText value="#{device.version}" />
 				</p:column>
-				<p:column headerText="MAC Address">
+				<p:column headerText="MAC Address" style="width:8em">
 					<h:outputText value="#{device.macAddress}" />
 				</p:column>
-				<p:column headerText="Ip Address">
+				<p:column headerText="Ip Address" style="width:6em">
 					<h:outputText value="#{device.ipAddress}" />
 				</p:column>
-				<p:column headerText="Status">
-					<h:outputText value="#{device.status}" />
+				<p:column headerText="Status" style="text-align:center; width:3em">
+					<h:outputText rendered="#{device.status}" value="ON" style="color:white; background: blue; font-weight:bold" />
+					<h:outputText rendered="#{not device.status}" value="OFF" style="color:white; background:red; font-weight:bold"/>
 				</p:column>
 				<p:column headerText="Location">
 					<h:outputText value="#{device.location}" />

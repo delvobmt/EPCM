@@ -11,6 +11,10 @@ form{
 	border-style: inherit!important;
 }
 
+.ui-menu{
+	padding:0!important;
+}
+
 .centered {
   position: fixed;
   top: 50%;

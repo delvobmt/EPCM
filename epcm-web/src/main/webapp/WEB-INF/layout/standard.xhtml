@@ -13,7 +13,7 @@
 	<ui:debug></ui:debug>
 
 	<h:body>
-		<h:form id="form">
+		<h:form id="form" style="display:fixed">
 			<p:menubar>
 				<p:menuitem value="Dashboard" url="/app/dashboard" icon="ui-icon-home"/>
 				<p:menuitem value="Devices" url="/app/device" icon="ui-icon-calculator"/>
@@ -23,6 +23,7 @@
 				</f:facet>
 			</p:menubar>
 		</h:form>
+		<p:sticky target="form"/>
 		<ui:insert name="content"/>
 		
 	</h:body>

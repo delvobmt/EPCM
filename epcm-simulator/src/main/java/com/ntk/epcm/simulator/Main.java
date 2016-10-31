@@ -29,16 +29,14 @@ public class Main {
 	private Destination destination;
 	private Connection connection;
 	private MessageProducer producer;
-	private MessageConsumer listener;
 
 	public static void main(String[] args) throws Exception {
 		
-		//test serialize and deserialize object
-		
 		Main simulator = new Main();
-		simulator.init();
-		simulator.start();
-		simulator.destroy();
+		DataGenerator data = new DataGenerator();
+//		simulator.init();
+//		simulator.start();
+//		simulator.destroy();
 
 	}
 
