@@ -16,7 +16,7 @@ import com.ntk.epcm.service.IDeviceService;
 
 @Scope("request")
 @Component
-public class DeviceBean implements SelectableDataModel<Device>{
+public class DeviceBean{
 	private static final Logger LOGGER = LoggerFactory.getLogger(DeviceBean.class);
 
 	@Inject
@@ -51,17 +51,6 @@ public class DeviceBean implements SelectableDataModel<Device>{
 		return listSelected;
 	}
 
-	@Override
-	public Device getRowData(String rowKey) {
-		//TODO return device data
-		return null;
-	}
-
-	@Override
-	public Object getRowKey(Device device) {
-		return device.getDevice_id();
-	}
-	
 //	public void onRowSelect(SelectEvent event) {
 //        FacesMessage msg = new FacesMessage("Car Selected", ((Car) event.getObject()).getId());
 //        FacesContext.getCurrentInstance().addMessage(null, msg);

@@ -9,41 +9,51 @@
 
 	<ui:define name="content">
 		<h:form id="f">
-			<p:commandButton value="Edit" icon="ui-icon-pencil" />
 			<p:commandButton value="Delete" icon="ui-icon-trash" />
 			<p:commandButton value="Refresh" action="#{deviceBean.refresh}"
 				icon="ui-icon-arrowrefresh-1-n" update="deviceView" />
-			<p:poll interval="10" listener="#{deviceBean.refresh}"
-				update="deviceView" />
+
+			<p:dataTable id="deviceView" style="padding:5px" var="device"
+				value="#{deviceBean.list}" selection="#{deviceBean.listSelected}"
+				rowKey="#{device.device_id}">
+				<f:facet name="header">
+					<h:outputText value="Devices Information" />
+				</f:facet>
+				<p:column selectionMode="multiple"
+					style="width:16px;text-align:center" />
+				<p:column style="width:160px;text-align:center">
+					<p:commandButton icon="ui-icon-search" process="deviceView" update=":f:deviceInfo" oncomplete="PF('deviceInfoDialog').show()" >
+						<f:setPropertyActionListener value="#{device}" target="#{viewingDevice}"/>
+					</p:commandButton>
+					<p:commandButton icon="ui-icon-pencil" />
+				</p:column>
+				<p:column headerText="Id">
+					<h:outputText value="#{device.device_id}" />
+				</p:column>
+				<p:column headerText="Model">
+					<h:outputText value="#{device.model}" />
+				</p:column>
+				<p:column headerText="Version">
+					<h:outputText value="#{device.version}" />
+				</p:column>
+				<p:column headerText="MAC Address">
+					<h:outputText value="#{device.macAddress}" />
+				</p:column>
+				<p:column headerText="Ip Address">
+					<h:outputText value="#{device.ipAddress}" />
+				</p:column>
+				<p:column headerText="Status">
+					<h:outputText value="#{device.status}" />
+				</p:column>
+				<p:column headerText="Location">
+					<h:outputText value="#{device.location}" />
+				</p:column>
+			</p:dataTable>
+			
+			<p:dialog id="deviceInfo" header="device Information" widgetVar="deviceInfoDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+				Device[#{viewingDevice.device_id},#{viewingDevice.macAddress}]
+			</p:dialog>			
+			
 		</h:form>
-		<p:dataTable id="deviceView" style="padding:5px" var="device"
-			value="#{deviceBean.list}" selection="#{deviceBean.listSelected}"
-			rowkey="#{device.device_id}">
-			<f:facet name="header">
-            		Checkbox
-        	</f:facet>
-			<p:column selectionMode="multiple" />
-			<p:column headerText="Id">
-				<h:outputText value="#{device.device_id}" />
-			</p:column>
-			<p:column headerText="Model">
-				<h:outputText value="#{device.model}" />
-			</p:column>
-			<p:column headerText="Version">
-				<h:outputText value="#{device.version}" />
-			</p:column>
-			<p:column headerText="MAC Address">
-				<h:outputText value="#{device.macAddress}" />
-			</p:column>
-			<p:column headerText="Ip Address">
-				<h:outputText value="#{device.ipAddress}" />
-			</p:column>
-			<p:column headerText="Status">
-				<h:outputText value="#{device.status}" />
-			</p:column>
-			<p:column headerText="Location">
-				<h:outputText value="#{device.location}" />
-			</p:column>
-		</p:dataTable>
 	</ui:define>
 </ui:composition>

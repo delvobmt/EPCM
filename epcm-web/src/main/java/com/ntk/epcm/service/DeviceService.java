@@ -19,20 +19,20 @@ public class DeviceService implements IDeviceService{
 	@Override
 	public int insert(Device device) {
 		int device_id = deviceDao.insert(device);
-		needUpdate = device_id != -1;
+		needUpdate = !needUpdate?device_id != -1:needUpdate;
 		return device_id;
 	}
 
 	@Override
 	public void save(Device device) {
 		//set flag when save success
-		needUpdate = deviceDao.save(device);
+		needUpdate = !needUpdate?deviceDao.save(device):needUpdate;
 	}
 
 	@Override
 	public void remove(Device device) {
 		//set flag when remove success
-		needUpdate = deviceDao.remove(device);
+		needUpdate = !needUpdate?deviceDao.remove(device):needUpdate;
 	}
 
 	@Override
@@ -52,6 +52,7 @@ public class DeviceService implements IDeviceService{
 
 	@Override
 	public List<Device> findAll() {
+		needUpdate = false;
 		return deviceDao.findAll();
 	}
 
