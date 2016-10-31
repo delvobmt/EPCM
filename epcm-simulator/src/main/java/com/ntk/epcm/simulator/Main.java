@@ -18,13 +18,11 @@ import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectMapper.DefaultTyping;
-import com.ntk.epcm.jms.listener.DeviceRegistrationListener;
 import com.ntk.epcm.model.Device;
 import com.ntk.epcm.model.DeviceBuilder;
 
-public class DeviceSimulator {
-	private static final Logger LOGGER = LoggerFactory.getLogger(DeviceSimulator.class);
+public class Main {
+	private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
 	
 	private ActiveMQConnectionFactory factory;
 	private Session session;
@@ -37,7 +35,7 @@ public class DeviceSimulator {
 		
 		//test serialize and deserialize object
 		
-		DeviceSimulator simulator = new DeviceSimulator();
+		Main simulator = new Main();
 		simulator.init();
 		simulator.start();
 		simulator.destroy();
@@ -64,11 +62,9 @@ public class DeviceSimulator {
 				}break;
 				case 5:
 				{
-					startListener();
 				}break;
 				case 6:
 				{
-					stopListener();
 				}break;
 				case 0:
 					System.out.println("bye");
@@ -83,24 +79,13 @@ public class DeviceSimulator {
 
 	}
 
-	private void startListener() throws JMSException {
-		listener = session.createConsumer(destination);
-		listener.setMessageListener(new DeviceRegistrationListener());
-		System.out.println("listener started...");
-	}
-	
-	private void stopListener() throws JMSException {
-		listener.close();
-		System.out.println("listener stopped...");
-	}
-
 	private void menu() {
 		System.out.println("1. send message");
 		System.out.println("2. receive message");
 		System.out.println("3.");
 		System.out.println("4.");
-		System.out.println("5. start listener");
-		System.out.println("6. stop listener");
+		System.out.println("5.");
+		System.out.println("6.");
 		System.out.println("0. exit");
 	}
 
