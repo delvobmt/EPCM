@@ -1,4 +1,5 @@
-package com.ntk.epcm.simulator;
+package com.ntk.epcm.simulator.data
+;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -7,15 +8,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ntk.epcm.model.Device;
 
 public class DataGenerator {
-	private static final Logger LOGGER = LoggerFactory.getLogger(DataGenerator.class);
-	
 	public static final String JSON_FILE = "basicinfo.json";
 	
 	public DataGenerator() {

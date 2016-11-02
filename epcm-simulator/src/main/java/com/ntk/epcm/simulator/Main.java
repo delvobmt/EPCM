@@ -1,39 +1,38 @@
 package com.ntk.epcm.simulator;
 
-import java.io.IOException;
 import java.util.Scanner;
 
 import javax.jms.Connection;
-import javax.jms.Destination;
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageConsumer;
-import javax.jms.MessageListener;
 import javax.jms.MessageProducer;
 import javax.jms.Queue;
 import javax.jms.Session;
-import javax.jms.TextMessage;
 import javax.jms.Topic;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
-import org.apache.activemq.command.ActiveMQTextMessage;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ntk.epcm.constant.EpcmConstant;
+import com.ntk.epcm.constant.ReqType;
 import com.ntk.epcm.model.Device;
-import com.ntk.epcm.model.DeviceBuilder;
+import com.ntk.epcm.simulator.data.DataGenerator;
+import com.ntk.epcm.simulator.listener.EpcmMessageListener;
+import com.ntk.epcm.simulator.processor.PingProcessor;
 
 public class Main {
 
 	private ActiveMQConnectionFactory factory;
 	private Session session;
 	private Connection connection;
-	private MessageProducer producer;
-	private MessageConsumer consumer;
 	private DataGenerator data;
-	private Device device;
+	private Queue deviceReportQueue;
+	private Queue deviceRegistrationQueue;
+	private Topic epcmRequestTopic;
+	private MessageProducer reportSender;
+	private MessageProducer registrationSender;
+	private MessageConsumer requestReceiver;
 
 	public static void main(String[] args) throws Exception {
 
@@ -48,30 +47,43 @@ public class Main {
 		factory = new ActiveMQConnectionFactory("tcp://localhost:61616");
 		connection = factory.createConnection();
 		session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
-		Queue deviceReportQueue = session.createQueue("DeviceReportQueue");
-		producer = session.createProducer(deviceReportQueue);
-		connection.start();
-
+		deviceReportQueue = session.createQueue(EpcmConstant.DEVICE_REPORT_QUEUE);
+		deviceRegistrationQueue = session.createQueue(EpcmConstant.DEVICE_REGISTRATION_QUEUE);
+		epcmRequestTopic = session.createTopic(EpcmConstant.EPCM_REQUEST_TOPIC);
+		
+		registrationSender = session.createProducer(deviceRegistrationQueue);
+		reportSender = session.createProducer(deviceReportQueue);
+		
 		data = new DataGenerator();
-		// register EPCM Request Listener
+		
+		connection.start();
+		
 		try {
-			device = data.getDevice();
-			Topic EpcmRequestTopic = session.createTopic("EPCMRequestTopic");
-			consumer = session.createConsumer(EpcmRequestTopic, String.format("device='%s'", device.getMacAddress()));
-			consumer.setMessageListener(new EpcmMessageListener());
+			Device device = data.getDevice();
+
+			// send register request to epcm service
+			ObjectMapper mapper = new ObjectMapper();
+			String deviceJson = mapper.writeValueAsString(device);
+			Message message = session.createTextMessage(deviceJson);
+			System.out.println("Send register request -> EPCM service");
+			System.out.println(deviceJson);
+			registrationSender.send(message);
 			
-			//test listener
-//			producer = session.createProducer(EpcmRequestTopic);
-//			TextMessage message = session.createTextMessage();
-//			message.setStringProperty("device", device.getMacAddress());
-//			producer.send(message);
-		} catch (IOException e) {
+			// register EPCM Request Listener
+			requestReceiver = session.createConsumer(epcmRequestTopic, String.format("device='%s'", device.getMacAddress()));
+			System.out.println("start request listener...");
+			EpcmMessageListener listener = new EpcmMessageListener();
+			listener.addProcessor(ReqType.PING, new PingProcessor(reportSender));
+			requestReceiver.setMessageListener(listener);
+			
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 	}
 
 	private void start() throws JMSException {
+		System.out.println("Device started");
 		Scanner scanner = new Scanner(System.in);
 		int c = -1;
 		do {
@@ -79,7 +91,7 @@ public class Main {
 			c = scanner.nextInt();
 			switch (c) {
 			case 0:
-				System.out.println("bye");
+				System.out.println("Bye!");
 				scanner.close();
 				break;
 			default: {
@@ -92,18 +104,11 @@ public class Main {
 	}
 
 	private void menu() {
-		System.out.println("0. exit");
-	}
-
-	private void send(Object object) throws JMSException {
-		try {
-			ObjectMapper mapper = new ObjectMapper();
-			String json = mapper.writeValueAsString(object);
-			Message message = session.createTextMessage(json);
-			producer.send(message);
-		} catch (JsonProcessingException e) {
-			e.printStackTrace();
-		}
+		System.out.println("******************************************");
+		System.out.println("* 1. make report                         *");
+		System.out.println("* 0. exit                                *");
+		System.out.println("******************************************");
+		System.out.print("choose:");
 	}
 
 	private void destroy() throws JMSException {

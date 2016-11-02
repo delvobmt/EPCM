@@ -18,13 +18,14 @@ public class Device{
 	public Device() {
 	}
 	
-	public Device(int device_id, String model, String version, String macAddress, long consumeNumber, long oldNumber,
+	public Device(int device_id, String model, String version, String macAddress, String ipAddress, long consumeNumber, long oldNumber,
 			boolean status, String location, Date lastUpdate) {
 		super();
 		this.device_id = device_id;
 		this.model = model;
 		this.version = version;
 		this.macAddress = macAddress;
+		this.ipAddress = ipAddress;
 		this.consumeNumber = consumeNumber;
 		this.oldNumber = oldNumber;
 		this.status = status;

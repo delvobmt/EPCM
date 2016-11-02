@@ -13,6 +13,7 @@
 		<property name="model" column="model" type="string"/>
 		<property name="version" column="version" type="string"/>
 		<property name="macAddress" column="macAddress" type="string"/>
+		<property name="ipAddress" column="ipAddress" type="string"/>
 		<property name="consumeNumber" column="consumeNumber" type="long"/>
 		<property name="oldNumber" column="oldNumber" type="long"/>
 		<property name="status" column="status" type="boolean"/>
