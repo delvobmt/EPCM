@@ -44,6 +44,11 @@ public class DeviceService implements IDeviceService{
 	public Device findDeviceByMacAddress(String macAddress) {
 		return deviceDao.findDeviceByMacAddress(macAddress);
 	}
+	
+	@Override
+	public boolean checkExistenceIpAddress(String ipAddress) {
+		return deviceDao.checkExistenceIpAddress(ipAddress);
+	}
 
 	@Override
 	public boolean needUpdate() {

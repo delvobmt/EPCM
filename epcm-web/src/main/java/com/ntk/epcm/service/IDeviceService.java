@@ -17,6 +17,8 @@ public interface IDeviceService {
 	Device findDeviceById(int device_id);
 
 	Device findDeviceByMacAddress(String macAddress);
+	
+	boolean checkExistenceIpAddress(String ipAddress);
 
 	List<Device> findAll();
 }

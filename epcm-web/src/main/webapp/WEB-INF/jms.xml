@@ -14,6 +14,6 @@
 	<bean id="deviceRegistrationListener" class="com.ntk.epcm.jms.listener.DeviceRegistrationListener"/>
 
 	<jms:listener-container>
-		<jms:listener destination="DeviceRegistrationQueue" ref="deviceRegistrationListener" />
+		<jms:listener destination="DeviceRegistrationQueue" ref="deviceRegistrationListener" selector="type='registration'"/>
 	</jms:listener-container>
 </beans>

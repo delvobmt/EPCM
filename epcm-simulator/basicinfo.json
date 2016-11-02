@@ -1,11 +1,11 @@
 {
     "model": "E103",
     "version": "1.0",
-    "macAddress": "00:00:00:00:00:01",
-    "ipAddress": "192.168.1.100",
+    "macAddress": "00:00:00:00:00:02",
+    "ipAddress": "192.168.1.101",
     "consumeNumber": 5302,
     "oldNumber": 5043,
-    "status": "false",
+    "status": "true",
     "location": "944 Quang Trung, P 8, Q Go Vap, Tp.HCM",
     "lastUpdate": "2016-11-01"
 }

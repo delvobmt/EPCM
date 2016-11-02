@@ -102,13 +102,11 @@ public class AccountDAO implements IAccountDAO {
 	@Override
 	public Account findAccountByEmail(String email) {
 		Session session = factory.openSession();
-		session.getTransaction().begin();
 		Criteria criteria = session.createCriteria(Account.class);
 		criteria.add(Restrictions.eq("email", email)).setMaxResults(1);
 		Object account = null;
 		try {
 			account = criteria.uniqueResult();
-			session.getTransaction().commit();
 		} catch (HibernateException e) {
 			LOGGER.error("eror while find account by email", e);
 		} finally {
@@ -141,11 +139,9 @@ public class AccountDAO implements IAccountDAO {
 		Session session = factory.openSession();
 		long count = 0;
 		try {
-			session.getTransaction().begin();
 			Criteria criteria = session.createCriteria(Account.class);
 			criteria.add(Restrictions.eq("email", email)).setProjection(Projections.rowCount());
 			count = (Long) criteria.uniqueResult();
-			session.getTransaction().commit();
 		} catch (HibernateException e) {
 			LOGGER.error("Error while check email existence", e);
 		} finally {
@@ -161,11 +157,9 @@ public class AccountDAO implements IAccountDAO {
 		
 		long count = 0;
 		try {
-			session.getTransaction().begin();
 			Criteria criteria = session.createCriteria(Account.class);
 			criteria.add(Restrictions.eq("username", username)).setProjection(Projections.rowCount());
 			count  = (Long) criteria.uniqueResult();
-			session.getTransaction().commit();
 		} catch (HibernateException e) {
 			LOGGER.error("Error while check username existence", e);
 		}finally {

@@ -7,6 +7,7 @@ import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -15,7 +16,7 @@ import com.ntk.epcm.service.IDeviceService;
 
 @Scope("request")
 @Component
-public class DeviceBean{
+public class DeviceBean implements InitializingBean{
 	private static final Logger LOGGER = LoggerFactory.getLogger(DeviceBean.class);
 
 	@Inject
@@ -23,12 +24,12 @@ public class DeviceBean{
 
 	List<Device> list;
 	List<Device> listSelected;
+	Device selected;
 	
 	/**
 	 * refresh device list. If there is no change, cache is returned.
 	 * @return
 	 */
-	@PostConstruct
 	public void refresh() {
 		if(list==null||deviceService.needUpdate()){
 			LOGGER.debug("refresh device list from service");
@@ -50,14 +51,16 @@ public class DeviceBean{
 		return listSelected;
 	}
 
-//	public void onRowSelect(SelectEvent event) {
-//        FacesMessage msg = new FacesMessage("Car Selected", ((Car) event.getObject()).getId());
-//        FacesContext.getCurrentInstance().addMessage(null, msg);
-//    }
-// 
-//    public void onRowUnselect(UnselectEvent event) {
-//        FacesMessage msg = new FacesMessage("Car Unselected", ((Car) event.getObject()).getId());
-//        FacesContext.getCurrentInstance().addMessage(null, msg);
-//    }
-//	
+	public Device getSelected() {
+		return selected;
+	}
+
+	public void setSelected(Device selected) {
+		this.selected = selected;
+	}
+
+	@Override
+	public void afterPropertiesSet() throws Exception {
+		refresh();
+	}
 }

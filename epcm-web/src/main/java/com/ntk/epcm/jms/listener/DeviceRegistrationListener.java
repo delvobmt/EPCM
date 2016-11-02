@@ -30,10 +30,27 @@ public class DeviceRegistrationListener implements MessageListener {
 				LOGGER.debug("process device Registration");
 				ObjectMapper mapper = new ObjectMapper();
 				Device device = mapper.readValue(msg.getText(), Device.class);
-				if (deviceService.insert(device) != -1)
-					LOGGER.debug("{} is registered into system", device.getMacAddress());
-				else
-					LOGGER.debug("{} is NOT registered into system", device.getMacAddress());
+
+				// check conflict Ip Address
+				String ipAddress = device.getIpAddress();
+				if (deviceService.checkExistenceIpAddress(ipAddress)) {
+					LOGGER.error("register new device FAIL, because of IP CONLFICT ({})", ipAddress);
+				} else {
+					String macAddress = device.getMacAddress();
+					Device oldDevice = deviceService.findDeviceByMacAddress(macAddress);
+					if (oldDevice == null) {
+						// register new device
+						if (deviceService.insert(device) != -1)
+							LOGGER.debug("{} is registered into system", device.getMacAddress());
+						else
+							LOGGER.debug("FAIL: {} is NOT registered into system", device.getMacAddress());
+					} else {
+						// update Device
+						device.setDevice_id(oldDevice.getDevice_id());
+						deviceService.save(device);
+					}
+					//TODO get more info of device
+				}
 			} catch (JMSException | IOException e) {
 				LOGGER.error("error while process message ", e);
 			}
