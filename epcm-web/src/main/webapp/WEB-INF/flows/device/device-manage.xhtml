@@ -12,6 +12,8 @@
 			<p:commandButton value="Delete" icon="ui-icon-trash" />
 			<p:commandButton value="Refresh" action="#{deviceBean.refresh}"
 				icon="ui-icon-arrowrefresh-1-n" update="deviceView" />
+			<p:commandButton type="button" value="Poll" action="#{deviceBean.poll}" update=":f:pollView" onclick="PF('pollDialog').show();PF('pollProgressBar').start();"/>
+			<p:poll interval="300" update="deviceView" listener="#{deviceBean.refresh}"/>
 
 			<p:dataTable id="deviceView" style="padding:5px" var="device"
 				value="#{deviceBean.list}" selection="#{deviceBean.listSelected}"
@@ -20,11 +22,10 @@
 					<h:outputText value="Devices Information" />
 				</f:facet>
 				<p:column selectionMode="multiple" style="width:1em"/>
-				<p:column style="text-align:center;width:8em">
+				<p:column style="text-align:center;width:2em">
 					<p:commandButton icon="ui-icon-pencil" process="deviceView" update=":f:deviceInfo" oncomplete="PF('deviceInfoDialog').show()" >
 						<f:setPropertyActionListener value="#{device}" target="#{viewingDevice}"/>
 					</p:commandButton>
-					<p:commandButton value="Poll" icon="ui-icon-carat-1-e" style="text-size:0.8em"/>
 				</p:column>
 				<p:column headerText="Id" style="width:1em">
 					<h:outputText value="#{device.device_id}" />
@@ -54,6 +55,11 @@
 				Device[#{viewingDevice.device_id},#{viewingDevice.macAddress}]
 			</p:dialog>			
 			
+			<p:dialog id="pollView" header="Poll Progress" widgetVar="pollDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" >
+				<p:progressBar widgetVar="pollProgressBar" value="#{deviceBean.progress}" labelTemplate="{value}%" global="false" ajax="true">
+					<p:ajax event="complete" listener="#{deviceBean.onPollComplete}"/>
+				</p:progressBar>
+			</p:dialog>
 		</h:form>
 	</ui:define>
 </ui:composition>

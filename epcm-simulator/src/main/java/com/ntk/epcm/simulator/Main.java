@@ -111,7 +111,7 @@ public class Main {
 			ObjectMapper mapper = new ObjectMapper();
 			if (device != null) {
 				device.setStatus(false);
-				device.setIpAddress("0.0.0.0");
+				device.setIpAddress(EpcmConstant.DEFAULT_IP_ADDRESS);
 				String json;
 				json = mapper.writeValueAsString(device);
 				System.out.println("send shutdown report -> EPCM");

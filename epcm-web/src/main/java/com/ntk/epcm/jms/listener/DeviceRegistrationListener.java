@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ntk.epcm.constant.EpcmConstant;
 import com.ntk.epcm.model.Device;
 import com.ntk.epcm.service.IDeviceService;
 
@@ -33,7 +34,7 @@ public class DeviceRegistrationListener implements MessageListener {
 
 				// check conflict Ip Address
 				String ipAddress = device.getIpAddress();
-				if (deviceService.checkExistenceIpAddress(ipAddress)) {
+				if (deviceService.checkExistenceIpAddress(ipAddress)&&!ipAddress.equals(EpcmConstant.DEFAULT_IP_ADDRESS)) {
 					LOGGER.error("register new device FAIL, because of IP CONLFICT ({})", ipAddress);
 				} else {
 					String macAddress = device.getMacAddress();
