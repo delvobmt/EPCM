@@ -9,20 +9,22 @@
 
 	<ui:define name="content">
 		<h:form id="f">
-			<p:commandButton value="Delete" icon="ui-icon-trash" />
-			<p:commandButton value="Refresh" action="#{deviceBean.refresh}"
-				icon="ui-icon-arrowrefresh-1-n" update="deviceView" />
-			<p:commandButton value="Poll" update="pollView"
-				action="#{deviceBean.poll}"
-				oncomplete="PF('pollDialog').show();PF('pollProgressBar').start();" />
-
 			<p:dataTable id="deviceView" style="padding:5px" var="device"
 				value="#{deviceBean.list}" selection="#{deviceBean.listSelected}"
 				rowKey="#{device.device_id}" tableStyle="table-layout: auto;">
 				<f:facet name="header">
-					<h:outputText value="Devices Information" />
+					<p:commandButton value="Delete" icon="ui-icon-trash" />
+					<p:commandButton value="Refresh" action="#{deviceBean.refresh}"
+						icon="ui-icon-arrowrefresh-1-n" update="deviceView" />
+					<p:commandButton id="pollButton"
+						value="#{empty deviceBean.listSelected}" update=":f:pollView"
+						action="#{deviceBean.poll}"
+						disabled="#{empty deviceBean.listSelected}"
+						oncomplete="PF('pollDialog').show();PF('pollProgressBar').start();" />
 				</f:facet>
-				<p:column selectionMode="multiple" style="width:1em" />
+				<p:column selectionMode="multiple" style="width:1em">
+
+				</p:column>
 				<p:column style="text-align:center;width:2em">
 					<p:commandButton icon="ui-icon-pencil" process="deviceView"
 						update=":f:deviceInfo" oncomplete="PF('deviceInfoDialog').show()">
@@ -69,7 +71,7 @@
 					<p:messages showDetail="true" />
 					<p:progressBar widgetVar="pollProgressBar"
 						value="#{deviceBean.progress}" labelTemplate="{value}%"
-						global="false" ajax="true">
+						global="false" ajax="true" >
 						<p:ajax event="complete" listener="#{deviceBean.onPollComplete}" />
 					</p:progressBar>
 					<p:commandButton value="Cancel" action="#{deviceBean.cancel}"
