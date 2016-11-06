@@ -32,9 +32,9 @@
 
 	</appender>
 	
-	<appender name="SECURITY-FILE"
+	<appender name="ERROR-FILE"
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<file>${DEV_HOME}/security.log</file>
+		<file>${DEV_HOME}/error.log</file>
 		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
 			<Pattern>
 				%d{yyyy-MM-dd HH:mm:ss} %-5level %logger{36} - %msg%n
@@ -53,31 +53,14 @@
 
 	</appender>
 
-	<logger name="org.springframework.beans.factory.annotation" level="debug" additivity="false">
-		<appender-ref ref="STDOUT" />
-	</logger>
-
-	<logger name="org.springframework.web" level="info" additivity="false">
-		<appender-ref ref="STDOUT" />
-	</logger>
-
-	<logger name="org.springframework.webflow" level="debug" additivity="false">
-	</logger>
-
-	<logger name="org.springframework.security" level="debug|info" additivity="false">
-	</logger>
-
 	<logger name="com.ntk.epcm" level="debug" additivity="false">
 		<appender-ref ref="STDOUT" />
-	</logger>
-	
-	<logger name="org.hibernate" level="debug|info" additivity="false">
 		<appender-ref ref="DEBUG-FILE" />
 	</logger>
 	
 	<root level="error">
 		<appender-ref ref="STDOUT" />
-		<appender-ref ref="DEBUG-FILE" />
+		<appender-ref ref="ERROR-FILE" />
 	</root>
 
 </configuration>

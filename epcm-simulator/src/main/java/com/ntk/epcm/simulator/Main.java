@@ -1,8 +1,10 @@
 package com.ntk.epcm.simulator;
 
+import java.io.IOException;
 import java.util.Scanner;
 
 import javax.jms.Connection;
+import javax.jms.Destination;
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageConsumer;
@@ -12,17 +14,22 @@ import javax.jms.Session;
 import javax.jms.Topic;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ntk.epcm.constant.DataType;
 import com.ntk.epcm.constant.EpcmConstant;
 import com.ntk.epcm.constant.ReqType;
+import com.ntk.epcm.manage.jms.EpcmDataMessage;
 import com.ntk.epcm.model.Device;
 import com.ntk.epcm.simulator.data.DataGenerator;
 import com.ntk.epcm.simulator.listener.EpcmMessageListener;
 import com.ntk.epcm.simulator.processor.PollProcessor;
 
 public class Main {
+	private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
 
 	private ActiveMQConnectionFactory factory;
 	private Session session;
@@ -49,7 +56,7 @@ public class Main {
 		deviceServiceQueue = session.createQueue(EpcmConstant.DEVICE_SERVICE_QUEUE);
 		EpcmServiceTopic = session.createTopic(EpcmConstant.EPCM_SERVICE_TOPIC);
 
-		sender = session.createProducer(deviceServiceQueue);
+		sender = session.createProducer(null);
 
 		data = new DataGenerator();
 
@@ -58,16 +65,11 @@ public class Main {
 		try {
 			device = data.getDevice();
 
-			// send register request to epcm service
-			ObjectMapper mapper = new ObjectMapper();
-			String deviceJson = mapper.writeValueAsString(device);
-			Message message = session.createTextMessage(deviceJson);
-			System.out.println("Send register request -> EPCM service");
-			System.out.println(deviceJson);
-			sender.send(message);
+			JmsSender.instance(sender, session, deviceServiceQueue, data).sendBasicInfo();
 
 			// register EPCM Request Listener
-			receiver = session.createConsumer(EpcmServiceTopic, String.format("device='%s'", device.getMacAddress()));
+			receiver = session.createConsumer(EpcmServiceTopic,
+					String.format("%s='%s'", EpcmConstant.DEVICE_MAC, device.getMacAddress()));
 			System.out.println("start request listener...");
 			EpcmMessageListener listener = new EpcmMessageListener();
 			listener.addProcessor(ReqType.POLL, new PollProcessor(sender, session, deviceServiceQueue, data));
@@ -108,17 +110,9 @@ public class Main {
 
 	private void destroy() throws JMSException {
 		try {
-			ObjectMapper mapper = new ObjectMapper();
-			if (device != null) {
-				device.setStatus(false);
-				device.setIpAddress(EpcmConstant.DEFAULT_IP_ADDRESS);
-				String json;
-				json = mapper.writeValueAsString(device);
-				System.out.println("send shutdown report -> EPCM");
-				sender.send(session.createTextMessage(json));
-				System.out.println(json);
-			}
-		} catch (JsonProcessingException e) {
+			JmsSender.instance(sender, session, deviceServiceQueue, data).sendOffDevice();
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
 			e.printStackTrace();
 		} finally {
 			System.out.println("Shutting down...");

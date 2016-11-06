@@ -12,8 +12,9 @@
 			<p:commandButton value="Delete" icon="ui-icon-trash" />
 			<p:commandButton value="Refresh" action="#{deviceBean.refresh}"
 				icon="ui-icon-arrowrefresh-1-n" update="deviceView" />
-			<p:commandButton type="button" value="Poll" action="#{deviceBean.poll}" update=":f:pollView" onclick="PF('pollDialog').show();PF('pollProgressBar').start();"/>
-			<p:poll interval="300" update="deviceView" listener="#{deviceBean.refresh}"/>
+			<p:commandButton value="Poll" update="pollView"
+				action="#{deviceBean.poll}"
+				oncomplete="PF('pollDialog').show();PF('pollProgressBar').start();" />
 
 			<p:dataTable id="deviceView" style="padding:5px" var="device"
 				value="#{deviceBean.list}" selection="#{deviceBean.listSelected}"
@@ -21,10 +22,12 @@
 				<f:facet name="header">
 					<h:outputText value="Devices Information" />
 				</f:facet>
-				<p:column selectionMode="multiple" style="width:1em"/>
+				<p:column selectionMode="multiple" style="width:1em" />
 				<p:column style="text-align:center;width:2em">
-					<p:commandButton icon="ui-icon-pencil" process="deviceView" update=":f:deviceInfo" oncomplete="PF('deviceInfoDialog').show()" >
-						<f:setPropertyActionListener value="#{device}" target="#{viewingDevice}"/>
+					<p:commandButton icon="ui-icon-pencil" process="deviceView"
+						update=":f:deviceInfo" oncomplete="PF('deviceInfoDialog').show()">
+						<f:setPropertyActionListener value="#{device}"
+							target="#{viewingDevice}" />
 					</p:commandButton>
 				</p:column>
 				<p:column headerText="Id" style="width:1em">
@@ -43,22 +46,35 @@
 					<h:outputText value="#{device.ipAddress}" />
 				</p:column>
 				<p:column headerText="Status" style="text-align:center; width:3em">
-					<h:outputText rendered="#{device.status}" value="ON" style="color:white; background: blue; font-weight:bold" />
-					<h:outputText rendered="#{not device.status}" value="OFF" style="color:white; background:red; font-weight:bold"/>
+					<h:outputText rendered="#{device.status}" value="ON"
+						style="color:white; background: blue; font-weight:bold" />
+					<h:outputText rendered="#{not device.status}" value="OFF"
+						style="color:white; background:red; font-weight:bold" />
 				</p:column>
 				<p:column headerText="Location">
 					<h:outputText value="#{device.location}" />
 				</p:column>
 			</p:dataTable>
-			
-			<p:dialog id="deviceInfo" header="device Information" widgetVar="deviceInfoDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+
+			<p:dialog id="deviceInfo" header="device Information"
+				widgetVar="deviceInfoDialog" modal="true" showEffect="fade"
+				hideEffect="fade" resizable="false">
 				Device[#{viewingDevice.device_id},#{viewingDevice.macAddress}]
-			</p:dialog>			
-			
-			<p:dialog id="pollView" header="Poll Progress" widgetVar="pollDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" >
-				<p:progressBar widgetVar="pollProgressBar" value="#{deviceBean.progress}" labelTemplate="{value}%" global="false" ajax="true">
-					<p:ajax event="complete" listener="#{deviceBean.onPollComplete}"/>
-				</p:progressBar>
+			</p:dialog>
+
+			<p:dialog id="pollView" header="Poll Progress" widgetVar="pollDialog"
+				modal="true" showEffect="fade" hideEffect="fade" resizable="false"
+				closable="false">
+				<p:panelGrid style="text-algin:center" columns="1">
+					<p:messages showDetail="true" />
+					<p:progressBar widgetVar="pollProgressBar"
+						value="#{deviceBean.progress}" labelTemplate="{value}%"
+						global="false" ajax="true">
+						<p:ajax event="complete" listener="#{deviceBean.onPollComplete}" />
+					</p:progressBar>
+					<p:commandButton value="Cancel" action="#{deviceBean.cancel}"
+						oncomplete="PF('pollDialog').hide();PF('pollProgressBar').cancel()" />
+				</p:panelGrid>
 			</p:dialog>
 		</h:form>
 	</ui:define>

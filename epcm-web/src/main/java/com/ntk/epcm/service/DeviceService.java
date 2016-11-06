@@ -26,13 +26,15 @@ public class DeviceService implements IDeviceService{
 	@Override
 	public void save(Device device) {
 		//set flag when save success
-		needUpdate = !needUpdate?deviceDao.save(device):needUpdate;
+		boolean result = deviceDao.save(device);
+		needUpdate = !needUpdate?result:needUpdate;
 	}
 
 	@Override
 	public void remove(Device device) {
 		//set flag when remove success
-		needUpdate = !needUpdate?deviceDao.remove(device):needUpdate;
+		boolean result = deviceDao.remove(device);
+		needUpdate = !needUpdate?result:needUpdate;
 	}
 
 	@Override
