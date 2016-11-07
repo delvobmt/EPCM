@@ -1,5 +1,6 @@
 package com.ntk.epcm.manage.bean;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -77,11 +78,11 @@ public class DeviceBean implements InitializingBean {
 		}
 	}
 	
-	public void save(Device device) {
-		deviceService.save(device);
-		list.stream().filter(d->d.equals(device)).forEach(d->list.set(list.indexOf(d),device));
+	public void save() {
+		deviceService.save(selectedDevice);
+		list.stream().filter(d->d.equals(selectedDevice)).forEach(d->list.set(list.indexOf(d),selectedDevice));
 		FacesContext.getCurrentInstance().addMessage(null,
-				new FacesMessage(FacesMessage.SEVERITY_INFO, String.format("Saved %s", device), ""));
+				new FacesMessage(FacesMessage.SEVERITY_INFO, String.format("Saved %s", selectedDevice.getMacAddress()), ""));
 	}
 	
 	public void delete() {

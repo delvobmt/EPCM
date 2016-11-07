@@ -15,8 +15,8 @@ import com.ntk.epcm.model.Device;
 import com.ntk.epcm.service.DeviceService;
 
 @Component
-public class BasicInfoDataProcessor implements IDataProcessor {
-	public static final Logger LOGGER = LoggerFactory.getLogger(BasicInfoDataProcessor.class);
+public class BasicInfoProcessor implements IDataProcessor {
+	public static final Logger LOGGER = LoggerFactory.getLogger(BasicInfoProcessor.class);
 	
 	@Inject
 	DeviceService deviceService;
@@ -24,7 +24,7 @@ public class BasicInfoDataProcessor implements IDataProcessor {
 	private DataType dataType = DataType.BASICINFO;
 
 	@Inject
-	public BasicInfoDataProcessor(DataProcessorRegistry registry) {
+	public BasicInfoProcessor(DataProcessorRegistry registry) {
 		registry.register(dataType, this);
 	}
 	
@@ -54,14 +54,30 @@ public class BasicInfoDataProcessor implements IDataProcessor {
 				if (deviceService.checkExistenceIpAddress(ipAddress)
 						&& !ipAddress.equals(EpcmConstant.NO_IP_ADDRESS)) {
 					//TODO add WARN for all 2 devices
-					LOGGER.error("WARN IP CONLFICT ({}) with mac {}", ipAddress, macAddress);
+					LOGGER.debug("WARN IP CONLFICT ({}) on device {} and {}", ipAddress, macAddress, oldDevice.getMacAddress());
 				}
 			}
 			// update Device
+			if(device.getLastUpdate().getTime()>oldDevice.getLastUpdate().getTime()){
+				//TODO add WARN override information to device
+				LOGGER.debug("WARN override infomation on device {}", macAddress);
+				//use mix data
+				device.setLocation(oldDevice.getLocation());
+			}
+			if(device.getConsumeNumber()<oldDevice.getConsumeNumber()){
+				//TODO add ERROR to device
+				//use old data
+				device.setConsumeNumber(oldDevice.getConsumeNumber());
+				LOGGER.debug("Consume Number ERROR: {} cannot update because lesser than {} on device {}", device.getConsumeNumber(), oldDevice.getConsumeNumber(),
+						macAddress);
+			}
+			if(device.getOldNumber()!=oldDevice.getOldNumber()){
+				//TODO add ERROR to device
+				LOGGER.debug("Old Number ERROR: {} cannot changed to {} by device {}", oldDevice.getOldNumber(), device.getOldNumber(), macAddress);
+			}
 			device.setDevice_id(oldDevice.getDevice_id());
 			deviceService.save(device);
 		}
-		// TODO get more info of device
 	}
 
 	public DataType getDataType() {

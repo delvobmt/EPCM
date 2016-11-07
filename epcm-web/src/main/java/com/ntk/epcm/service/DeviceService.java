@@ -3,6 +3,7 @@ package com.ntk.epcm.service;
 import com.ntk.epcm.data.IDeviceDAO;
 import com.ntk.epcm.model.Device;
 
+import java.sql.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -25,6 +26,7 @@ public class DeviceService implements IDeviceService{
 
 	@Override
 	public void save(Device device) {
+		device.setLastUpdate(new Date(System.currentTimeMillis()));
 		//set flag when save success
 		boolean result = deviceDao.save(device);
 		needUpdate = !needUpdate?result:needUpdate;
