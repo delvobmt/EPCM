@@ -9,27 +9,31 @@
 
 	<ui:define name="content">
 		<h:form id="f">
-			<p:dataTable id="deviceView" style="padding:5px" var="device"
-				value="#{deviceBean.list}" selection="#{deviceBean.listSelected}"
+			<p:dataTable id="deviceView" style="padding:5px" var="device" rowSelectMode="checkbox"
+				value="#{deviceBean.list}" selection="#{deviceBean.listSelected}" 
 				rowKey="#{device.device_id}" tableStyle="table-layout: auto;">
+				<p:ajax event="rowSelectCheckbox" update="@this"/>
+				<p:ajax event="rowUnselectCheckbox" update="@this"/>
+				<p:ajax event="toggleSelect" update="@this"/>
 				<f:facet name="header">
-					<p:commandButton value="Delete" icon="ui-icon-trash" />
-					<p:commandButton value="Refresh" action="#{deviceBean.refresh}"
-						icon="ui-icon-arrowrefresh-1-n" update="deviceView" />
-					<p:commandButton id="pollButton"
-						value="#{empty deviceBean.listSelected}" update=":f:pollView"
-						action="#{deviceBean.poll}"
+					<p:commandButton value="Refresh" icon="ui-icon-refresh" 
+						update=":f:deviceView" action="#{deviceBean.refresh}"/>
+					<p:commandButton value="Delete" icon="ui-icon-trash" 
 						disabled="#{empty deviceBean.listSelected}"
+						action="#{deviceBean.delete}"
+						update=":f:deviceView"/>
+					<p:commandButton value="Poll" icon="ui-icon-transferthick-e-w" 
+						disabled="#{empty deviceBean.listSelected}"
+						update=":f:pollView" action="#{deviceBean.poll}"
 						oncomplete="PF('pollDialog').show();PF('pollProgressBar').start();" />
 				</f:facet>
-				<p:column selectionMode="multiple" style="width:1em">
-
+				<p:column rowSelectMode="checkbox" selectionMode="multiple" style="width:1em">
 				</p:column>
 				<p:column style="text-align:center;width:2em">
 					<p:commandButton icon="ui-icon-pencil" process="deviceView"
 						update=":f:deviceInfo" oncomplete="PF('deviceInfoDialog').show()">
 						<f:setPropertyActionListener value="#{device}"
-							target="#{viewingDevice}" />
+							target="#{selectedDevice}" />
 					</p:commandButton>
 				</p:column>
 				<p:column headerText="Id" style="width:1em">
@@ -58,10 +62,100 @@
 				</p:column>
 			</p:dataTable>
 
-			<p:dialog id="deviceInfo" header="device Information"
-				widgetVar="deviceInfoDialog" modal="true" showEffect="fade"
-				hideEffect="fade" resizable="false">
-				Device[#{viewingDevice.device_id},#{viewingDevice.macAddress}]
+			<p:dialog id="deviceInfo" header="Device Information" widgetVar="deviceInfoDialog" 
+				modal="true" showEffect="fade" hideEffect="fade" resizable="false" closable="false">
+				<p:panelGrid>
+					<p:row>
+						<p:column>
+							<p:outputLabel for="id" value="Id"/>
+						</p:column>
+						<p:column>
+							<p:inputText id="id" value="#{selectedDevice.device_id}" readonly="true"/>
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column>
+							<p:outputLabel for="model" value="Model"/>
+						</p:column>
+						<p:column>
+							<p:inputText id="model" value="#{selectedDevice.model}" readonly="true"/>
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column>
+							<p:outputLabel for="version" value="Version"/>
+						</p:column>
+						<p:column>
+							<p:inputText id="version" value="#{selectedDevice.version}" readonly="true"/>
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column>
+							<p:outputLabel for="macAddress" value="MAC address"/>
+						</p:column>
+						<p:column>
+							<p:inputText id="macAddress" value="#{selectedDevice.macAddress}" readonly="true"/>
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column>
+							<p:outputLabel for="ipAddress" value="Ip address"/>
+						</p:column>
+						<p:column>
+							<p:inputText id="ipAddress" value="#{selectedDevice.ipAddress}" readonly="true"/>
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column>
+							<p:outputLabel value="Status"/>
+						</p:column>
+						<p:column>
+							<h:outputText rendered="#{selectedDevice.status}" value="ON" style="color:white; background: blue; font-weight:bold" />
+							<h:outputText rendered="#{not selectedDevice.status}" value="OFF" style="color:white; background:red; font-weight:bold" />
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column>
+							<p:outputLabel for="consumeNumber" value="Consume Number"/>
+						</p:column>
+						<p:column>
+							<p:inputNumber id="consumeNumber" value="#{selectedDevice.consumeNumber}" readonly="true"/>
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column>
+							<p:outputLabel for="oldNumber" value="Old Number"/>
+						</p:column>
+						<p:column>
+							<p:inputNumber id="oldNumber" value="#{selectedDevice.oldNumber}" readonly="true"/>
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column>
+							<p:outputLabel for="lastUpdate" value="Last Update"/>
+						</p:column>
+						<p:column>
+							<p:calendar id="lastUpdate" value="#{selectedDevice.lastUpdate}" pattern="MM/dd/yyyy" readonly="true"/>
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column>
+							<p:outputLabel for="location" value="Location"/>
+						</p:column>
+						<p:column>
+							<p:inputTextarea id="location" value="#{selectedDevice.location}" autoResize="true" maxlength="250"/>
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column colspan="2">
+							<p:commandButton value="#{selectedDevice}" actionListener="#{deviceBean.save}">
+								<f:setPropertyActionListener value="#{selectedDevice}" target="#{deviceBean.selectedDevice}"/>
+							</p:commandButton>
+							<p:commandButton value="Cancel" type="button" onclick="PF('deviceInfoDialog').hide()"/>
+						</p:column>
+					</p:row>
+				
+				</p:panelGrid>
 			</p:dialog>
 
 			<p:dialog id="pollView" header="Poll Progress" widgetVar="pollDialog"

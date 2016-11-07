@@ -1,12 +1,9 @@
 package com.ntk.epcm.simulator;
 
-import java.io.IOException;
 import java.util.Scanner;
 
 import javax.jms.Connection;
-import javax.jms.Destination;
 import javax.jms.JMSException;
-import javax.jms.Message;
 import javax.jms.MessageConsumer;
 import javax.jms.MessageProducer;
 import javax.jms.Queue;
@@ -17,12 +14,8 @@ import org.apache.activemq.ActiveMQConnectionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ntk.epcm.constant.DataType;
 import com.ntk.epcm.constant.EpcmConstant;
 import com.ntk.epcm.constant.ReqType;
-import com.ntk.epcm.manage.jms.EpcmDataMessage;
 import com.ntk.epcm.model.Device;
 import com.ntk.epcm.simulator.data.DataGenerator;
 import com.ntk.epcm.simulator.listener.EpcmMessageListener;

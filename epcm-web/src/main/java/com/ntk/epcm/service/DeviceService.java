@@ -31,9 +31,9 @@ public class DeviceService implements IDeviceService{
 	}
 
 	@Override
-	public void remove(Device device) {
+	public void remove(List<Device> devices) {
 		//set flag when remove success
-		boolean result = deviceDao.remove(device);
+		boolean result = deviceDao.remove(devices);
 		needUpdate = !needUpdate?result:needUpdate;
 	}
 
@@ -62,6 +62,4 @@ public class DeviceService implements IDeviceService{
 		needUpdate = false;
 		return deviceDao.findAll();
 	}
-
-	
 }

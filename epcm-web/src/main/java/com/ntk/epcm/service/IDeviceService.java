@@ -10,7 +10,7 @@ public interface IDeviceService {
 
 	void save(Device device);
 
-	void remove(Device device);
+	void remove(List<Device> devices);
 	
 	boolean needUpdate();
 	

@@ -63,15 +63,15 @@ public class DeviceDAO implements IDeviceDAO {
 
 	@SuppressWarnings("finally")
 	@Override
-	public boolean remove(Device device) {
+	public boolean remove(List<Device> devices) {
 		boolean error = false;
 		Session session = factory.openSession();
 		try {
 			session.getTransaction().begin();
-			session.remove(device);
+			devices.forEach(session::remove);
 			session.getTransaction().commit();
 		} catch (HibernateException e) {
-			LOGGER.error("error while remove({})", device, e);
+			LOGGER.error("error while remove({})", devices, e);
 			error = true;
 		} finally {
 			session.close();

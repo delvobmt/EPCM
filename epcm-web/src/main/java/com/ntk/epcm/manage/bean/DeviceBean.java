@@ -33,6 +33,7 @@ public class DeviceBean implements InitializingBean {
 
 	List<Device> list;
 	List<Device> listSelected;
+	Device selectedDevice;
 	List<String> executeList = new LinkedList<>();
 
 	@Inject
@@ -75,6 +76,19 @@ public class DeviceBean implements InitializingBean {
 							String.format("%s is polling, your request to those are ignored", conflictList)));
 		}
 	}
+	
+	public void save(Device device) {
+		deviceService.save(device);
+		list.stream().filter(d->d.equals(device)).forEach(d->list.set(list.indexOf(d),device));
+		FacesContext.getCurrentInstance().addMessage(null,
+				new FacesMessage(FacesMessage.SEVERITY_INFO, String.format("Saved %s", device), ""));
+	}
+	
+	public void delete() {
+		deviceService.remove(listSelected);
+		list.removeAll(listSelected);
+		listSelected.clear();
+	}
 
 	public void cancel() {
 		TaskManager taskManager = TaskManager.instance();
@@ -113,5 +127,13 @@ public class DeviceBean implements InitializingBean {
 	@Override
 	public void afterPropertiesSet() throws Exception {
 		refresh();
+	}
+
+	public Device getSelectedDevice() {
+		return selectedDevice;
+	}
+
+	public void setSelectedDevice(Device selectedDevice) {
+		this.selectedDevice = selectedDevice;
 	}
 }

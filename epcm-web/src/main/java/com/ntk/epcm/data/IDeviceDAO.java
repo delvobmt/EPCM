@@ -22,7 +22,7 @@ public interface IDeviceDAO {
 	 * @param device
 	 * @return true when save success, otherwise
 	 */
-	boolean remove(Device device);
+	boolean remove(List<Device> devices);
 
 	Device findDeviceById(int device_id);
 
