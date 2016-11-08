@@ -5,6 +5,7 @@ import com.ntk.epcm.constant.ReqType;
 public class EpcmRequestObject {
 	String macAddress;
 	ReqType reqType;
+	Object data;
 	
 	public EpcmRequestObject() {
 	}
@@ -28,5 +29,13 @@ public class EpcmRequestObject {
 
 	public void setReqType(ReqType reqType) {
 		this.reqType = reqType;
+	}
+
+	public Object getData() {
+		return data;
+	}
+
+	public void setData(Object data) {
+		this.data = data;
 	}
 }

@@ -80,7 +80,7 @@ public class DeviceBean implements InitializingBean {
 	
 	public void save() {
 		deviceService.save(selectedDevice);
-		list.stream().filter(d->d.equals(selectedDevice)).forEach(d->list.set(list.indexOf(d),selectedDevice));
+		//TODO device information is changed locally, then we need to send message to request device changes.
 		FacesContext.getCurrentInstance().addMessage(null,
 				new FacesMessage(FacesMessage.SEVERITY_INFO, String.format("Saved %s", selectedDevice.getMacAddress()), ""));
 	}

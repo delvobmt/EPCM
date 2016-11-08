@@ -9,7 +9,7 @@
 
 	<ui:define name="content">
 		<h:form id="f">
-			<p:messages />
+			<p:growl />
 			<p:dataTable id="deviceView" style="padding:5px" var="device" rowSelectMode="checkbox"
 				value="#{deviceBean.list}" selection="#{deviceBean.listSelected}" 
 				rowKey="#{device.device_id}" tableStyle="table-layout: auto;">
