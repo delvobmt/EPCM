@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
 
 import com.ntk.epcm.constant.EpcmConstant;
 import com.ntk.epcm.constant.ReqType;
-import com.ntk.epcm.simulator.processor.IRequestProcessor;
+import com.ntk.epcm.simulator.requestprocessor.IRequestProcessor;
 
 public class EpcmMessageListener implements MessageListener {
 
@@ -26,6 +26,7 @@ public class EpcmMessageListener implements MessageListener {
 
 	@Override
 	public void onMessage(Message message) {
+		LOGGER.debug("receive Message!");
 		try {
 			String requestType = message.getStringProperty(EpcmConstant.REQ_TYPE_KEY);
 			IRequestProcessor processor = processorRegistry.get(requestType);

@@ -34,19 +34,19 @@ public class PollTask extends AbstractTask {
 				@SuppressWarnings("finally")
 				@Override
 				public Message createMessage(Session session) throws JMSException {
-					EpcmRequestObject reqObject = new EpcmRequestObject(macAddress, ReqType.POLL);
+					EpcmRequestObject reqObject = new EpcmRequestObject();
 					ObjectMapper mapper = new ObjectMapper();
 					String json = "";
 					try {
 						json = mapper.writeValueAsString(reqObject);
-					} catch (JsonProcessingException e) {
-						LOGGER.error(e.getMessage(), e);
-					} finally {
 						TextMessage message = session.createTextMessage(json);
 						message.setStringProperty(EpcmConstant.DEVICE_MAC, macAddress);
 						message.setStringProperty(EpcmConstant.REQ_TYPE_KEY, ReqType.POLL.toString());
 						return message;
+					} catch (JsonProcessingException e) {
+						LOGGER.error(e.getMessage(), e);
 					}
+					return null;
 				}
 			});
 		}

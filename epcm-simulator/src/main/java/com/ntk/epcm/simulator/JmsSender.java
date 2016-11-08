@@ -52,8 +52,6 @@ public class JmsSender {
 		EpcmDataMessage dataMessage = new EpcmDataMessage(DataType.BASICINFO, device.getMacAddress(), device);
 		String json = mapper.writeValueAsString(dataMessage);
 		Message message = session.createTextMessage(json);
-		System.out.println("Send device info -> EPCM service");
-		System.out.println(json);
 		LOGGER.debug("send to Service: {}", json);
 		sender.send(destination, message);
 	}

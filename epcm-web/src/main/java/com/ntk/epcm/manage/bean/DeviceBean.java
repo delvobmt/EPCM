@@ -15,8 +15,10 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Component;
 
+import com.ntk.epcm.constant.DataType;
 import com.ntk.epcm.jms.callback.PollCallback;
 import com.ntk.epcm.jms.task.PollTask;
+import com.ntk.epcm.jms.task.UpdateTask;
 import com.ntk.epcm.manage.TaskManager;
 import com.ntk.epcm.manage.TaskReporter;
 import com.ntk.epcm.model.Device;
@@ -81,6 +83,7 @@ public class DeviceBean implements InitializingBean {
 	public void save() {
 		deviceService.save(selectedDevice);
 		//TODO device information is changed locally, then we need to send message to request device changes.
+		TaskManager.instance().put(new UpdateTask(jmsTemplate, selectedDevice.getMacAddress(), selectedDevice, DataType.BASICINFO));
 		FacesContext.getCurrentInstance().addMessage(null,
 				new FacesMessage(FacesMessage.SEVERITY_INFO, String.format("Saved %s", selectedDevice.getMacAddress()), ""));
 	}

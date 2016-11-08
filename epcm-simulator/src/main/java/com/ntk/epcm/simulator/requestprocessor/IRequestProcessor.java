@@ -1,4 +1,4 @@
-package com.ntk.epcm.simulator.processor;
+package com.ntk.epcm.simulator.requestprocessor;
 
 import javax.jms.TextMessage;
 

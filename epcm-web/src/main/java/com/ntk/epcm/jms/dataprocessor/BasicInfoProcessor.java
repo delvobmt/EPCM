@@ -65,15 +65,16 @@ public class BasicInfoProcessor implements IDataProcessor {
 				device.setLocation(oldDevice.getLocation());
 			}
 			if(device.getConsumeNumber()<oldDevice.getConsumeNumber()){
+				LOGGER.debug("Consume Number ERROR: {} cannot update because lesser than {} on device {}", device.getConsumeNumber(), oldDevice.getConsumeNumber(),
+						macAddress);
 				//TODO add ERROR to device
 				//use old data
 				device.setConsumeNumber(oldDevice.getConsumeNumber());
-				LOGGER.debug("Consume Number ERROR: {} cannot update because lesser than {} on device {}", device.getConsumeNumber(), oldDevice.getConsumeNumber(),
-						macAddress);
 			}
 			if(device.getOldNumber()!=oldDevice.getOldNumber()){
-				//TODO add ERROR to device
 				LOGGER.debug("Old Number ERROR: {} cannot changed to {} by device {}", oldDevice.getOldNumber(), device.getOldNumber(), macAddress);
+				//TODO add ERROR to device
+				device.setOldNumber(oldDevice.getOldNumber());
 			}
 			device.setDevice_id(oldDevice.getDevice_id());
 			deviceService.save(device);

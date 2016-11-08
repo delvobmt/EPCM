@@ -1,4 +1,4 @@
-package com.ntk.epcm.simulator.processor;
+package com.ntk.epcm.simulator.requestprocessor;
 
 import java.io.IOException;
 
@@ -35,7 +35,6 @@ public class PollProcessor implements IRequestProcessor {
 	@Override
 	public void process(TextMessage message) {
 		try {
-			LOGGER.debug("receive message: {}", message.getText());
 			Destination replyTo = message.getJMSReplyTo();
 			Device device = data.getDevice();
 			EpcmResponseObject responseObject = new EpcmResponseObject(device.getMacAddress());
