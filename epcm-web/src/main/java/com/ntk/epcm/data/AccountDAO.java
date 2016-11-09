@@ -5,17 +5,15 @@ import java.util.Calendar;
 
 import javax.inject.Inject;
 
-import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
+import com.ntk.epcm.constant.AccountConstant;
 import com.ntk.epcm.model.Account;
 import com.ntk.epcm.model.AccountRole;
 
@@ -98,33 +96,34 @@ public class AccountDAO implements IAccountDAO {
 		}
 	}
 
-	@SuppressWarnings({ "deprecation", "finally" })
+	@SuppressWarnings("finally")
 	@Override
 	public Account findAccountByEmail(String email) {
+		Account account = null;
 		Session session = factory.openSession();
-		Criteria criteria = session.createCriteria(Account.class);
-		criteria.add(Restrictions.eq("email", email)).setMaxResults(1);
-		Object account = null;
 		try {
-			account = criteria.uniqueResult();
+		account = session.createQuery(String.format("from %s where %s=:email",
+				AccountConstant.TABLE, AccountConstant.EMAIL_KEY)
+				, Account.class).setParameter("email", email)
+			.setMaxResults(1).getSingleResult();
 		} catch (HibernateException e) {
 			LOGGER.error("eror while find account by email", e);
 		} finally {
 			session.close();
-			return account == null ? null : (Account) account;
+			return account;
 		}
 	}
 
-	@SuppressWarnings({ "deprecation", "finally" })
+	@SuppressWarnings("finally")
 	@Override
 	public Account findAccountByUsername(String username) {
-		Session session = factory.openSession();
 		Account account = null;
+		Session session = factory.openSession();
 		try {
-			session.getTransaction().begin();
-			Criteria criteria = session.createCriteria(Account.class);
-			criteria.add(Restrictions.eq("username", username)).setMaxResults(1);
-			account = (Account) criteria.uniqueResult();
+			account =session.createQuery(String.format("from %s where %s=:username",
+					AccountConstant.TABLE, AccountConstant.USERNAME_KEY)
+					, Account.class).setParameter("username", username)
+				.setMaxResults(1).getSingleResult();
 		} catch (HibernateException e) {
 			LOGGER.error("error while find account by username", e);
 		} finally {
@@ -133,15 +132,16 @@ public class AccountDAO implements IAccountDAO {
 		}
 	}
 
-	@SuppressWarnings({ "deprecation", "finally" })
+	@SuppressWarnings("finally")
 	@Override
 	public boolean checkExistenceEmail(String email) {
 		Session session = factory.openSession();
 		long count = 0;
 		try {
-			Criteria criteria = session.createCriteria(Account.class);
-			criteria.add(Restrictions.eq("email", email)).setProjection(Projections.rowCount());
-			count = (Long) criteria.uniqueResult();
+			count = session.createQuery(String.format("select count(*) from %s where %s=:email",
+					AccountConstant.TABLE, AccountConstant.EMAIL_KEY)
+					, Long.class).setParameter("email", email)
+				.setMaxResults(1).getSingleResult();
 		} catch (HibernateException e) {
 			LOGGER.error("Error while check email existence", e);
 		} finally {
@@ -150,16 +150,17 @@ public class AccountDAO implements IAccountDAO {
 		}
 	}
 
-	@SuppressWarnings({ "deprecation", "finally" })
+	@SuppressWarnings("finally")
 	@Override
 	public boolean checkExistenceUsername(String username) {
 		Session session = factory.openSession();
 		
 		long count = 0;
 		try {
-			Criteria criteria = session.createCriteria(Account.class);
-			criteria.add(Restrictions.eq("username", username)).setProjection(Projections.rowCount());
-			count  = (Long) criteria.uniqueResult();
+			count = session.createQuery(String.format("select count(*) from %s where %s=:username",
+					AccountConstant.TABLE, AccountConstant.USERNAME_KEY)
+					, Long.class).setParameter("username", username)
+				.setMaxResults(1).getSingleResult();
 		} catch (HibernateException e) {
 			LOGGER.error("Error while check username existence", e);
 		}finally {

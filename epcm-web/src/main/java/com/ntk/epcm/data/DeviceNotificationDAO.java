@@ -8,7 +8,6 @@ import javax.inject.Inject;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Restrictions;
 import org.hibernate.query.Query;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -99,13 +98,13 @@ public class DeviceNotificationDAO implements IDeviceNotificationDAO {
 		}
 	}
 
-	@SuppressWarnings({ "unchecked", "finally" })
+	@SuppressWarnings("finally")
 	@Override
 	public List<DeviceNotification> findAll() {
 		List<DeviceNotification> list = Collections.emptyList();
 		Session session = factory.openSession();
 		try {
-			Query<DeviceNotification> query = session.createQuery("from "+DeviceNotificationConstant.TABLE);
+			Query<DeviceNotification> query = session.createQuery("from "+DeviceNotificationConstant.TABLE, DeviceNotification.class);
 			list = query.getResultList();
 			
 		} catch (HibernateException e) {
@@ -126,7 +125,7 @@ public class DeviceNotificationDAO implements IDeviceNotificationDAO {
 					.setParameter("severity", severity);
 			list = query.getResultList();
 		} catch (HibernateException e) {
-			// TODO: handle exception
+			LOGGER.error("ERROR while findBySevertity",e);
 		}
 		return list;
 	}

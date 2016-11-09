@@ -8,8 +8,6 @@ import javax.inject.Inject;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Restrictions;
 import org.hibernate.query.Query;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -94,16 +92,16 @@ public class DeviceDAO implements IDeviceDAO {
 		}
 	}
 
-	@SuppressWarnings({ "finally", "deprecation" })
+	@SuppressWarnings("finally")
 	@Override
 	public Device findDeviceByMacAddress(String macAddress) {
 		Session session = factory.openSession();
 		Device device = null;
 		try {
-			device = (Device) session.createCriteria(Device.class)
-					.add(Restrictions.eq("macAddress", macAddress))
-					.setMaxResults(1)
-					.uniqueResult();
+			device = (Device) session.createQuery(String.format("from %s where %s=:macAddress", 
+					DeviceConstant.TABLE, DeviceConstant.MAC_ADDRESS_KEY),Device.class)
+					.setParameter("macAddress", macAddress)
+					.setMaxResults(1).getSingleResult();
 		} catch (HibernateException e) {
 			LOGGER.error("error while findDeviceByMacAddress({})", macAddress, e);
 		} finally {
@@ -112,15 +110,14 @@ public class DeviceDAO implements IDeviceDAO {
 		}
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public boolean checkExistenceIpAddress(String ipAddress) {
 		Session session = factory.openSession();
 		try {
-			long count = (long) session.createCriteria(Device.class)
-					.add(Restrictions.eq(DeviceConstant.IP_ADRESS_KEY, ipAddress))
-					.setProjection(Projections.rowCount())
-					.uniqueResult();
+			long count = (long) session.createQuery(String.format("select count(*) from %s where %s=:ipAddress", 
+					DeviceConstant.TABLE, DeviceConstant.IP_ADRESS_KEY))
+					.setParameter("ipAddress", ipAddress)
+					.getSingleResult();
 			return count != 0;
 		} catch (HibernateException e) {
 			LOGGER.error("error while checkIpAddressAvailable({})", ipAddress, e);
@@ -128,13 +125,13 @@ public class DeviceDAO implements IDeviceDAO {
 		return false;
 	}
 
-	@SuppressWarnings({ "unchecked", "finally" })
+	@SuppressWarnings("finally")
 	@Override
 	public List<Device> findAll() {
 		Session session = factory.openSession();
 		List<Device> list = Collections.emptyList();
 		try {
-			Query<Device> query = session.createQuery("from " + DeviceConstant.TABLE);
+			Query<Device> query = session.createQuery("from " + DeviceConstant.TABLE, Device.class);
 			list = query.getResultList();
 		} catch (HibernateException e) {
 			LOGGER.error("error while findAll()", e);
