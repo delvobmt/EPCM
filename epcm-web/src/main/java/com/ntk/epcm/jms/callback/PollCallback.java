@@ -6,7 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ntk.epcm.manage.TaskManager;
 import com.ntk.epcm.manage.TaskReporter;
 import com.ntk.epcm.manage.jms.EpcmResponseObject;
 

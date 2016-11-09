@@ -1,5 +1,6 @@
 package com.ntk.epcm.model;
 
+import java.sql.Date;
 import java.util.Collections;
 import java.util.Set;
 
@@ -10,6 +11,8 @@ public class Account {
 	private String email;
 	private String name;
 	private String status;
+	private Date createAt;
+	private Date lastActiveAt;
 	private Set<AccountRole> roles = Collections.emptySet();
 	
 	public Account(int id) {
@@ -48,11 +51,6 @@ public class Account {
 		this.password = password;
 	}
 
-	@Override
-	public String toString() {
-		return String.format("[id=%s, username=%s]", id, username);
-	}
-
 	public String getEmail() {
 		return email;
 	}
@@ -84,4 +82,56 @@ public class Account {
 	public void setRoles(Set<AccountRole> roles) {
 		this.roles = roles;
 	}
+
+	public Date getCreateAt() {
+		return createAt;
+	}
+
+	public void setCreateAt(Date createAt) {
+		this.createAt = createAt;
+	}
+
+	public Date getLastActiveAt() {
+		return lastActiveAt;
+	}
+
+	public void setLastActiveAt(Date lastActiveAt) {
+		this.lastActiveAt = lastActiveAt;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + id;
+		result = prime * result + ((username == null) ? 0 : username.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Account other = (Account) obj;
+		if (id != other.id)
+			return false;
+		if (username == null) {
+			if (other.username != null)
+				return false;
+		} else if (!username.equals(other.username))
+			return false;
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "Account [id=" + id + ", username=" + username + ", password=" + password + ", email=" + email
+				+ ", name=" + name + ", status=" + status + ", createAt=" + createAt + ", lastActiveAt=" + lastActiveAt
+				+ ", roles=" + roles + "]";
+	}
+	
 }

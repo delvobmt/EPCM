@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+ "-//Hibernate/Hibernate Mapping DTD//EN"
+ "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.ntk.epcm.model.DeviceConfig" table="Device_Config">
+		<meta attribute="class-description">
+			This class contains device configuration information
+		</meta>
+		<id name="deviceConfig_id" column="deviceConfig_id" type="int">
+			<generator class="native"></generator>
+		</id>
+		<one-to-one name="device" class="com.ntk.epcm.model.Device"/>
+		<property name="limitedConsume" column="limitedConsume" type="int"/>
+		<property name="alarmConsume" column="alarmConsume" type="int"/>
+		
+	</class>
+</hibernate-mapping>

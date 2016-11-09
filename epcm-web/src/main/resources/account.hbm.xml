@@ -16,6 +16,8 @@
 		<property name="email" column="email" type="string"/>		
 		<property name="name" column="name" type="string"/>		
 		<property name="status" column="status" type="string"/>
+		<property name="createAt" column="createAt" type="date"/>
+		<property name="lastActiveAt" column="lastActiveAt" type="date"/>
 		<set name="roles" lazy="false">
             <key>
                 <column name="account_id"/>

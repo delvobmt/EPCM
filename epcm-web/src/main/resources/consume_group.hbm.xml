@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+ "-//Hibernate/Hibernate Mapping DTD//EN"
+ "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.ntk.epcm.model.ConsumeGroup" table="Consume_Group">
+		<meta attribute="class-description">
+			This class contains consume group information
+		</meta>
+		<id name="customerGroup_id" column="customerGroup_id" type="int">
+			<generator class="native"></generator>
+		</id>
+		<property name="group" column="group" type="string"/>
+	</class>
+</hibernate-mapping>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+ "-//Hibernate/Hibernate Mapping DTD//EN"
+ "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.ntk.epcm.model.DeviceNotification" table="Device_Notification">
+		<meta attribute="class-description">
+			This class contains device notification information
+		</meta>
+		<id name="deviceNotification_id" column="deviceNotification_id" type="int">
+			<generator class="native"></generator>
+		</id>
+		<one-to-one name="device" class="com.ntk.epcm.model.Device"/>
+		<property name="severity" column="severity" type="string"/>
+		<property name="description" column="description" type="string"/>
+		
+	</class>
+</hibernate-mapping>

@@ -28,6 +28,12 @@
 				<value>account.hbm.xml</value>
 				<value>account_role.hbm.xml</value>
 				<value>device.hbm.xml</value>
+				<value>device_config.hbm.xml</value>
+				<value>device_notification.hbm.xml</value>
+				<value>consume_group.hbm.xml</value>
+				<value>consume_policy.hbm.xml</value>
+				<value>customer.hbm.xml</value>
+				<value>customer_device.hbm.xml</value>
 			</list>
 		</property>
 

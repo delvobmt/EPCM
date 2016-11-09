@@ -1,7 +1,6 @@
 package com.ntk.epcm.jms.listener;
 
 import java.io.IOException;
-import java.sql.Date;
 
 import javax.inject.Inject;
 import javax.jms.JMSException;
@@ -13,11 +12,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ntk.epcm.constant.DataType;
-import com.ntk.epcm.constant.EpcmConstant;
 import com.ntk.epcm.jms.dataprocessor.DataProcessorRegistry;
 import com.ntk.epcm.manage.jms.EpcmDataMessage;
-import com.ntk.epcm.model.Device;
 import com.ntk.epcm.service.IDeviceService;
 
 public class DeviceReportListener implements MessageListener {

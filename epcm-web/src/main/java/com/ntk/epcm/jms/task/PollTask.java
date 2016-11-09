@@ -31,7 +31,6 @@ public class PollTask extends AbstractTask {
 		if (!isCancelled) {
 			message = (TextMessage) jmsTemplate.sendAndReceive(new MessageCreator() {
 
-				@SuppressWarnings("finally")
 				@Override
 				public Message createMessage(Session session) throws JMSException {
 					EpcmRequestObject reqObject = new EpcmRequestObject();

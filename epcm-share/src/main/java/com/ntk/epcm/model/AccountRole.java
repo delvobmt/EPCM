@@ -63,4 +63,9 @@ public class AccountRole implements Serializable{
 		this.expireAt = expireAt;
 	}
 
+	@Override
+	public String toString() {
+		return "AccountRole [role=" + role + ", account_id=" + account_id + ", expireAt=" + expireAt + "]";
+	}
+
 }

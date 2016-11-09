@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+ "-//Hibernate/Hibernate Mapping DTD//EN"
+ "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.ntk.epcm.model.ConsumPolicy" table="Consume_Policy">
+		<meta attribute="class-description">
+			This class contains consume policy information
+		</meta>
+		<id name="consumePolicy_id" column="consumePolicy_id" type="int">
+			<generator class="native"></generator>
+		</id>
+		
+		<property name="fromConsume" column="fromConsume" type="int"/>
+		<property name="toConsume" column="toConsume" type="int"/>
+		<property name="price" column="price" type="int"/>
+	</class>
+</hibernate-mapping>

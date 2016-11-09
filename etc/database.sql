@@ -50,13 +50,11 @@ CREATE TABLE IF NOT EXISTS `Customer`(
 	PRIMARY KEY(`customer_id`)
 );
 
-DROP TABLE IF EXISTS `Customer_Group`;
-CREATE TABLE IF NOT EXISTS `Customer_Group`(
-	`customerGroup_id` INT AUTO_INCREMENT,
-	`customer_id` INT REFERENCES `Customer`(`customer_id`),
-	`group` VARCHAR(10),
-	PRIMARY KEY(`customerGroup_id`),
-	UNIQUE(`customer_id`, `group`)
+DROP TABLE IF EXISTS `Consume_Group`;
+CREATE TABLE IF NOT EXISTS `Consume_Group`(
+	`consumeGroup_id` INT AUTO_INCREMENT,
+	`group` VARCHAR(50),
+	PRIMARY KEY(`consumeGroup_id`)
 );
 
 DROP TABLE IF EXISTS `Customer_Device`;
@@ -64,12 +62,12 @@ CREATE TABLE IF NOT EXISTS `Customer_Device`(
 	`customerDevice_id` INT AUTO_INCREMENT,
 	`customer_id` INT REFERENCES `Customer`(`customer_id`),
 	`device_id` INT REFERENCES `Device`(`device_id`),
-	PRIMARY KEY(`customerDevice_id`),
-	UNIQUE(`customer_id`, `device_id`)
+	`consumeGroup_id` INT REFERENCES `Consume_Group`(`consumeGroup_id`),
+	PRIMARY KEY(`customerDevice_id`)
 );
 
-DROP TABLE IF EXISTS `DeviceNotification`;
-CREATE TABLE IF NOT EXISTS `DeviceNotification`(
+DROP TABLE IF EXISTS `Device_Notification`;
+CREATE TABLE IF NOT EXISTS `Device_Notification`(
 	`deviceNotification_id` INT AUTO_INCREMENT,
 	`device_id` INT REFERENCES `Device`(`device_id`),
 	`severity` VARCHAR(10) DEFAULT 'info',
@@ -77,19 +75,20 @@ CREATE TABLE IF NOT EXISTS `DeviceNotification`(
 	PRIMARY KEY(`deviceNotification_id`)
 ); 
 
-DROP TABLE IF EXISTS `DeviceConfig`;
-CREATE TABLE IF NOT EXISTS `DeviceConfig`(
+DROP TABLE IF EXISTS `Device_Config`;
+CREATE TABLE IF NOT EXISTS `Device_Config`(
 	`deviceConfig_id` INT AUTO_INCREMENT,
+	`device_id` INT REFERENCES `Device`(`device_id`),
 	`limitedConsume` INT,
 	`alarmConsume` INT,
 	PRIMARY KEY(`deviceConfig_id`)
 );
 
-DROP TABLE IF EXISTS `ConsumePolicy`;
-CREATE TABLE IF NOT EXISTS `ConsumePolicy`(
+DROP TABLE IF EXISTS `Consume_Policy`;
+CREATE TABLE IF NOT EXISTS `Consume_Policy`(
 	`consumePolicy_id` INT AUTO_INCREMENT,
-	`min` INT,
-	`max` INT,
-	`percent` INT,
+	`fromConsume` INT,
+	`toConsume` INT,
+	`price` INT,
 	PRIMARY KEY(`consumePolicy_id`)
 );

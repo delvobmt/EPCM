@@ -120,4 +120,11 @@ public class Device{
 			return false;
 		return true;
 	}
+
+	@Override
+	public String toString() {
+		return "Device [device_id=" + device_id + ", model=" + model + ", version=" + version + ", macAddress="
+				+ macAddress + ", ipAddress=" + ipAddress + ", consumeNumber=" + consumeNumber + ", oldNumber="
+				+ oldNumber + ", status=" + status + ", location=" + location + ", lastUpdate=" + lastUpdate + "]";
+	}
 }

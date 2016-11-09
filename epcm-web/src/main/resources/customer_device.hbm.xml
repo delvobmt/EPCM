@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+ "-//Hibernate/Hibernate Mapping DTD//EN"
+ "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.ntk.epcm.model.CustomerDevice" table="Customer_Device">
+		<meta attribute="class-description">
+			This class contains customer's device information
+		</meta>
+		<id name="customerDevice_id" column="customerDevice_id" type="int">
+			<generator class="native"></generator>
+		</id>
+		<one-to-one name="customer" class="com.ntk.epcm.model.Customer"/>
+		<one-to-one name="device" class="com.ntk.epcm.model.Device"/>
+		<one-to-one name="consumeGroup" class="com.ntk.epcm.model.ConsumeGroup"/>
+		
+	</class>
+</hibernate-mapping>
