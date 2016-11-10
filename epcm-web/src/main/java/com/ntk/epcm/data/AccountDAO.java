@@ -28,9 +28,9 @@ public class AccountDAO implements IAccountDAO {
 	@Override
 	public int insert(String username, String password, String name, String email) {
 		Session session = factory.openSession();
-		session.getTransaction().begin();
 		int id = -1;
 		try {
+			session.getTransaction().begin();
 			Account account = new Account(username, password);
 			account.setEmail(email);
 			account.setName(name);
@@ -84,8 +84,6 @@ public class AccountDAO implements IAccountDAO {
 		Session session = factory.openSession();
 		Account account = null;
 		try {
-
-			session.getTransaction().begin();
 			account = session.load(Account.class, id);
 			session.close();
 		} catch (HibernateException e) {

@@ -1,6 +1,6 @@
 package com.ntk.epcm.model;
 
-public class ConsumPolicy {
+public class ConsumePolicy {
 	private int consumePolicy_id;
 	private int fromConsume;
 	private int toConsume;
@@ -54,7 +54,7 @@ public class ConsumPolicy {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		ConsumPolicy other = (ConsumPolicy) obj;
+		ConsumePolicy other = (ConsumePolicy) obj;
 		if (consumePolicy_id != other.consumePolicy_id)
 			return false;
 		return true;

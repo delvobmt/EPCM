@@ -27,10 +27,10 @@ public class DeviceNotificationDAO implements IDeviceNotificationDAO {
 	@SuppressWarnings("finally")
 	@Override
 	public int insert(DeviceNotification notification) {
-		Session session = factory.openSession();
-		session.getTransaction().begin();
 		int id = -1;
+		Session session = factory.openSession();
 		try {
+			session.getTransaction().begin();
 			session.save(notification);
 			session.getTransaction().commit();
 		} catch (HibernateException e) {
@@ -47,15 +47,10 @@ public class DeviceNotificationDAO implements IDeviceNotificationDAO {
 	public boolean save(DeviceNotification notification) {
 		boolean error = false;
 		Session session = factory.openSession();
-		session.getTransaction().begin();
 		try {
-			DeviceNotification real =  session.load(DeviceNotification.class, notification.getDeviceNotification_id());
-			if(real!=null){
-				session.save(notification);
-				session.getTransaction().commit();
-			}else{
-				error = true;
-			}
+			session.getTransaction().begin();
+			session.update(notification);
+			session.getTransaction().commit();
 		} catch (HibernateException e) {
 			LOGGER.error("error while save device notification", e);
 			session.getTransaction().rollback();
@@ -74,8 +69,10 @@ public class DeviceNotificationDAO implements IDeviceNotificationDAO {
 		session.getTransaction().begin();
 		try {
 			session.remove(notification);
+			session.getTransaction().commit();
 		} catch (HibernateException e) {
 			LOGGER.error("error while delete device notification",e);
+			session.getTransaction().rollback();
 			error = true;
 		}finally {
 			session.close();
@@ -132,8 +129,17 @@ public class DeviceNotificationDAO implements IDeviceNotificationDAO {
 
 	@Override
 	public List<DeviceNotification> findByDevice(int device_id) {
-		// TODO Auto-generated method stub
-		return null;
+		List<DeviceNotification> list = Collections.emptyList();
+		Session session = factory.openSession();
+		try {
+			Query<DeviceNotification> query = session.createQuery(String.format("from %s where %s=:device_id", 
+					DeviceNotificationConstant.TABLE, DeviceNotificationConstant.DEVICE_ID_KEY), DeviceNotification.class)
+					.setParameter("severity", device_id);
+			list = query.getResultList();
+		} catch (HibernateException e) {
+			LOGGER.error("ERROR while findBySevertity",e);
+		}
+		return list;
 	}
 
 }

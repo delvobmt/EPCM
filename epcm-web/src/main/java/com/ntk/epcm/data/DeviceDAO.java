@@ -52,6 +52,7 @@ public class DeviceDAO implements IDeviceDAO {
 			session.getTransaction().commit();
 		} catch (HibernateException e) {
 			LOGGER.error("error while save({})", device, e);
+			session.getTransaction().rollback();
 			error = true;
 		} finally {
 			session.close();
@@ -70,6 +71,7 @@ public class DeviceDAO implements IDeviceDAO {
 			session.getTransaction().commit();
 		} catch (HibernateException e) {
 			LOGGER.error("error while remove({})", devices, e);
+			session.getTransaction().rollback();
 			error = true;
 		} finally {
 			session.close();
