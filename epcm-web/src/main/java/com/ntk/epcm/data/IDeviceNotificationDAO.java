@@ -12,7 +12,7 @@ public interface IDeviceNotificationDAO {
 
 	boolean remove(DeviceNotification notification);
 
-	DeviceNotification find(int id);
+	DeviceNotification findById(int id);
 
 	List<DeviceNotification> findAll();
 

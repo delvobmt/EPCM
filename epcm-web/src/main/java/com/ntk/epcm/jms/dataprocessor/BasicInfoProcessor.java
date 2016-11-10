@@ -11,7 +11,11 @@ import org.springframework.stereotype.Component;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ntk.epcm.constant.DataType;
 import com.ntk.epcm.constant.EpcmConstant;
+import com.ntk.epcm.constant.Severity;
+import com.ntk.epcm.manage.TaskManager;
 import com.ntk.epcm.model.Device;
+import com.ntk.epcm.model.DeviceNotification;
+import com.ntk.epcm.service.DeviceNotificationService;
 import com.ntk.epcm.service.DeviceService;
 
 @Component
@@ -20,6 +24,9 @@ public class BasicInfoProcessor implements IDataProcessor {
 	
 	@Inject
 	DeviceService deviceService;
+
+	@Inject
+	DeviceNotificationService deviceNotificationService;
 	
 	private DataType dataType = DataType.BASICINFO;
 
@@ -53,7 +60,14 @@ public class BasicInfoProcessor implements IDataProcessor {
 			if(!ipAddress.equals(oldDevice.getIpAddress())){
 				if (deviceService.checkExistenceIpAddress(ipAddress)
 						&& !ipAddress.equals(EpcmConstant.NO_IP_ADDRESS)) {
-					//TODO add WARN for all 2 devices
+					DeviceNotification notification = new DeviceNotification();
+					notification.setDevice(oldDevice);
+					notification.setSeverity(Severity.WARN);
+					notification.setDescription(String.format("Ip address %s is used by %s and %s", 
+							ipAddress, macAddress, oldDevice.getMacAddress()));
+					deviceNotificationService.insert(notification);
+					notification.setDevice(device);
+					deviceNotificationService.insert(notification);
 					LOGGER.debug("WARN IP CONLFICT ({}) on device {} and {}", ipAddress, macAddress, oldDevice.getMacAddress());
 				}
 			}

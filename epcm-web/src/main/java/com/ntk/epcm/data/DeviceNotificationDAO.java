@@ -82,7 +82,7 @@ public class DeviceNotificationDAO implements IDeviceNotificationDAO {
 
 	@SuppressWarnings("finally")
 	@Override
-	public DeviceNotification find(int id) {
+	public DeviceNotification findById(int id) {
 		DeviceNotification notification = null;
 		Session session = factory.openSession();
 		try {
