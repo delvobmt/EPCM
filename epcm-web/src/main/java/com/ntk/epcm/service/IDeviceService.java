@@ -11,13 +11,15 @@ public interface IDeviceService {
 	void save(Device device);
 
 	void remove(List<Device> devices);
-	
+
 	boolean needUpdate();
-	
+
 	Device findDeviceById(int device_id);
 
 	Device findDeviceByMacAddress(String macAddress);
-	
+
+	Device findByIpAddress(String ipAddress);
+
 	boolean checkExistenceIpAddress(String ipAddress);
 
 	List<Device> findAll();

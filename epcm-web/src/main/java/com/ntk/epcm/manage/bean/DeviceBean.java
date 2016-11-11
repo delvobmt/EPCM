@@ -1,6 +1,7 @@
 package com.ntk.epcm.manage.bean;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -35,7 +36,7 @@ public class DeviceBean implements InitializingBean {
 
 	List<Device> list;
 	List<Device> listSelected;
-	Device selectedDevice;
+	Device selectedDevice = new Device();
 	List<String> executeList = new LinkedList<>();
 
 	@Inject

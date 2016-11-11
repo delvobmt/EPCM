@@ -12,7 +12,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ntk.epcm.constant.DataType;
 import com.ntk.epcm.constant.EpcmConstant;
 import com.ntk.epcm.constant.Severity;
-import com.ntk.epcm.manage.TaskManager;
 import com.ntk.epcm.model.Device;
 import com.ntk.epcm.model.DeviceNotification;
 import com.ntk.epcm.service.DeviceNotificationService;
@@ -28,7 +27,7 @@ public class BasicInfoProcessor implements IDataProcessor {
 	@Inject
 	DeviceNotificationService deviceNotificationService;
 	
-	private DataType dataType = DataType.BASICINFO;
+	private final DataType dataType = DataType.BASICINFO;
 
 	@Inject
 	public BasicInfoProcessor(DataProcessorRegistry registry) {
@@ -43,7 +42,6 @@ public class BasicInfoProcessor implements IDataProcessor {
 		String ipAddress = device.getIpAddress();
 
 		Device oldDevice = deviceService.findDeviceByMacAddress(macAddress);
-		device.setLastUpdate(new Date(System.currentTimeMillis()));
 
 		if (oldDevice == null) {
 			// register new device
@@ -60,15 +58,17 @@ public class BasicInfoProcessor implements IDataProcessor {
 			if(!ipAddress.equals(oldDevice.getIpAddress())){
 				if (deviceService.checkExistenceIpAddress(ipAddress)
 						&& !ipAddress.equals(EpcmConstant.NO_IP_ADDRESS)) {
+					Device conflict = deviceService.findByIpAddress(ipAddress);
 					DeviceNotification notification = new DeviceNotification();
 					notification.setDevice(oldDevice);
-					notification.setSeverity(Severity.WARN);
+					notification.setSeverity(Severity.WARN.toString());
 					notification.setDescription(String.format("Ip address %s is used by %s and %s", 
-							ipAddress, macAddress, oldDevice.getMacAddress()));
+							ipAddress, macAddress, conflict.getMacAddress()));
 					deviceNotificationService.insert(notification);
 					notification.setDevice(device);
 					deviceNotificationService.insert(notification);
-					LOGGER.debug("WARN IP CONLFICT ({}) on device {} and {}", ipAddress, macAddress, oldDevice.getMacAddress());
+					LOGGER.debug("WARN IP CONLFICT ({}) on device {} and {}",
+							ipAddress, macAddress, conflict.getMacAddress());
 				}
 			}
 			// update Device
@@ -79,18 +79,21 @@ public class BasicInfoProcessor implements IDataProcessor {
 				device.setLocation(oldDevice.getLocation());
 			}
 			if(device.getConsumeNumber()<oldDevice.getConsumeNumber()){
-				LOGGER.debug("Consume Number ERROR: {} cannot update because lesser than {} on device {}", device.getConsumeNumber(), oldDevice.getConsumeNumber(),
+				LOGGER.debug("Consume Number ERROR: {} cannot update because lesser than {} on device {}",
+						device.getConsumeNumber(), oldDevice.getConsumeNumber(),
 						macAddress);
 				//TODO add ERROR to device
 				//use old data
 				device.setConsumeNumber(oldDevice.getConsumeNumber());
 			}
 			if(device.getOldNumber()!=oldDevice.getOldNumber()){
-				LOGGER.debug("Old Number ERROR: {} cannot changed to {} by device {}", oldDevice.getOldNumber(), device.getOldNumber(), macAddress);
+				LOGGER.debug("Old Number ERROR: {} cannot changed to {} by device {}",
+						oldDevice.getOldNumber(), device.getOldNumber(), macAddress);
 				//TODO add ERROR to device
 				device.setOldNumber(oldDevice.getOldNumber());
 			}
 			device.setDevice_id(oldDevice.getDevice_id());
+			device.setLastUpdate(new Date(System.currentTimeMillis()));
 			deviceService.save(device);
 		}
 	}
@@ -98,9 +101,4 @@ public class BasicInfoProcessor implements IDataProcessor {
 	public DataType getDataType() {
 		return dataType;
 	}
-
-	public void setDataType(DataType dataType) {
-		this.dataType = dataType;
-	}
-
 }

@@ -28,8 +28,11 @@ public interface IDeviceDAO {
 
 	Device findDeviceByMacAddress(String macAddress);
 
+	Device findByIpAddress(String ipAddress);
+
 	boolean checkExistenceIpAddress(String ipAddress);
 
 	List<Device> findAll();
+
 
 }

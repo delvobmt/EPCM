@@ -62,7 +62,7 @@ public class ConsumePolicy {
 
 	@Override
 	public String toString() {
-		return "ConsumPolicy [consumePolicy_id=" + consumePolicy_id + ", fromConsume=" + fromConsume + ", toConsume="
+		return "ConsumePolicy [consumePolicy_id=" + consumePolicy_id + ", fromConsume=" + fromConsume + ", toConsume="
 				+ toConsume + ", price=" + price + "]";
 	}
 

@@ -31,9 +31,9 @@ public class DeviceNotificationDAO implements IDeviceNotificationDAO {
 		Session session = factory.openSession();
 		try {
 			session.getTransaction().begin();
-			session.save(notification);
+			id = (int) session.save(notification);
 			session.getTransaction().commit();
-		} catch (HibernateException e) {
+		} catch (Exception e) {
 			LOGGER.error("error while insert new Device Notification", e);
 			session.getTransaction().rollback();
 		} finally {

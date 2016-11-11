@@ -78,7 +78,7 @@ public class AccountRoleDAO implements IAccountRoleDAO {
 	}
 
 	@Override
-	public List<AccountRole> findRoleByAccount(int account_id) {
+	public List<AccountRole> findByAccount(int account_id) {
 		List<AccountRole> list = Collections.emptyList();
 		Session session = factory.openSession();
 		try {
@@ -87,7 +87,24 @@ public class AccountRoleDAO implements IAccountRoleDAO {
 			.setParameter("account_id", account_id)
 			.getResultList();
 		} catch (HibernateException e) {
-			LOGGER.error("ERROR while insert new role", e);
+			LOGGER.error("ERROR while findByAccount", e);
+		}finally{
+			session.close();
+		}
+		return list;
+	}
+
+	@Override
+	public List<AccountRole> findByRole(String role) {
+		List<AccountRole> list = Collections.emptyList();
+		Session session = factory.openSession();
+		try {
+			list = session.createQuery(String.format("from %s where %s = :role", 
+					AccountRoleConstant.TABLE, AccountRoleConstant.ROLE_KEY), AccountRole.class)
+			.setParameter("role", role)
+			.getResultList();
+		} catch (HibernateException e) {
+			LOGGER.error("ERROR while findByRole", e);
 		}finally{
 			session.close();
 		}

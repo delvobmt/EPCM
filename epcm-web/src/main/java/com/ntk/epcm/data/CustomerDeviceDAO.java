@@ -7,10 +7,12 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import com.ntk.epcm.constant.CustomerDeviceConstant;
 import com.ntk.epcm.model.CustomerDevice;
 
+@Component
 public class CustomerDeviceDAO implements ICustomerDeviceDAO {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(CustomerDeviceDAO.class);

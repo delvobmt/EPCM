@@ -143,4 +143,22 @@ public class DeviceDAO implements IDeviceDAO {
 		}
 	}
 
+	@SuppressWarnings("finally")
+	@Override
+	public Device findByIpAddress(String ipAddress) {
+		Session session = factory.openSession();
+		Device device = null;
+		try {
+			device = (Device) session.createQuery(String.format("from %s where %s=:ipAddress", 
+					DeviceConstant.TABLE, DeviceConstant.IP_ADRESS_KEY),Device.class)
+					.setParameter("ipAddress", ipAddress)
+					.setMaxResults(1).getSingleResult();
+		} catch (HibernateException e) {
+			LOGGER.error("error while findDeviceByMacAddress({})", ipAddress, e);
+		} finally {
+			session.close();
+			return device;
+		}
+	}
+
 }

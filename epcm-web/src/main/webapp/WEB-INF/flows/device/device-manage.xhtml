@@ -18,7 +18,7 @@
 				<p:ajax event="toggleSelect" update="@this"/>
 				<f:facet name="header">
 					<p:commandButton value="Refresh" icon="ui-icon-refresh" 
-						update=":f:deviceView" action="#{deviceBean.refresh}"/>
+						update=":f:deviceView" action="#{deviceBean.refresh}" process="@this"/>
 					<p:commandButton value="Delete" icon="ui-icon-trash" 
 						disabled="#{empty deviceBean.listSelected}"
 						action="#{deviceBean.delete}"

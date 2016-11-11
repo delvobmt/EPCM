@@ -2,18 +2,10 @@ package com.ntk.epcm.model;
 
 import com.ntk.epcm.constant.Severity;
 
-/**
- * @author nguyentienkhoa
- *
- */
-/**
- * @author nguyentienkhoa
- *
- */
 public class DeviceNotification {
 	private int deviceNotification_id;
 	private Device device;
-	private Severity severity;
+	private String severity;
 	private String description;
 
 	public int getDeviceNotification_id() {
@@ -32,11 +24,11 @@ public class DeviceNotification {
 		this.device = device;
 	}
 
-	public Severity getSeverity() {
+	public String getSeverity() {
 		return severity;
 	}
 
-	public void setSeverity(Severity severity) {
+	public void setSeverity(String severity) {
 		this.severity = severity;
 	}
 

@@ -16,19 +16,27 @@ public class DeviceNotificationService implements IDeviceNotificationService {
 	@Inject
 	IDeviceNotificationDAO dao;
 	
+	private boolean needUpdate = false;
+	
 	@Override
 	public int insert(DeviceNotification deviceNotification) {
-		return dao.insert(deviceNotification);
+		int id = dao.insert(deviceNotification);
+		needUpdate = needUpdate?needUpdate:id!=-1;
+		return id;
 	}
 
 	@Override
 	public boolean save(DeviceNotification deviceNotification) {
-		return dao.save(deviceNotification);
+		boolean success = dao.save(deviceNotification);
+		needUpdate = needUpdate?needUpdate:success;
+		return success;
 	}
 
 	@Override
 	public boolean remove(DeviceNotification deviceNotification) {
-		return remove(deviceNotification);
+		boolean sucess = remove(deviceNotification);
+		needUpdate = needUpdate?needUpdate:sucess;
+		return sucess;
 	}
 
 	@Override
@@ -49,6 +57,11 @@ public class DeviceNotificationService implements IDeviceNotificationService {
 	@Override
 	public List<DeviceNotification> findByAll() {
 		return dao.findAll();
+	}
+
+	@Override
+	public boolean needUpdate() {
+		return needUpdate;
 	}
 	
 }

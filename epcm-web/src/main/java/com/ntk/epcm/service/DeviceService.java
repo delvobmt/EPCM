@@ -13,13 +13,13 @@ import org.springframework.stereotype.Component;
 @Component
 public class DeviceService implements IDeviceService{
 	@Inject
-	IDeviceDAO deviceDao;
+	IDeviceDAO dao;
 	
 	boolean needUpdate;
 
 	@Override
 	public int insert(Device device) {
-		int device_id = deviceDao.insert(device);
+		int device_id = dao.insert(device);
 		needUpdate = !needUpdate?device_id != -1:needUpdate;
 		return device_id;
 	}
@@ -28,30 +28,30 @@ public class DeviceService implements IDeviceService{
 	public void save(Device device) {
 		device.setLastUpdate(new Date(System.currentTimeMillis()));
 		//set flag when save success
-		boolean result = deviceDao.save(device);
+		boolean result = dao.save(device);
 		needUpdate = !needUpdate?result:needUpdate;
 	}
 
 	@Override
 	public void remove(List<Device> devices) {
 		//set flag when remove success
-		boolean result = deviceDao.remove(devices);
+		boolean result = dao.remove(devices);
 		needUpdate = !needUpdate?result:needUpdate;
 	}
 
 	@Override
 	public Device findDeviceById(int device_id) {
-		return deviceDao.findDeviceById(device_id);
+		return dao.findDeviceById(device_id);
 	}
 
 	@Override
 	public Device findDeviceByMacAddress(String macAddress) {
-		return deviceDao.findDeviceByMacAddress(macAddress);
+		return dao.findDeviceByMacAddress(macAddress);
 	}
 	
 	@Override
 	public boolean checkExistenceIpAddress(String ipAddress) {
-		return deviceDao.checkExistenceIpAddress(ipAddress);
+		return dao.checkExistenceIpAddress(ipAddress);
 	}
 
 	@Override
@@ -62,6 +62,11 @@ public class DeviceService implements IDeviceService{
 	@Override
 	public List<Device> findAll() {
 		needUpdate = false;
-		return deviceDao.findAll();
+		return dao.findAll();
+	}
+
+	@Override
+	public Device findByIpAddress(String ipAddress) {
+		return dao.findByIpAddress(ipAddress);
 	}
 }

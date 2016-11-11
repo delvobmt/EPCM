@@ -7,9 +7,11 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import com.ntk.epcm.model.ConsumeGroup;
 
+@Component
 public class ConsumeGroupDAO implements IConsumeGroupDAO {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ConsumeGroupDAO.class);
