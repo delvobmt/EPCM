@@ -60,12 +60,12 @@ public class BasicInfoProcessor implements IDataProcessor {
 						&& !ipAddress.equals(EpcmConstant.NO_IP_ADDRESS)) {
 					Device conflict = deviceService.findByIpAddress(ipAddress);
 					DeviceNotification notification = new DeviceNotification();
-					notification.setDevice(oldDevice);
+					notification.setDevice_id(oldDevice.getDevice_id());
 					notification.setSeverity(Severity.WARN.toString());
 					notification.setDescription(String.format("Ip address %s is used by %s and %s", 
 							ipAddress, macAddress, conflict.getMacAddress()));
 					deviceNotificationService.insert(notification);
-					notification.setDevice(device);
+					notification.setDevice_id(conflict.getDevice_id());
 					deviceNotificationService.insert(notification);
 					LOGGER.debug("WARN IP CONLFICT ({}) on device {} and {}",
 							ipAddress, macAddress, conflict.getMacAddress());

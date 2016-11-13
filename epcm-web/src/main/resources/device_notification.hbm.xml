@@ -10,7 +10,8 @@
 		<id name="deviceNotification_id" column="deviceNotification_id" type="int">
 			<generator class="native"></generator>
 		</id>
-		<one-to-one name="device" class="com.ntk.epcm.model.Device"/>
+		<property name="device_id" column="device_id" type="int"/>
+		<one-to-one name="device" class="com.ntk.epcm.model.Device" constrained="true" />
 		<property name="severity" column="severity" type="string"/>
 		<property name="description" column="description" type="string"/>
 		

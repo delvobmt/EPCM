@@ -39,7 +39,6 @@ public class PollCallback implements ICallback {
 	}
 	
 	private void pollDone(EpcmResponseObject responseObject) {
-		//TODO process result
 		String macAddress = responseObject.getMacAddress();
 		if(responseObject.isSuccess()){
 			reporter.success(macAddress);
