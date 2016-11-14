@@ -56,11 +56,8 @@
 		<param-name>javax.faces.FACELETS_REFRESH_PERIOD</param-name>
 		<param-value>1</param-value>
 	</context-param>
-	
-	<!-- 
-	Faces servlet 
-	-->
 
+	<!-- Faces servlet -->
 	<servlet>
 		<servlet-name>Faces Servlet</servlet-name>
 		<servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
@@ -99,5 +96,18 @@
 		<filter-name>PrimeFaces FileUpload Filter</filter-name>
 		<servlet-name>Spring MVC Servlet</servlet-name>
 	</filter-mapping>
+
+	<!-- Primefaces Push Servlet
+	<servlet>
+		<servlet-name>Push Servlet</servlet-name>
+		<servlet-class>org.primefaces.push.PushServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+		<async-supported>true</async-supported>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Push Servlet</servlet-name>
+		<url-pattern>/primepush/*</url-pattern>
+	</servlet-mapping>
+	-->
 
 </web-app>

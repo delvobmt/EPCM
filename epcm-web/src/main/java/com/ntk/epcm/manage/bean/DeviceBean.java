@@ -1,14 +1,17 @@
 package com.ntk.epcm.manage.bean;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 
+import org.primefaces.push.EventBus;
+import org.primefaces.push.EventBusFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -22,14 +25,14 @@ import com.ntk.epcm.jms.task.UpdateTask;
 import com.ntk.epcm.manage.TaskManager;
 import com.ntk.epcm.manage.TaskReporter;
 import com.ntk.epcm.model.Device;
-import com.ntk.epcm.service.IDeviceService;
+import com.ntk.epcm.service.DeviceService;
 
 @Component
-public class DeviceBean implements InitializingBean {
+public class DeviceBean implements InitializingBean, Observer {
 	private static final Logger LOGGER = LoggerFactory.getLogger(DeviceBean.class);
 
 	@Inject
-	IDeviceService deviceService;
+	DeviceService deviceService;
 
 	@Inject
 	private JmsTemplate jmsTemplate;
@@ -43,18 +46,22 @@ public class DeviceBean implements InitializingBean {
 	TaskReporter reporter;
 	int progress = 0;
 
+	@Override
+	public void afterPropertiesSet() throws Exception {
+		deviceService.addObserver(this);
+		list = deviceService.findAll();
+	}
+
 	/**
-	 * refresh device list. If there is no change, cache is returned.
+	 * refresh device list.
 	 * 
 	 * @return
 	 */
 	public void refresh() {
-		if (list == null || deviceService.needUpdate()) {
-			LOGGER.debug("refresh device list from service");
-			list = deviceService.findAll();
-		} else {
-			LOGGER.debug("refresh device list from cache");
-		}
+		list = deviceService.findAll();
+		EventBusFactory eventBusFactory = EventBusFactory.getDefault();
+		EventBus eventBus = eventBusFactory.eventBus();
+		eventBus.publish("/device", "refresh");
 	}
 
 	public void poll() {
@@ -79,15 +86,17 @@ public class DeviceBean implements InitializingBean {
 							String.format("%s is polling, your request to those are ignored", conflictList)));
 		}
 	}
-	
+
 	public void save() {
 		deviceService.save(selectedDevice);
-		//TODO device information is changed locally, then we need to send message to request device changes.
-		TaskManager.instance().put(new UpdateTask(jmsTemplate, selectedDevice.getMacAddress(), selectedDevice, DataType.BASICINFO));
-		FacesContext.getCurrentInstance().addMessage(null,
-				new FacesMessage(FacesMessage.SEVERITY_INFO, String.format("Saved %s", selectedDevice.getMacAddress()), ""));
+		// TODO device information is changed locally, then we need to send
+		// message to request device changes.
+		TaskManager.instance()
+				.put(new UpdateTask(jmsTemplate, selectedDevice.getMacAddress(), selectedDevice, DataType.BASICINFO));
+		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
+				String.format("Saved %s", selectedDevice.getMacAddress()), ""));
 	}
-	
+
 	public void delete() {
 		deviceService.remove(listSelected);
 		list.removeAll(listSelected);
@@ -96,7 +105,7 @@ public class DeviceBean implements InitializingBean {
 
 	public void cancel() {
 		TaskManager taskManager = TaskManager.instance();
-		executeList.forEach(mac-> taskManager.cancel(mac));
+		executeList.forEach(mac -> taskManager.cancel(mac));
 		reporter.reset();
 	}
 
@@ -120,17 +129,12 @@ public class DeviceBean implements InitializingBean {
 	}
 
 	public int getProgress() {
-		progress = reporter.getProgress(); 
+		progress = reporter.getProgress();
 		return progress;
 	}
 
 	public void setProgress(int progress) {
 		this.progress = progress;
-	}
-
-	@Override
-	public void afterPropertiesSet() throws Exception {
-		refresh();
 	}
 
 	public Device getSelectedDevice() {
@@ -139,5 +143,11 @@ public class DeviceBean implements InitializingBean {
 
 	public void setSelectedDevice(Device selectedDevice) {
 		this.selectedDevice = selectedDevice;
+	}
+
+	@Override
+	public void update(Observable o, Object arg) {
+		LOGGER.debug("database changed, call refresh data");
+		refresh();
 	}
 }

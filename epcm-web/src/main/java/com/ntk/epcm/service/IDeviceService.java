@@ -12,8 +12,6 @@ public interface IDeviceService {
 
 	void remove(List<Device> devices);
 
-	boolean needUpdate();
-
 	Device findDeviceById(int device_id);
 
 	Device findDeviceByMacAddress(String macAddress);

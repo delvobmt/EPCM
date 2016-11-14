@@ -17,6 +17,7 @@
 				<p:ajax event="rowUnselectCheckbox" update="@this"/>
 				<p:ajax event="toggleSelect" update="@this"/>
 				<f:facet name="header">
+					<p:poll interval="5" update=":f:deviceView"/>
 					<p:commandButton value="Refresh" icon="ui-icon-refresh" 
 						update=":f:deviceView" action="#{deviceBean.refresh}" process="@this"/>
 					<p:commandButton value="Delete" icon="ui-icon-trash" 
@@ -175,5 +176,14 @@
 				</p:panelGrid>
 			</p:dialog>
 		</h:form>
+		<p:socket channel="/device" onMessage="handleMessage">
+			<p:ajax event="message" update=":f:deviceView"/>
+		</p:socket>
+		<script>
+			function handleMessage(message){
+				alert(message);
+				PF('deviceInfoDialog').show();
+			}
+		</script>
 	</ui:define>
 </ui:composition>

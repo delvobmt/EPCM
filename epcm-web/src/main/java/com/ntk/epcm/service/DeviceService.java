@@ -5,22 +5,24 @@ import com.ntk.epcm.model.Device;
 
 import java.sql.Date;
 import java.util.List;
+import java.util.Observable;
 
 import javax.inject.Inject;
 
 import org.springframework.stereotype.Component;
 
 @Component
-public class DeviceService implements IDeviceService{
+public class DeviceService extends Observable implements IDeviceService{
 	@Inject
 	IDeviceDAO dao;
 	
-	boolean needUpdate;
-
 	@Override
 	public int insert(Device device) {
 		int device_id = dao.insert(device);
-		needUpdate = !needUpdate?device_id != -1:needUpdate;
+		if(device_id != -1) {
+			setChanged();
+			notifyObservers();
+		};
 		return device_id;
 	}
 
@@ -29,14 +31,20 @@ public class DeviceService implements IDeviceService{
 		device.setLastUpdate(new Date(System.currentTimeMillis()));
 		//set flag when save success
 		boolean result = dao.save(device);
-		needUpdate = !needUpdate?result:needUpdate;
+		if(result) {
+			setChanged();
+			notifyObservers();
+		}
 	}
 
 	@Override
 	public void remove(List<Device> devices) {
 		//set flag when remove success
 		boolean result = dao.remove(devices);
-		needUpdate = !needUpdate?result:needUpdate;
+		if(result) {
+			setChanged();
+			notifyObservers();
+		}
 	}
 
 	@Override
@@ -55,13 +63,7 @@ public class DeviceService implements IDeviceService{
 	}
 
 	@Override
-	public boolean needUpdate() {
-		return needUpdate;
-	}
-
-	@Override
 	public List<Device> findAll() {
-		needUpdate = false;
 		return dao.findAll();
 	}
 

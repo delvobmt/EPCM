@@ -18,6 +18,10 @@ public class DeviceNotificationService implements IDeviceNotificationService {
 	
 	private boolean needUpdate = false;
 	
+	public DeviceNotificationService() {
+		
+	}
+	
 	@Override
 	public int insert(DeviceNotification deviceNotification) {
 		int id = dao.insert(deviceNotification);
