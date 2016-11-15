@@ -2,7 +2,6 @@ package com.ntk.epcm.model;
 
 public class DeviceNotification {
 	private int deviceNotification_id;
-	private int device_id;
 	private Device device;
 	private String severity;
 	private String description;
@@ -13,14 +12,6 @@ public class DeviceNotification {
 
 	public void setDeviceNotification_id(int deviceNotification_id) {
 		this.deviceNotification_id = deviceNotification_id;
-	}
-
-	public int getDevice_id() {
-		return device_id;
-	}
-
-	public void setDevice_id(int device_id) {
-		this.device_id = device_id;
 	}
 
 	public Device getDevice() {
@@ -77,7 +68,7 @@ public class DeviceNotification {
 
 	@Override
 	public String toString() {
-		return "DeviceNotification [deviceNotification_id=" + deviceNotification_id + ", device=" + device
+		return "DeviceNotification [deviceNotification_id=" + deviceNotification_id + ", device=" + device.getDevice_id()
 				+ ", severity=" + severity + ", description=" + description + "]";
 	}
 }

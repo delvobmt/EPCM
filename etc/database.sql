@@ -72,6 +72,7 @@ CREATE TABLE IF NOT EXISTS `Device_Notification`(
 	`device_id` INT REFERENCES `Device`(`device_id`),
 	`severity` VARCHAR(10) DEFAULT 'info',
 	`description` VARCHAR(250),
+	`createOn` TIMESTAMP,
 	PRIMARY KEY(`deviceNotification_id`)
 ); 
 

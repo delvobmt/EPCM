@@ -10,8 +10,6 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 
-import org.primefaces.push.EventBus;
-import org.primefaces.push.EventBusFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -25,6 +23,8 @@ import com.ntk.epcm.jms.task.UpdateTask;
 import com.ntk.epcm.manage.TaskManager;
 import com.ntk.epcm.manage.TaskReporter;
 import com.ntk.epcm.model.Device;
+import com.ntk.epcm.model.DeviceBuilder;
+import com.ntk.epcm.service.DeviceNotificationService;
 import com.ntk.epcm.service.DeviceService;
 
 @Component
@@ -33,13 +33,16 @@ public class DeviceBean implements InitializingBean, Observer {
 
 	@Inject
 	DeviceService deviceService;
+	
+	@Inject
+	DeviceNotificationService deviceNotificationService;
 
 	@Inject
 	private JmsTemplate jmsTemplate;
 
 	List<Device> list;
 	List<Device> listSelected;
-	Device selectedDevice = new Device();
+	Device selectedDevice = new DeviceBuilder().build();
 	List<String> executeList = new LinkedList<>();
 
 	@Inject
@@ -49,6 +52,7 @@ public class DeviceBean implements InitializingBean, Observer {
 	@Override
 	public void afterPropertiesSet() throws Exception {
 		deviceService.addObserver(this);
+		deviceNotificationService.addObserver(this);
 		list = deviceService.findAll();
 	}
 
@@ -59,9 +63,6 @@ public class DeviceBean implements InitializingBean, Observer {
 	 */
 	public void refresh() {
 		list = deviceService.findAll();
-		EventBusFactory eventBusFactory = EventBusFactory.getDefault();
-		EventBus eventBus = eventBusFactory.eventBus();
-		eventBus.publish("/device", "refresh");
 	}
 
 	public void poll() {

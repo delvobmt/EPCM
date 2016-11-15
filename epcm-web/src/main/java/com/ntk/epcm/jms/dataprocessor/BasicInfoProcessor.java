@@ -60,12 +60,12 @@ public class BasicInfoProcessor implements IDataProcessor {
 						&& !ipAddress.equals(EpcmConstant.NO_IP_ADDRESS)) {
 					Device conflict = deviceService.findByIpAddress(ipAddress);
 					DeviceNotification notification = new DeviceNotification();
-					notification.setDevice_id(oldDevice.getDevice_id());
+					notification.setDevice(oldDevice);
 					notification.setSeverity(Severity.WARN.toString());
 					notification.setDescription(String.format("Ip address %s is used by %s and %s", 
 							ipAddress, macAddress, conflict.getMacAddress()));
 					deviceNotificationService.insert(notification);
-					notification.setDevice_id(conflict.getDevice_id());
+					notification.setDevice(conflict);
 					deviceNotificationService.insert(notification);
 					LOGGER.debug("WARN IP CONLFICT ({}) on device {} and {}",
 							ipAddress, macAddress, conflict.getMacAddress());
@@ -73,23 +73,36 @@ public class BasicInfoProcessor implements IDataProcessor {
 			}
 			// update Device
 			if(device.getLastUpdate().getTime()>oldDevice.getLastUpdate().getTime()){
-				//TODO add WARN override information to device
 				LOGGER.debug("WARN override infomation on device {}", macAddress);
+				DeviceNotification notification = new DeviceNotification();
+				notification.setDevice(device);
+				notification.setDescription(String.format("Update device %s uses mixed information", macAddress));
+				notification.setSeverity(Severity.INFO.toString());
+				deviceNotificationService.insert(notification);
 				//use mix data
 				device.setLocation(oldDevice.getLocation());
 			}
 			if(device.getConsumeNumber()<oldDevice.getConsumeNumber()){
 				LOGGER.debug("Consume Number ERROR: {} cannot update because lesser than {} on device {}",
-						device.getConsumeNumber(), oldDevice.getConsumeNumber(),
-						macAddress);
-				//TODO add ERROR to device
+						device.getConsumeNumber(), oldDevice.getConsumeNumber(), macAddress);
+				DeviceNotification notification = new DeviceNotification();
+				notification.setDevice(device);
+				notification.setDescription(String.format("Consume Number ERROR: %s cannot update because lesser than %s on device %s", 
+						device.getConsumeNumber(), oldDevice.getConsumeNumber(), macAddress));
+				notification.setSeverity(Severity.ERROR.toString());
+				deviceNotificationService.insert(notification);
 				//use old data
 				device.setConsumeNumber(oldDevice.getConsumeNumber());
 			}
 			if(device.getOldNumber()!=oldDevice.getOldNumber()){
 				LOGGER.debug("Old Number ERROR: {} cannot changed to {} by device {}",
 						oldDevice.getOldNumber(), device.getOldNumber(), macAddress);
-				//TODO add ERROR to device
+				DeviceNotification notification = new DeviceNotification();
+				notification.setDevice(device);
+				notification.setDescription(String.format("Old Number %s cannot changed to %s by device %s", 
+						oldDevice.getOldNumber(), device.getOldNumber(), macAddress));
+				notification.setSeverity(Severity.ERROR.toString());
+				deviceNotificationService.insert(notification);
 				device.setOldNumber(oldDevice.getOldNumber());
 			}
 			device.setDevice_id(oldDevice.getDevice_id());

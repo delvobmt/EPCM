@@ -1,6 +1,7 @@
 package com.ntk.epcm.service;
 
 import java.util.List;
+import java.util.Observable;
 
 import javax.inject.Inject;
 
@@ -11,36 +12,39 @@ import com.ntk.epcm.data.IDeviceNotificationDAO;
 import com.ntk.epcm.model.DeviceNotification;
 
 @Service
-public class DeviceNotificationService implements IDeviceNotificationService {
+public class DeviceNotificationService extends Observable implements IDeviceNotificationService {
 
 	@Inject
 	IDeviceNotificationDAO dao;
 	
-	private boolean needUpdate = false;
-	
-	public DeviceNotificationService() {
-		
-	}
-	
 	@Override
 	public int insert(DeviceNotification deviceNotification) {
 		int id = dao.insert(deviceNotification);
-		needUpdate = needUpdate?needUpdate:id!=-1;
+		if(id!=-1) {
+			setChanged();
+			notifyObservers();
+		}
 		return id;
 	}
 
 	@Override
 	public boolean save(DeviceNotification deviceNotification) {
 		boolean success = dao.save(deviceNotification);
-		needUpdate = needUpdate?needUpdate:success;
+		if(success) {
+			setChanged();
+			notifyObservers();
+		}
 		return success;
 	}
 
 	@Override
 	public boolean remove(DeviceNotification deviceNotification) {
-		boolean sucess = remove(deviceNotification);
-		needUpdate = needUpdate?needUpdate:sucess;
-		return sucess;
+		boolean success = remove(deviceNotification);
+		if(success) {
+			setChanged();
+			notifyObservers();
+		}
+		return success;
 	}
 
 	@Override
@@ -62,10 +66,4 @@ public class DeviceNotificationService implements IDeviceNotificationService {
 	public List<DeviceNotification> findByAll() {
 		return dao.findAll();
 	}
-
-	@Override
-	public boolean needUpdate() {
-		return needUpdate;
-	}
-	
 }

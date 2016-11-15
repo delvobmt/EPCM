@@ -53,11 +53,17 @@
 				<p:column headerText="Ip Address" style="width:6em" filterBy="#{device.ipAddress}">
 					<h:outputText value="#{device.ipAddress}" />
 				</p:column>
-				<p:column headerText="Status" style="text-align:center; width:3em">
+				<p:column headerText="Status" style="width:3em">
 					<h:outputText rendered="#{device.status}" value="ON"
-						style="color:white; background: blue; font-weight:bold" />
+						style="border-radius: 10px; color:white; background: blue; font-weight:bold" />
 					<h:outputText rendered="#{not device.status}" value="OFF"
-						style="color:white; background:red; font-weight:bold" />
+						style="border-radius: 10px; color:white; background:red; font-weight:bold" />
+					<p:commandButton rendered="#{not empty device.notifications}" style="border-radius: 10px; background:orange; font-weight:bold" 
+						icon="ui-icon-notice" process="deviceView"
+						update=":f:deviceInfo" oncomplete="PF('deviceInfoDialog').show()">
+						<f:setPropertyActionListener value="#{device}"
+							target="#{deviceBean.selectedDevice}" />
+					</p:commandButton>
 				</p:column>
 				<p:column headerText="Location" filterBy="#{device.location}">
 					<h:outputText value="#{device.location}" />
@@ -176,14 +182,5 @@
 				</p:panelGrid>
 			</p:dialog>
 		</h:form>
-		<p:socket channel="/device" onMessage="handleMessage">
-			<p:ajax event="message" update=":f:deviceView"/>
-		</p:socket>
-		<script>
-			function handleMessage(message){
-				alert(message);
-				PF('deviceInfoDialog').show();
-			}
-		</script>
 	</ui:define>
 </ui:composition>

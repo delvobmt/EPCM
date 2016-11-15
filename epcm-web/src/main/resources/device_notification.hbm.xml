@@ -10,8 +10,9 @@
 		<id name="deviceNotification_id" column="deviceNotification_id" type="int">
 			<generator class="native"></generator>
 		</id>
-		<property name="device_id" column="device_id" type="int"/>
-		<one-to-one name="device" class="com.ntk.epcm.model.Device" constrained="true" />
+		<many-to-one name="device" class="com.ntk.epcm.model.Device" fetch="select">
+			<column name="device_id"/>
+		</many-to-one>
 		<property name="severity" column="severity" type="string"/>
 		<property name="description" column="description" type="string"/>
 		

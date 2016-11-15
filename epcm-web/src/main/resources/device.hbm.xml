@@ -20,5 +20,12 @@
 		<property name="location" column="location" type="string"/>
 		<property name="lastUpdate" column="lastUpdate" type="date"/>
 		
+		<set name="notifications" table="Device_Notification" lazy="false" inverse="true" fetch="select">
+            <key>
+                <column name="device_id"/>
+            </key>
+            <one-to-many class="com.ntk.epcm.model.DeviceNotification" />
+        </set>	
+		
 	</class>
 </hibernate-mapping>

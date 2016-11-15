@@ -1,6 +1,7 @@
 package com.ntk.epcm.model;
 
 import java.sql.Date;
+import java.util.Set;
 
 public class Device{
 
@@ -14,6 +15,7 @@ public class Device{
 	boolean status;
 	String location;
 	Date lastUpdate;
+	Set<DeviceNotification> notifications;
 	
 	public Device() {
 	}
@@ -126,5 +128,13 @@ public class Device{
 		return "Device [device_id=" + device_id + ", model=" + model + ", version=" + version + ", macAddress="
 				+ macAddress + ", ipAddress=" + ipAddress + ", consumeNumber=" + consumeNumber + ", oldNumber="
 				+ oldNumber + ", status=" + status + ", location=" + location + ", lastUpdate=" + lastUpdate + "]";
+	}
+
+	public Set<DeviceNotification> getNotifications() {
+		return notifications;
+	}
+
+	public void setNotifications(Set<DeviceNotification> notifications) {
+		this.notifications = notifications;
 	}
 }

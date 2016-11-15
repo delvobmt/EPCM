@@ -15,6 +15,4 @@ public interface IDeviceNotificationService {
 	List<DeviceNotification> findBySeverity(Severity severity);
 	List<DeviceNotification> findByAll();
 	
-	boolean needUpdate();
-	
 }

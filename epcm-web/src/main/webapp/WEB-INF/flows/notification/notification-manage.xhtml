@@ -1,0 +1,39 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:sec="http://www.springframework.org/security/tags"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/layout/standard.xhtml">
+
+	<ui:define name="content">
+		<h:form id="f">
+			<p:dataTable id="notificationView" style="padding:5px" var="notificaiton" rowSelectMode="checkbox"
+				value="#{notificationBean.list}" selection="#{notificationBean.listSelected}" 
+				rowKey="#{notification.notification_id}" tableStyle="table-layout: auto;">
+				<p:ajax event="rowSelectCheckbox" update="@this"/>
+				<p:ajax event="rowUnselectCheckbox" update="@this"/>
+				<p:ajax event="toggleSelect" update="@this"/>
+				<f:facet name="header">
+					<p:poll interval="5" update=":f:“notificationView”"/>
+					<p:commandButton value="Refresh" icon="ui-icon-refresh" 
+						update=":f:“notificationView”" action="#{notificationBean.refresh}" process="@this"/>
+					<p:commandButton value="Delete" icon="ui-icon-trash" 
+						disabled="#{empty notificationBean.listSelected}"
+						action="#{notificationBean.delete}"
+						update=":f:notificationView"/>
+				<p:facet>
+				<p:column rowSelectMode="checkbox" selectionMode="multiple" style="width:1em">
+				</p:column>
+				<p:column style="text-align:center;width:2em">
+					<p:commandButton icon="ui-icon-extlink" process="notificationView"
+						update=":f:notificationInfo" oncomplete="PF('deviceInfoDialog').show()">
+						<f:setPropertyActionListener value="#{device}"
+							target="#{deviceBean.selectedDevice}" />
+					</p:commandButton>
+				</p:column>
+			</p:dataTable>
+		<h:form>		
+	</ui:define>
+</ui:composition>
