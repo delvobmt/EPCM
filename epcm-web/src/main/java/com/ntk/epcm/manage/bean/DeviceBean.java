@@ -56,11 +56,6 @@ public class DeviceBean implements InitializingBean, Observer {
 		list = deviceService.findAll();
 	}
 
-	/**
-	 * refresh device list.
-	 * 
-	 * @return
-	 */
 	public void refresh() {
 		list = deviceService.findAll();
 	}

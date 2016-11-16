@@ -1,7 +1,7 @@
 package com.ntk.epcm.constant;
 
 public class CustomerDeviceConstant {
-	public static final String TABLE = "Customer_Device";
+	public static final String TABLE = "CustomerDevice";
 	
 	public static final String KEY_ID = "customerDevice_id";
 	public static final String CUSTOMER_ID_KEY = "customer_id";

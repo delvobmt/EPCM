@@ -15,7 +15,7 @@
 		<property name="lastName" column="lastName" type="string"/>
 		<property name="address" column="address" type="string"/>
 		<property name="contact" column="contact" type="string"/>
-		<property name="registerDate" column="registerDate" type="date"/>
+		<property name="registerDate" column="registerDate" type="timestamp"/>
 		<property name="note" column="note" type="string"/>
 		
 	</class>

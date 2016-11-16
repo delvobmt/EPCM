@@ -10,8 +10,8 @@ CREATE TABLE IF NOT EXISTS `Account`(
     `email` VARCHAR(50) UNIQUE NOT NULL,
     `name` VARCHAR(50),
 	`status` VARCHAR(10) DEFAULT 'inactive',
-    `createAt` DATETIME DEFAULT CURRENT_TIMESTAMP,
-    `lastActiveAt` DATETIME DEFAULT CURRENT_TIMESTAMP,
+    `createAt` TIMESTAMP,
+    `lastActiveAt` TIMESTAMP,
     PRIMARY KEY(`account_id`)
 );
 
@@ -19,7 +19,7 @@ DROP TABLE IF EXISTS `Account_Role`;
 CREATE TABLE IF NOT EXISTS `Account_Role`(
 	`role` VARCHAR(10) DEFAULT 'user', 
 	`account_id` INT REFERENCES `Account`(`account_id`),
-    `expireAt` DATETIME,
+    `expireAt` TIMESTAMP,
     PRIMARY KEY(`role`, `account_id`)
 );
 
@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS `Device`(
     `oldNumber` int DEFAULT 0,
     `status`  BIT DEFAULT 0,
 	`location` VARCHAR(250),
-    `lastUpdate` DATETIME DEFAULT CURRENT_TIMESTAMP,
+    `lastUpdate` TIMESTAMP,
     PRIMARY KEY(`device_id`)
 );
 
@@ -45,7 +45,7 @@ CREATE TABLE IF NOT EXISTS `Customer`(
 	`lastName` VARCHAR(100),
 	`address` VARCHAR(250),
 	`contact` VARCHAR(250),
-	`registerDate` DATETIME DEFAULT CURRENT_TIMESTAMP,
+	`registerDate` TIMESTAMP,
 	`note` VARCHAR(250),
 	PRIMARY KEY(`customer_id`)
 );

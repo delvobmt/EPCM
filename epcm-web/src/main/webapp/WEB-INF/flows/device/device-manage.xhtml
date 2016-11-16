@@ -10,20 +10,20 @@
 	<ui:define name="content">
 		<h:form id="f">
 			<p:growl />
-			<p:dataTable id="deviceView" style="padding:5px" var="device" rowSelectMode="checkbox"
+			<p:dataTable id="deviceView" widgetVar="deviceView" style="padding:5px" var="device" rowSelectMode="checkbox"
 				value="#{deviceBean.list}" selection="#{deviceBean.listSelected}" 
 				rowKey="#{device.device_id}" tableStyle="table-layout: auto;">
 				<p:ajax event="rowSelectCheckbox" update="@this"/>
 				<p:ajax event="rowUnselectCheckbox" update="@this"/>
 				<p:ajax event="toggleSelect" update="@this"/>
 				<f:facet name="header">
-					<p:poll interval="5" update=":f:deviceView"/>
+					<p:poll interval="5" oncomplete="PF('deviceView').filter()"/>
 					<p:commandButton value="Refresh" icon="ui-icon-refresh" 
-						update=":f:deviceView" action="#{deviceBean.refresh}" process="@this"/>
+						oncomplete="PF('deviceView').filter()" action="#{deviceBean.refresh}" process="@this"/>
 					<p:commandButton value="Delete" icon="ui-icon-trash" 
 						disabled="#{empty deviceBean.listSelected}"
 						action="#{deviceBean.delete}"
-						update=":f:deviceView"/>
+						oncomplete="PF('deviceView').filter()"/>
 					<p:commandButton value="Poll" icon="ui-icon-transferthick-e-w" 
 						disabled="#{empty deviceBean.listSelected}"
 						update=":f:pollView" action="#{deviceBean.poll}"
@@ -55,10 +55,10 @@
 				</p:column>
 				<p:column headerText="Status" style="width:3em">
 					<h:outputText rendered="#{device.status}" value="ON"
-						style="border-radius: 10px; color:white; background: blue; font-weight:bold" />
+						style="padding:3px;border-radius: 10px; color:white; background: blue; font-weight:bold" />
 					<h:outputText rendered="#{not device.status}" value="OFF"
-						style="border-radius: 10px; color:white; background:red; font-weight:bold" />
-					<p:commandButton rendered="#{not empty device.notifications}" style="border-radius: 10px; background:orange; font-weight:bold" 
+						style="padding:3px;border-radius: 10px; color:white; background:red; font-weight:bold" />
+					<p:commandButton rendered="#{not empty device.notifications}" style="border-radius: 10px;background:orange" 
 						icon="ui-icon-notice" process="deviceView"
 						update=":f:deviceInfo" oncomplete="PF('deviceInfoDialog').show()">
 						<f:setPropertyActionListener value="#{device}"
@@ -118,8 +118,8 @@
 							<p:outputLabel value="Status"/>
 						</p:column>
 						<p:column>
-							<h:outputText rendered="#{deviceBean.selectedDevice.status}" value="ON" style="color:white; background: blue; font-weight:bold" />
-							<h:outputText rendered="#{not deviceBean.selectedDevice.status}" value="OFF" style="color:white; background:red; font-weight:bold" />
+							<h:outputText rendered="#{deviceBean.selectedDevice.status}" value="ON" style="padding:5px;color:white; background: blue; font-weight:bold" />
+							<h:outputText rendered="#{not deviceBean.selectedDevice.status}" value="OFF" style="padding:5px;color:white; background:red; font-weight:bold" />
 						</p:column>
 					</p:row>
 					<p:row>

@@ -1,10 +1,13 @@
 package com.ntk.epcm.model;
 
+import java.util.Date;
+
 public class DeviceNotification {
 	private int deviceNotification_id;
 	private Device device;
 	private String severity;
 	private String description;
+	private Date createOn;
 
 	public int getDeviceNotification_id() {
 		return deviceNotification_id;
@@ -45,6 +48,14 @@ public class DeviceNotification {
 		result = prime * result + ((device == null) ? 0 : device.hashCode());
 		result = prime * result + deviceNotification_id;
 		return result;
+	}
+	
+	public Date getCreateOn() {
+		return createOn;
+	}
+	
+	public void setCreateOn(Date createOn) {
+		this.createOn = createOn;
 	}
 
 	@Override

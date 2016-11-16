@@ -10,7 +10,7 @@ public interface IDeviceNotificationDAO {
 
 	boolean save(DeviceNotification notification);
 
-	boolean remove(DeviceNotification notification);
+	boolean remove(List<DeviceNotification> notification);
 
 	DeviceNotification findById(int id);
 
@@ -19,4 +19,5 @@ public interface IDeviceNotificationDAO {
 	List<DeviceNotification> findBySeverity(Severity severity);
 
 	List<DeviceNotification> findByDevice(int device_id);
+
 }

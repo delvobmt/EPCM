@@ -9,31 +9,202 @@
 
 	<ui:define name="content">
 		<h:form id="f">
-			<p:dataTable id="notificationView" style="padding:5px" var="notificaiton" rowSelectMode="checkbox"
+			<p:dataTable id="notificationView" widgetVar="notificationView" style="padding:5px" var="notification" rowSelectMode="checkbox"
 				value="#{notificationBean.list}" selection="#{notificationBean.listSelected}" 
-				rowKey="#{notification.notification_id}" tableStyle="table-layout: auto;">
+				rowKey="#{notification.deviceNotification_id}" tableStyle="table-layout: auto;">
 				<p:ajax event="rowSelectCheckbox" update="@this"/>
 				<p:ajax event="rowUnselectCheckbox" update="@this"/>
 				<p:ajax event="toggleSelect" update="@this"/>
 				<f:facet name="header">
-					<p:poll interval="5" update=":f:“notificationView”"/>
+					<p:poll interval="5" oncomplete="PF('notificationView').filter()"/>
 					<p:commandButton value="Refresh" icon="ui-icon-refresh" 
-						update=":f:“notificationView”" action="#{notificationBean.refresh}" process="@this"/>
+						update=":f:notificationView" action="#{notificationBean.refresh}" process="@this"/>
 					<p:commandButton value="Delete" icon="ui-icon-trash" 
 						disabled="#{empty notificationBean.listSelected}"
 						action="#{notificationBean.delete}"
 						update=":f:notificationView"/>
-				<p:facet>
+				</f:facet>
 				<p:column rowSelectMode="checkbox" selectionMode="multiple" style="width:1em">
 				</p:column>
 				<p:column style="text-align:center;width:2em">
 					<p:commandButton icon="ui-icon-extlink" process="notificationView"
-						update=":f:notificationInfo" oncomplete="PF('deviceInfoDialog').show()">
-						<f:setPropertyActionListener value="#{device}"
-							target="#{deviceBean.selectedDevice}" />
+						update=":f:notificationDialog" oncomplete="PF('notificationDialog').show()">
+						<f:setPropertyActionListener value="#{notification}"
+							target="#{viewingNotification}" />
 					</p:commandButton>
 				</p:column>
+				<p:column headerText="Id" style="text-align:center; width:1em">
+					<h:outputLabel value="#{notification.deviceNotification_id}"/>
+				</p:column>
+				<p:column headerText="Device" style="text-align:center; width:2em" filterBy="#{notification.device.device_id}">
+					<p:commandButton value="#{notification.device.device_id}" icon="ui-icon-extlink" 
+						update=":f:deviceDialog" oncomplete="PF('deviceDialog').show()">
+						<f:setPropertyActionListener value="#{notification.device}" target="#{device}"/>
+					</p:commandButton>
+				</p:column>
+				<p:column headerText="Create On" style="text-align:center; width:15em;">
+					<h:outputText value="#{notification.createOn}"/>
+				</p:column>
+				<p:column headerText="Severity" style="text-align:center;width:10em;">
+					<h:outputText value="CRITICAL" rendered="#{notification.severity=='CRITICAL'}" style="padding:4px;border-radius: 10px; color:white; background:red; font-weight:bold"/>
+					<h:outputText value="WARN" rendered="#{notification.severity=='WARN'}" style="padding:4px;border-radius: 10px; color:white; background:orange; font-weight:bold"/>
+					<h:outputText value="INFO" rendered="#{notification.severity=='INFO'}" style="padding:4px;border-radius: 10px; color:white; background:green; font-weight:bold"/>
+					<h:outputText value="NOTE" rendered="#{notification.severity=='NOTIFICATION'}" style="padding:4px;border-radius: 10px; color:white; background:blue; font-weight:bold"/>
+				</p:column>
+				<p:column headerText="Description">
+					<h:outputText value="#{notification.description}"/>
+				</p:column>
 			</p:dataTable>
-		<h:form>		
+			
+			<p:dialog id="notificationDialog" header="Notifiation Information" widgetVar="notificationDialog"
+				modal="true" showEffect="fade" hideEffect="fade" resizable="false" closable="false">
+				<p:panelGrid>
+					<p:row>
+						<p:column>
+							<p:outputLabel value="Id" for="id"/>
+						</p:column>
+						<p:column headerText="Id" style="width:1em">
+							<p:inputText id="id" value="#{viewingNotification.deviceNotification_id}" readonly="true"/>
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column>
+							<p:outputLabel value="Device Id" for="device_id"/>
+						</p:column>
+						<p:column headeText="Device">
+							<p:inputText id="device_id" value="#{viewingNotification.device.device_id}" readonly="true"/>
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column>
+							<p:outputLabel value="Create On" for="createOn"/>
+						</p:column>
+						<p:column>
+							<p:inputText id="createOn" value="#{viewingNotification.createOn}" readonly="true"/>
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column>
+							<p:outputLabel value="Severity"/>
+						</p:column>
+						<p:column headerText="Severity">
+							<h:outputText value="CRITICAL" rendered="#{viewingNotification.severity=='CRITICAL'}" style="padding:4px;border-radius: 10px; color:white; background:red; font-weight:bold"/>
+							<h:outputText value="WARN" rendered="#{viewingNotification.severity=='WARN'}" style="padding:4px;border-radius: 10px; color:white; background:orange; font-weight:bold"/>
+							<h:outputText value="INFO" rendered="#{viewingNotification.severity=='INFO'}" style="padding:4px;border-radius: 10px; color:white; background:green; font-weight:bold"/>
+							<h:outputText value="NOTE" rendered="#{viewingNotification.severity=='NOTIFICATION'}" style="padding:4px;border-radius: 10px; color:white; background:blue; font-weight:bold"/>
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column>
+							<p:outputLabel value="Description" for="description"/>
+						</p:column>
+						<p:column>
+							<p:inputTextarea id="description" value="#{viewingNotification.description}" readonly="true" maxlength="250"/>
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column colspan="2">
+							<p:commandButton value="Cancel" icon="ui-icon-close" type="button" onclick="PF('notificationDialog').hide()"/>
+						</p:column>
+					</p:row>
+				</p:panelGrid>
+			</p:dialog>
+			
+			<p:dialog id="deviceDialog" header="Device Information" widgetVar="deviceDialog" 
+				modal="true" showEffect="fade" hideEffect="fade" resizable="false" closable="false">
+				<p:panelGrid>
+					<p:row>
+						<p:column>
+							<p:outputLabel for="d_id" value="Id"/>
+						</p:column>
+						<p:column>
+							<p:inputText id="d_id" value="#{device.device_id}" readonly="true"/>
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column>
+							<p:outputLabel for="model" value="Model"/>
+						</p:column>
+						<p:column>
+							<p:inputText id="model" value="#{device.model}" readonly="true"/>
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column>
+							<p:outputLabel for="version" value="Version"/>
+						</p:column>
+						<p:column>
+							<p:inputText id="version" value="#{device.version}" readonly="true"/>
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column>
+							<p:outputLabel for="macAddress" value="MAC address"/>
+						</p:column>
+						<p:column>
+							<p:inputText id="macAddress" value="#{device.macAddress}" readonly="true"/>
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column>
+							<p:outputLabel for="ipAddress" value="Ip address"/>
+						</p:column>
+						<p:column>
+							<p:inputText id="ipAddress" value="#{device.ipAddress}" readonly="true"/>
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column>
+							<p:outputLabel value="Status"/>
+						</p:column>
+						<p:column>
+							<h:outputText rendered="#{device.status}" value="ON" style="color:white; background: blue; font-weight:bold" />
+							<h:outputText rendered="#{not device.status}" value="OFF" style="color:white; background:red; font-weight:bold" />
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column>
+							<p:outputLabel for="consumeNumber" value="Consume Number"/>
+						</p:column>
+						<p:column>
+							<p:inputNumber id="consumeNumber" value="#{device.consumeNumber}" 
+								decimalPlaces="0" readonly="true"/>
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column>
+							<p:outputLabel for="oldNumber" value="Old Number"/>
+						</p:column>
+						<p:column>
+							<p:inputNumber id="oldNumber" value="#{device.oldNumber}" 
+							decimalPlaces="0" readonly="true"/>
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column>
+							<p:outputLabel for="lastUpdate" value="Last Update"/>
+						</p:column>
+						<p:column>
+							<p:calendar id="lastUpdate" value="#{device.lastUpdate}"
+								pattern="MM/dd/yyyy" readonly="true" readonlyInput="true"/>
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column>
+							<p:outputLabel for="location" value="Location"/>
+						</p:column>
+						<p:column>
+							<p:inputTextarea id="location" value="#{device.location}" autoResize="true" maxlength="250" readonly="true"/>
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column colspan="2">
+							<p:commandButton value="Cancel" icon="ui-icon-close" type="button" onclick="PF('deviceDialog').hide()"/>
+						</p:column>
+					</p:row>
+				
+				</p:panelGrid>
+			</p:dialog>
+		</h:form>		
 	</ui:define>
 </ui:composition>

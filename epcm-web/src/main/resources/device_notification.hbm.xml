@@ -10,11 +10,12 @@
 		<id name="deviceNotification_id" column="deviceNotification_id" type="int">
 			<generator class="native"></generator>
 		</id>
-		<many-to-one name="device" class="com.ntk.epcm.model.Device" fetch="select">
+		<many-to-one name="device" class="com.ntk.epcm.model.Device" lazy="false" fetch="select">
 			<column name="device_id"/>
 		</many-to-one>
 		<property name="severity" column="severity" type="string"/>
 		<property name="description" column="description" type="string"/>
+		<property name="createOn" column="createOn" type="timestamp"/>
 		
 	</class>
 </hibernate-mapping>

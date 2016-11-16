@@ -2,7 +2,7 @@ package com.ntk.epcm.constant;
 
 public class DeviceConfigConstant {
 
-	public static final String TABLE = "Device_Config";
+	public static final String TABLE = "DeviceConfig";
 	
 	public static final String KEY_ID = "deviceConfig_id";
 	

@@ -38,8 +38,8 @@ public class DeviceNotificationService extends Observable implements IDeviceNoti
 	}
 
 	@Override
-	public boolean remove(DeviceNotification deviceNotification) {
-		boolean success = remove(deviceNotification);
+	public boolean remove(List<DeviceNotification> deviceNotification) {
+		boolean success = dao.remove(deviceNotification);
 		if(success) {
 			setChanged();
 			notifyObservers();

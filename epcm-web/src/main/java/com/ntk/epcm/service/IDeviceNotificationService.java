@@ -8,7 +8,7 @@ import com.ntk.epcm.model.DeviceNotification;
 public interface IDeviceNotificationService {
 	int insert(DeviceNotification deviceNotification);
 	boolean save(DeviceNotification deviceNotification);
-	boolean remove(DeviceNotification deviceNotification);
+	boolean remove(List<DeviceNotification> deviceNotification);
 	
 	DeviceNotification findById(int id);
 	List<DeviceNotification> findByDeviceId(int device_id);

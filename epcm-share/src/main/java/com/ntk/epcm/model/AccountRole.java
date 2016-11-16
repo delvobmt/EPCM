@@ -1,7 +1,7 @@
 package com.ntk.epcm.model;
 
 import java.io.Serializable;
-import java.sql.Date;
+import java.util.Date;
 
 public class AccountRole implements Serializable{
 	

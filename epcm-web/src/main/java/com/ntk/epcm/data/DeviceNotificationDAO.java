@@ -63,12 +63,12 @@ public class DeviceNotificationDAO implements IDeviceNotificationDAO {
 
 	@SuppressWarnings("finally")
 	@Override
-	public boolean remove(DeviceNotification notification) {
+	public boolean remove(List<DeviceNotification> notification) {
 		boolean error = false;
 		Session session = factory.openSession();
 		session.getTransaction().begin();
 		try {
-			session.remove(notification);
+			notification.forEach(session::remove);
 			session.getTransaction().commit();
 		} catch (HibernateException e) {
 			LOGGER.error("error while delete device notification",e);
