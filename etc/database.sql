@@ -67,7 +67,7 @@ CREATE TABLE IF NOT EXISTS `Customer_Device`(
 );
 
 DROP TABLE IF EXISTS `Device_Notification`;
-CREATE TABLE IF NOT EXISTS `Device_Notification`(
+CREATE TABLE IF NOT EXISTS `Device_Notification`(	
 	`deviceNotification_id` INT AUTO_INCREMENT,
 	`device_id` INT REFERENCES `Device`(`device_id`),
 	`severity` VARCHAR(10) DEFAULT 'info',
@@ -88,6 +88,7 @@ CREATE TABLE IF NOT EXISTS `Device_Config`(
 DROP TABLE IF EXISTS `Consume_Policy`;
 CREATE TABLE IF NOT EXISTS `Consume_Policy`(
 	`consumePolicy_id` INT AUTO_INCREMENT,
+	`consumeGroup_id` INT REFERENCES `Consume_Group`(`consumeGroup_id`)
 	`fromConsume` INT,
 	`toConsume` INT,
 	`price` INT,
