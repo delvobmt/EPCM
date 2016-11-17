@@ -10,19 +10,20 @@
 	<ui:define name="content">
 		<h:form id="f">
 			<p:dataTable id="notificationView" widgetVar="notificationView" style="padding:5px" var="notification" rowSelectMode="checkbox"
-				value="#{notificationBean.list}" selection="#{notificationBean.listSelected}" 
-				rowKey="#{notification.deviceNotification_id}" tableStyle="table-layout: auto;">
-				<p:ajax event="rowSelectCheckbox" update="@this"/>
-				<p:ajax event="rowUnselectCheckbox" update="@this"/>
-				<p:ajax event="toggleSelect" update="@this"/>
+				value="#{notificationBean.list}" selection="#{notificationBean.listSelected}" filteredValue="#{notificationBean.listFiltered}"
+				rowKey="#{notification.deviceNotification_id}" tableStyle="table-layout: auto;" >
+				<p:ajax event="rowSelectCheckbox" update="deleteButton"/>
+				<p:ajax event="rowUnselectCheckbox" update="deleteButton"/>
+				<p:ajax event="toggleSelect" update="deleteButton"/>
 				<f:facet name="header">
 					<p:poll interval="5" oncomplete="PF('notificationView').filter()"/>
 					<p:commandButton value="Refresh" icon="ui-icon-refresh" 
 						update=":f:notificationView" action="#{notificationBean.refresh}" process="@this"/>
-					<p:commandButton value="Delete" icon="ui-icon-trash" 
+					<p:commandButton id="deleteButton" value="Delete" icon="ui-icon-trash" 
 						disabled="#{empty notificationBean.listSelected}"
 						action="#{notificationBean.delete}"
-						update=":f:notificationView"/>
+						update="deleteButton"
+						oncomplete="PF('notificationView').filter()"/>
 				</f:facet>
 				<p:column rowSelectMode="checkbox" selectionMode="multiple" style="width:1em">
 				</p:column>
@@ -36,7 +37,7 @@
 				<p:column headerText="Id" style="text-align:center; width:1em">
 					<h:outputLabel value="#{notification.deviceNotification_id}"/>
 				</p:column>
-				<p:column headerText="Device" style="text-align:center; width:2em" filterBy="#{notification.device.device_id}">
+				<p:column headerText="Device" style="text-align:center; width:2em" filterBy="#{notification.device.device_id}" filterValue="#{notificationBean.device_id_Filter}">
 					<p:commandButton value="#{notification.device.device_id}" icon="ui-icon-extlink" 
 						update=":f:deviceDialog" oncomplete="PF('deviceDialog').show()">
 						<f:setPropertyActionListener value="#{notification.device}" target="#{device}"/>
@@ -109,7 +110,6 @@
 					</p:row>
 				</p:panelGrid>
 			</p:dialog>
-			
 			<p:dialog id="deviceDialog" header="Device Information" widgetVar="deviceDialog" 
 				modal="true" showEffect="fade" hideEffect="fade" resizable="false" closable="false">
 				<p:panelGrid>
@@ -205,6 +205,11 @@
 				
 				</p:panelGrid>
 			</p:dialog>
-		</h:form>		
+		</h:form>
+		<script>
+			 jQuery(document).ready(function() {
+				PF('notificationView').filter()
+			 });
+		</script>
 	</ui:define>
 </ui:composition>

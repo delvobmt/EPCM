@@ -41,6 +41,7 @@ public class DeviceBean implements InitializingBean, Observer {
 	private JmsTemplate jmsTemplate;
 
 	List<Device> list;
+	List<Device> listFiltered;
 	List<Device> listSelected;
 	Device selectedDevice = new DeviceBuilder().build();
 	List<String> executeList = new LinkedList<>();
@@ -54,6 +55,12 @@ public class DeviceBean implements InitializingBean, Observer {
 		deviceService.addObserver(this);
 		deviceNotificationService.addObserver(this);
 		list = deviceService.findAll();
+	}
+	
+	@Override
+	public void update(Observable o, Object arg) {
+		LOGGER.debug("database changed, call refresh data");
+		refresh();
 	}
 
 	public void refresh() {
@@ -141,9 +148,11 @@ public class DeviceBean implements InitializingBean, Observer {
 		this.selectedDevice = selectedDevice;
 	}
 
-	@Override
-	public void update(Observable o, Object arg) {
-		LOGGER.debug("database changed, call refresh data");
-		refresh();
+	public List<Device> getListFiltered() {
+		return listFiltered;
+	}
+
+	public void setListFiltered(List<Device> listFiltered) {
+		this.listFiltered = listFiltered;
 	}
 }

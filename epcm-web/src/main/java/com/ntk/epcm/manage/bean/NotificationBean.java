@@ -26,17 +26,9 @@ public class NotificationBean implements InitializingBean, Observer{
 	DeviceNotificationService deviceNotificationService;
 	
 	List<DeviceNotification> list;
+	List<DeviceNotification> listFiltered;
 	List<DeviceNotification> listSelected;
-
-	public void delete() {
-		deviceNotificationService.remove(listSelected);
-		list.removeAll(listSelected);
-		listSelected.clear();
-	}
-	
-	public void refresh(){
-		list = deviceNotificationService.findByAll();
-	}
+	String device_id_Filter = "";
 	
 	@Override
 	public void update(Observable o, Object arg) {
@@ -50,6 +42,17 @@ public class NotificationBean implements InitializingBean, Observer{
 		list = deviceNotificationService.findByAll();
 		deviceService.addObserver(this);
 		deviceNotificationService.addObserver(this);
+	}
+	
+
+	public void delete() {
+		deviceNotificationService.remove(listSelected);
+		list.removeAll(listSelected);
+		listSelected.clear();
+	}
+	
+	public void refresh(){
+		list = deviceNotificationService.findByAll();
 	}
 
 	public List<DeviceNotification> getList() {
@@ -66,6 +69,22 @@ public class NotificationBean implements InitializingBean, Observer{
 
 	public void setListSelected(List<DeviceNotification> listSelected) {
 		this.listSelected = listSelected;
+	}
+
+	public List<DeviceNotification> getListFiltered() {
+		return listFiltered;
+	}
+
+	public void setListFiltered(List<DeviceNotification> listFiltered) {
+		this.listFiltered = listFiltered;
+	}
+
+	public String getDevice_id_Filter() {
+		return device_id_Filter;
+	}
+
+	public void setDevice_id_Filter(String device_id_Filter) {
+		this.device_id_Filter = device_id_Filter;
 	}
 	
 	

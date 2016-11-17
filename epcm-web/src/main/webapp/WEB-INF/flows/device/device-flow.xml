@@ -4,5 +4,8 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/webflow http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
 
 	<view-state id="device-manage">
+		<transition on="notification" to="notification"/>
 	</view-state>
+	
+	<end-state id="notification" view="externalRedirect:servletRelative:/notification"></end-state>
 </flow>

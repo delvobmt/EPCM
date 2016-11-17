@@ -9,7 +9,7 @@
 		<transition on="fail" to="fail"/>
 	</view-state>
 	
-	<end-state id="login" view="/externalRedirect:servletRelative:/login"/>
+	<end-state id="login" view="externalRedirect:servletRelative:/login"/>
 	<end-state id="success" view="externalRedirect:servletRelative:/login?register=success"/>
 	<end-state id="fail" view="externalRedirect:servletRelative:/login?register=fail"/>
 </flow>

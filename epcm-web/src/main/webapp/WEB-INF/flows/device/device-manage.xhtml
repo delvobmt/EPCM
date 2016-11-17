@@ -11,20 +11,19 @@
 		<h:form id="f">
 			<p:growl />
 			<p:dataTable id="deviceView" widgetVar="deviceView" style="padding:5px" var="device" rowSelectMode="checkbox"
-				value="#{deviceBean.list}" selection="#{deviceBean.listSelected}" 
+				value="#{deviceBean.list}" selection="#{deviceBean.listSelected}" filteredValue="#{deviceBean.listFiltered}"
 				rowKey="#{device.device_id}" tableStyle="table-layout: auto;">
-				<p:ajax event="rowSelectCheckbox" update="@this"/>
-				<p:ajax event="rowUnselectCheckbox" update="@this"/>
-				<p:ajax event="toggleSelect" update="@this"/>
+				<p:ajax event="rowSelectCheckbox" update="pollButton deleteButton"/>
+				<p:ajax event="rowUnselectCheckbox" update="pollButton deleteButton"/>
+				<p:ajax event="toggleSelect" update="pollButton deleteButton"/>
 				<f:facet name="header">
-					<p:poll interval="5" oncomplete="PF('deviceView').filter()"/>
 					<p:commandButton value="Refresh" icon="ui-icon-refresh" 
 						oncomplete="PF('deviceView').filter()" action="#{deviceBean.refresh}" process="@this"/>
-					<p:commandButton value="Delete" icon="ui-icon-trash" 
+					<p:commandButton id="deleteButton" value="Delete" icon="ui-icon-trash" 
 						disabled="#{empty deviceBean.listSelected}"
 						action="#{deviceBean.delete}"
 						oncomplete="PF('deviceView').filter()"/>
-					<p:commandButton value="Poll" icon="ui-icon-transferthick-e-w" 
+					<p:commandButton id="pollButton" value="Poll" icon="ui-icon-transferthick-e-w" 
 						disabled="#{empty deviceBean.listSelected}"
 						update=":f:pollView" action="#{deviceBean.poll}"
 						oncomplete="PF('pollDialog').show();PF('pollProgressBar').start();" />
@@ -33,9 +32,9 @@
 				</p:column>
 				<p:column style="text-align:center;width:2em">
 					<p:commandButton icon="ui-icon-pencil" process="deviceView"
-						update=":f:deviceInfo" oncomplete="PF('deviceInfoDialog').show()">
+						update=":f:deviceInfo" oncomplete="PF('deviceInfoDialog').show();">
 						<f:setPropertyActionListener value="#{device}"
-							target="#{deviceBean.selectedDevice}" />
+							target="#{deviceBean.selectedDevice}"/>
 					</p:commandButton>
 				</p:column>
 				<p:column headerText="Id" style="width:1em">
@@ -58,11 +57,11 @@
 						style="padding:3px;border-radius: 10px; color:white; background: blue; font-weight:bold" />
 					<h:outputText rendered="#{not device.status}" value="OFF"
 						style="padding:3px;border-radius: 10px; color:white; background:red; font-weight:bold" />
-					<p:commandButton rendered="#{not empty device.notifications}" style="border-radius: 10px;background:orange" 
-						icon="ui-icon-notice" process="deviceView"
-						update=":f:deviceInfo" oncomplete="PF('deviceInfoDialog').show()">
-						<f:setPropertyActionListener value="#{device}"
-							target="#{deviceBean.selectedDevice}" />
+					<p:commandButton rendered="#{not empty device.notifications}" style="border-radius: 10px;background:orange"
+						action="notification" immediate="true"
+						icon="ui-icon-notice">
+						<f:setPropertyActionListener value="#{device.device_id}"
+							target="#{notificationBean.device_id_Filter}" />
 					</p:commandButton>
 				</p:column>
 				<p:column headerText="Location" filterBy="#{device.location}">
