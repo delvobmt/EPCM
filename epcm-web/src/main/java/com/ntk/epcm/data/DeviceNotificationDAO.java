@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -51,7 +50,7 @@ public class DeviceNotificationDAO implements IDeviceNotificationDAO {
 			session.getTransaction().begin();
 			session.update(notification);
 			session.getTransaction().commit();
-		} catch (HibernateException e) {
+		} catch (Exception e) {
 			LOGGER.error("error while save device notification", e);
 			session.getTransaction().rollback();
 			error = true;
@@ -70,7 +69,7 @@ public class DeviceNotificationDAO implements IDeviceNotificationDAO {
 		try {
 			notification.forEach(session::remove);
 			session.getTransaction().commit();
-		} catch (HibernateException e) {
+		} catch (Exception e) {
 			LOGGER.error("error while delete device notification",e);
 			session.getTransaction().rollback();
 			error = true;
@@ -87,7 +86,7 @@ public class DeviceNotificationDAO implements IDeviceNotificationDAO {
 		Session session = factory.openSession();
 		try {
 			notification = session.load(DeviceNotification.class, id);
-		} catch (HibernateException e) {
+		} catch (Exception e) {
 			LOGGER.error("error while find Device", e);
 		}finally{
 			session.close();
@@ -104,7 +103,7 @@ public class DeviceNotificationDAO implements IDeviceNotificationDAO {
 			Query<DeviceNotification> query = session.createQuery("from "+DeviceNotificationConstant.TABLE, DeviceNotification.class);
 			list = query.getResultList();
 			
-		} catch (HibernateException e) {
+		} catch (Exception e) {
 			LOGGER.error("error while findAll DeviceNotification",e);
 		}finally{
 			session.close();
@@ -121,7 +120,7 @@ public class DeviceNotificationDAO implements IDeviceNotificationDAO {
 					DeviceNotificationConstant.TABLE, DeviceNotificationConstant.SEVERITY_KEY), DeviceNotification.class)
 					.setParameter("severity", severity);
 			list = query.getResultList();
-		} catch (HibernateException e) {
+		} catch (Exception e) {
 			LOGGER.error("ERROR while findBySevertity",e);
 		}
 		return list;
@@ -136,10 +135,23 @@ public class DeviceNotificationDAO implements IDeviceNotificationDAO {
 					DeviceNotificationConstant.TABLE, DeviceNotificationConstant.DEVICE_ID_KEY), DeviceNotification.class)
 					.setParameter("severity", device_id);
 			list = query.getResultList();
-		} catch (HibernateException e) {
+		} catch (Exception e) {
 			LOGGER.error("ERROR while findBySevertity",e);
 		}
 		return list;
 	}
 
+	@Override
+	public long countSeverity(String severity) {
+		long count = -1;
+		Session session = factory.openSession();
+		try {
+			count = session.createQuery(String.format("select count(*) from %s where %s=:severity", 
+					DeviceNotificationConstant.TABLE, DeviceNotificationConstant.SEVERITY_KEY), Long.class)
+					.setParameter("severity", severity).getSingleResult();
+		} catch (Exception e) {
+			LOGGER.error("ERROR while findBySevertity",e);
+		}
+		return count;
+	}
 }

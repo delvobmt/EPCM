@@ -34,5 +34,6 @@ public interface IDeviceDAO {
 
 	List<Device> findAll();
 
+	long countStatus(boolean isOn);
 
 }

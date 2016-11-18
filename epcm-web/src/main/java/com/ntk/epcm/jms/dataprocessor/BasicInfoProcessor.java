@@ -62,7 +62,7 @@ public class BasicInfoProcessor implements IDataProcessor {
 					DeviceNotification notification = new DeviceNotification();
 					notification.setDevice(oldDevice);
 					notification.setSeverity(Severity.WARN.toString());
-					notification.setDescription(String.format("Ip address %s is used by %s and %s", 
+					notification.setDescription(String.format("Ip address (%s) is used by (%s) and (%s)", 
 							ipAddress, macAddress, conflict.getMacAddress()));
 					deviceNotificationService.insert(notification);
 					notification.setDevice(conflict);
@@ -75,8 +75,8 @@ public class BasicInfoProcessor implements IDataProcessor {
 			if(device.getLastUpdate().getTime()>oldDevice.getLastUpdate().getTime()){
 				LOGGER.debug("WARN override infomation on device {}", macAddress);
 				DeviceNotification notification = new DeviceNotification();
-				notification.setDevice(device);
-				notification.setDescription(String.format("Update device %s uses mixed information", macAddress));
+				notification.setDevice(oldDevice);
+				notification.setDescription(String.format("Update device (%s) uses mixed information", macAddress));
 				notification.setSeverity(Severity.INFO.toString());
 				deviceNotificationService.insert(notification);
 				//use mix data
@@ -86,8 +86,8 @@ public class BasicInfoProcessor implements IDataProcessor {
 				LOGGER.debug("Consume Number ERROR: {} cannot update because lesser than {} on device {}",
 						device.getConsumeNumber(), oldDevice.getConsumeNumber(), macAddress);
 				DeviceNotification notification = new DeviceNotification();
-				notification.setDevice(device);
-				notification.setDescription(String.format("Consume Number ERROR: %s cannot update because lesser than %s on device %s", 
+				notification.setDevice(oldDevice);
+				notification.setDescription(String.format("New Consume Number (%s) cannot update because lesser than current(%s) by device (%s)", 
 						device.getConsumeNumber(), oldDevice.getConsumeNumber(), macAddress));
 				notification.setSeverity(Severity.ERROR.toString());
 				deviceNotificationService.insert(notification);
@@ -98,8 +98,8 @@ public class BasicInfoProcessor implements IDataProcessor {
 				LOGGER.debug("Old Number ERROR: {} cannot changed to {} by device {}",
 						oldDevice.getOldNumber(), device.getOldNumber(), macAddress);
 				DeviceNotification notification = new DeviceNotification();
-				notification.setDevice(device);
-				notification.setDescription(String.format("Old Number %s cannot changed to %s by device %s", 
+				notification.setDevice(oldDevice);
+				notification.setDescription(String.format("Old Number (%s) cannot changed to (%s) by device (%s)", 
 						oldDevice.getOldNumber(), device.getOldNumber(), macAddress));
 				notification.setSeverity(Severity.ERROR.toString());
 				deviceNotificationService.insert(notification);

@@ -71,4 +71,9 @@ public class DeviceService extends Observable implements IDeviceService{
 	public Device findByIpAddress(String ipAddress) {
 		return dao.findByIpAddress(ipAddress);
 	}
+
+	@Override
+	public long countStatus(boolean isOn) {
+		return dao.countStatus(isOn);
+	}
 }

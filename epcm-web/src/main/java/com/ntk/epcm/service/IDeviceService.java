@@ -19,6 +19,9 @@ public interface IDeviceService {
 	Device findByIpAddress(String ipAddress);
 
 	boolean checkExistenceIpAddress(String ipAddress);
-
+	
 	List<Device> findAll();
+
+	long countStatus(boolean isOn);
+	
 }

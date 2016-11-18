@@ -37,7 +37,7 @@
 				<p:column headerText="Id" style="text-align:center; width:1em">
 					<h:outputLabel value="#{notification.deviceNotification_id}"/>
 				</p:column>
-				<p:column headerText="Device" style="text-align:center; width:2em" filterBy="#{notification.device.device_id}" filterValue="#{notificationBean.device_id_Filter}">
+				<p:column headerText="Device" style="text-align:center; width:2em" filterBy="#{notification.device.device_id}" filterValue="#{notificationBean.device_id_Filter}" filterMatchMode="contains">
 					<p:commandButton value="#{notification.device.device_id}" icon="ui-icon-extlink" 
 						update=":f:deviceDialog" oncomplete="PF('deviceDialog').show()">
 						<f:setPropertyActionListener value="#{notification.device}" target="#{device}"/>
@@ -46,8 +46,16 @@
 				<p:column headerText="Create On" style="text-align:center; width:15em;">
 					<h:outputText value="#{notification.createOn}"/>
 				</p:column>
-				<p:column headerText="Severity" style="text-align:center;width:10em;">
-					<h:outputText value="CRITICAL" rendered="#{notification.severity=='CRITICAL'}" style="padding:4px;border-radius: 10px; color:white; background:red; font-weight:bold"/>
+				<p:column headerText="Severity" style="text-align:center;width:10em;" filterBy="#{notification.severity}" filterMatchMode="in">
+					<f:facet name="filter">
+						<p:selectCheckboxMenu label="filter" onchange="PF('notificationView').filter()">
+							<f:selectItem itemLabel="ERROR" itemValue="ERROR" />
+							<f:selectItem itemLabel="WARN" itemValue="WARN" />
+							<f:selectItem itemLabel="INFO" itemValue="INFO" />
+							<f:selectItem itemLabel="NOTIC" itemValue="NOTIFICATION" />
+						</p:selectCheckboxMenu>
+					</f:facet>
+					<h:outputText value="ERROR" rendered="#{notification.severity=='ERROR'}" style="padding:4px;border-radius: 10px; color:white; background:red; font-weight:bold"/>
 					<h:outputText value="WARN" rendered="#{notification.severity=='WARN'}" style="padding:4px;border-radius: 10px; color:white; background:orange; font-weight:bold"/>
 					<h:outputText value="INFO" rendered="#{notification.severity=='INFO'}" style="padding:4px;border-radius: 10px; color:white; background:green; font-weight:bold"/>
 					<h:outputText value="NOTE" rendered="#{notification.severity=='NOTIFICATION'}" style="padding:4px;border-radius: 10px; color:white; background:blue; font-weight:bold"/>

@@ -6,7 +6,6 @@
 	http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd">
 	<http auto-config="true" use-expressions="true">
 		<access-denied-handler error-page="/app/dashboard"/>
-		<intercept-url pattern="/app/dashboard" access="hasRole('ROLE_USER')"/>
 		<intercept-url pattern="/app/login" access="isAnonymous()"/>
 		<form-login
 			login-page="/app/login"

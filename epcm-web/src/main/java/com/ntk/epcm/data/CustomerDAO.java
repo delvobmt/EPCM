@@ -1,14 +1,17 @@
 package com.ntk.epcm.data;
 
+import java.util.Collections;
+import java.util.List;
+
 import javax.inject.Inject;
 
-import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import com.ntk.epcm.constant.CustomerConstant;
 import com.ntk.epcm.model.Customer;
 
 @Component
@@ -27,7 +30,7 @@ public class CustomerDAO implements ICustomerDAO{
 			session.getTransaction().begin();
 			id = (int) session.save(customer);
 			session.getTransaction().commit();
-		} catch (HibernateException e) {
+		} catch (Exception e) {
 			LOGGER.error("ERROR while insert new Customer",e);
 			session.getTransaction().rollback();
 		}
@@ -43,7 +46,7 @@ public class CustomerDAO implements ICustomerDAO{
 			session.getTransaction().begin();
 			session.update(customer);
 			session.getTransaction().commit();
-		} catch (HibernateException e) {
+		} catch (Exception e) {
 			LOGGER.error("ERROR while save Customer",e);
 			session.getTransaction().rollback();
 			error = true;
@@ -53,14 +56,14 @@ public class CustomerDAO implements ICustomerDAO{
 	}
 
 	@Override
-	public boolean remove(Customer customer) {
+	public boolean remove(List<Customer> customer) {
 		boolean error = false;
 		Session session = factory.openSession();
 		try {
 			session.getTransaction().begin();
-			session.remove(customer);
+			customer.forEach(session::remove);
 			session.getTransaction().commit();
-		} catch (HibernateException e) {
+		} catch (Exception e) {
 			LOGGER.error("ERROR while remove Customer",e);
 			session.getTransaction().rollback();
 			error = true;
@@ -75,11 +78,24 @@ public class CustomerDAO implements ICustomerDAO{
 		Session session = factory.openSession();
 		try {
 			customer = session.load(Customer.class, id);
-		} catch (HibernateException e) {
+		} catch (Exception e) {
 			LOGGER.error("ERROR while find by Id Customer",e);
 		}
 		session.close();
 		return customer;
+	}
+
+	@Override
+	public List<Customer> findAll() {
+		List<Customer> list = Collections.emptyList();
+		Session session = factory.openSession();
+		try {
+			list = session.createQuery(String.format("from %s", CustomerConstant.TABLE),Customer.class).getResultList();
+		} catch (Exception e) {
+			LOGGER.error("ERROR while findAll Customer",e);
+		}
+		session.close();
+		return list;
 	}
 
 }

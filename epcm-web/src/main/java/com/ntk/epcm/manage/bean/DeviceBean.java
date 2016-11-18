@@ -54,7 +54,7 @@ public class DeviceBean implements InitializingBean, Observer {
 	public void afterPropertiesSet() throws Exception {
 		deviceService.addObserver(this);
 		deviceNotificationService.addObserver(this);
-		list = deviceService.findAll();
+		refresh();
 	}
 	
 	@Override

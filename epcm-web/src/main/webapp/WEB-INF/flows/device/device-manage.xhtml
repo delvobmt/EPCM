@@ -17,6 +17,7 @@
 				<p:ajax event="rowUnselectCheckbox" update="pollButton deleteButton"/>
 				<p:ajax event="toggleSelect" update="pollButton deleteButton"/>
 				<f:facet name="header">
+					<p:poll interval="5" oncomplete="PF('deviceView').filter()"/>
 					<p:commandButton value="Refresh" icon="ui-icon-refresh" 
 						oncomplete="PF('deviceView').filter()" action="#{deviceBean.refresh}" process="@this"/>
 					<p:commandButton id="deleteButton" value="Delete" icon="ui-icon-trash" 
@@ -40,16 +41,16 @@
 				<p:column headerText="Id" style="width:1em">
 					<h:outputText value="#{device.device_id}" />
 				</p:column>
-				<p:column headerText="Model" filterBy="#{device.model}">
+				<p:column headerText="Model" filterBy="#{device.model}" filterMatchMode="contains">
 					<h:outputText value="#{device.model}" />
 				</p:column>
-				<p:column headerText="Version" filterBy="#{device.version}">
+				<p:column headerText="Version" filterBy="#{device.version}" filterMatchMode="contains">
 					<h:outputText value="#{device.version}" />
 				</p:column>
-				<p:column headerText="MAC Address" style="width:8em" filterBy="#{device.macAddress}">
+				<p:column headerText="MAC Address" style="width:8em" filterBy="#{device.macAddress}" filterMatchMode="contains">
 					<h:outputText value="#{device.macAddress}" />
 				</p:column>
-				<p:column headerText="Ip Address" style="width:6em" filterBy="#{device.ipAddress}">
+				<p:column headerText="Ip Address" style="width:6em" filterBy="#{device.ipAddress}" filterMatchMode="contains">
 					<h:outputText value="#{device.ipAddress}" />
 				</p:column>
 				<p:column headerText="Status" style="width:3em">
@@ -64,7 +65,7 @@
 							target="#{notificationBean.device_id_Filter}" />
 					</p:commandButton>
 				</p:column>
-				<p:column headerText="Location" filterBy="#{device.location}">
+				<p:column headerText="Location" filterBy="#{device.location}" filterMatchMode="contains">
 					<h:outputText value="#{device.location}" />
 				</p:column>
 			</p:dataTable>

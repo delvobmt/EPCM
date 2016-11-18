@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -32,7 +31,7 @@ public class DeviceDAO implements IDeviceDAO {
 			session.getTransaction().begin();
 			device_id = (int) session.save(device);
 			session.getTransaction().commit();
-		} catch (HibernateException e) {
+		} catch (Exception e) {
 			LOGGER.error("error while insert({})", device, e);
 			session.getTransaction().rollback();
 		} finally {
@@ -50,7 +49,7 @@ public class DeviceDAO implements IDeviceDAO {
 			session.getTransaction().begin();
 			session.update(device);
 			session.getTransaction().commit();
-		} catch (HibernateException e) {
+		} catch (Exception e) {
 			LOGGER.error("error while save({})", device, e);
 			session.getTransaction().rollback();
 			error = true;
@@ -69,7 +68,7 @@ public class DeviceDAO implements IDeviceDAO {
 			session.getTransaction().begin();
 			devices.forEach(session::remove);
 			session.getTransaction().commit();
-		} catch (HibernateException e) {
+		} catch (Exception e) {
 			LOGGER.error("error while remove({})", devices, e);
 			session.getTransaction().rollback();
 			error = true;
@@ -86,7 +85,7 @@ public class DeviceDAO implements IDeviceDAO {
 		Device device = null;
 		try {
 			device = session.load(Device.class, device_id);
-		} catch (HibernateException e) {
+		} catch (Exception e) {
 			LOGGER.error("error while findDeviceById({})", device_id, e);
 		} finally {
 			session.close();
@@ -104,7 +103,7 @@ public class DeviceDAO implements IDeviceDAO {
 					DeviceConstant.TABLE, DeviceConstant.MAC_ADDRESS_KEY),Device.class)
 					.setParameter("macAddress", macAddress)
 					.setMaxResults(1).getSingleResult();
-		} catch (HibernateException e) {
+		} catch (Exception e) {
 			LOGGER.error("error while findDeviceByMacAddress({})", macAddress, e);
 		} finally {
 			session.close();
@@ -121,7 +120,7 @@ public class DeviceDAO implements IDeviceDAO {
 					.setParameter("ipAddress", ipAddress)
 					.getSingleResult();
 			return count != 0;
-		} catch (HibernateException e) {
+		} catch (Exception e) {
 			LOGGER.error("error while checkIpAddressAvailable({})", ipAddress, e);
 		}
 		return false;
@@ -135,7 +134,7 @@ public class DeviceDAO implements IDeviceDAO {
 		try {
 			Query<Device> query = session.createQuery("from " + DeviceConstant.TABLE, Device.class);
 			list = query.getResultList();
-		} catch (HibernateException e) {
+		} catch (Exception e) {
 			LOGGER.error("error while findAll()", e);
 		} finally {
 			session.close();
@@ -149,15 +148,33 @@ public class DeviceDAO implements IDeviceDAO {
 		Session session = factory.openSession();
 		Device device = null;
 		try {
-			device = (Device) session.createQuery(String.format("from %s where %s=:ipAddress", 
+			device = session.createQuery(String.format("from %s where %s=:ipAddress", 
 					DeviceConstant.TABLE, DeviceConstant.IP_ADRESS_KEY),Device.class)
 					.setParameter("ipAddress", ipAddress)
 					.setMaxResults(1).getSingleResult();
-		} catch (HibernateException e) {
+		} catch (Exception e) {
 			LOGGER.error("error while findDeviceByMacAddress({})", ipAddress, e);
 		} finally {
 			session.close();
 			return device;
+		}
+	}
+
+	@SuppressWarnings("finally")
+	@Override
+	public long countStatus(boolean isOn) {
+		Session session = factory.openSession();
+		long count = -1;
+		try {
+			count = session.createQuery(String.format("select count(*) from %s where %s=:status", 
+					DeviceConstant.TABLE, DeviceConstant.STATUS_KEY),Long.class)
+					.setParameter("status", isOn)
+					.getSingleResult();
+		} catch (Exception e) {
+			LOGGER.error("error while countOffDevices({})", e);
+		} finally {
+			session.close();
+			return count;
 		}
 	}
 

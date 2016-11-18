@@ -20,4 +20,5 @@ public interface IDeviceNotificationDAO {
 
 	List<DeviceNotification> findByDevice(int device_id);
 
+	long countSeverity(String severity);
 }

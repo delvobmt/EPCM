@@ -8,5 +8,18 @@
 	template="/WEB-INF/layout/standard.xhtml">
 
 	<ui:define name="content">
+		<h:form>
+			<p:poll interval="5" update="dashboard" />
+			<p:dashboard id="dashboard" model="#{dashboardView.model}">
+				<p:panel id="devices" header="Devices">
+					<p:chart type="pie" model="#{dashboardView.devicesModel}" />
+				</p:panel>
+
+				<p:panel id="notifications" header="Notifications">
+					<p:chart type="pie" model="#{dashboardView.notificationsModel}" />
+				</p:panel>
+
+			</p:dashboard>
+		</h:form>
 	</ui:define>
 </ui:composition>

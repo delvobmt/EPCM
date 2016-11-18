@@ -16,11 +16,11 @@ public class DeviceNotificationService extends Observable implements IDeviceNoti
 
 	@Inject
 	IDeviceNotificationDAO dao;
-	
+
 	@Override
 	public int insert(DeviceNotification deviceNotification) {
 		int id = dao.insert(deviceNotification);
-		if(id!=-1) {
+		if (id != -1) {
 			setChanged();
 			notifyObservers();
 		}
@@ -30,7 +30,7 @@ public class DeviceNotificationService extends Observable implements IDeviceNoti
 	@Override
 	public boolean save(DeviceNotification deviceNotification) {
 		boolean success = dao.save(deviceNotification);
-		if(success) {
+		if (success) {
 			setChanged();
 			notifyObservers();
 		}
@@ -40,7 +40,7 @@ public class DeviceNotificationService extends Observable implements IDeviceNoti
 	@Override
 	public boolean remove(List<DeviceNotification> deviceNotification) {
 		boolean success = dao.remove(deviceNotification);
-		if(success) {
+		if (success) {
 			setChanged();
 			notifyObservers();
 		}
@@ -65,5 +65,9 @@ public class DeviceNotificationService extends Observable implements IDeviceNoti
 	@Override
 	public List<DeviceNotification> findByAll() {
 		return dao.findAll();
+	}
+
+	public long countSevertiy(String severity) {
+		return dao.countSeverity(severity);
 	}
 }

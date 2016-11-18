@@ -1,0 +1,138 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:sec="http://www.springframework.org/security/tags"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/layout/standard.xhtml">
+
+	<ui:define name="content">
+		<p:growl id="messages"/>
+		<h:form id="f">
+			<p:dataTable id="customerView" widgetVar="customerView" style="padding:5px" var="customer" rowSelectMode="checkbox"
+				value="#{customerBean.list}" selection="#{customerBean.listSelected}" filteredValue="#{customerBean.listFiltered}"
+				rowKey="#{customer.customer_id}" tableStyle="table-layout: auto;">
+				<p:ajax event="rowSelectCheckbox" update="deleteButton"/>
+				<p:ajax event="rowUnselectCheckbox" update="deleteButton"/>
+				<p:ajax event="toggleSelect" update="deleteButton"/>
+				<f:facet name="header">
+					<p:poll interval="5" oncomplete="PF('customerView').filter()"/>
+					
+					<p:commandButton value="Refresh" icon="ui-icon-refresh" 
+						oncomplete="PF('customerView').filter()" action="#{customerBean.refresh}" process="@this"/>
+					<p:commandButton id="deleteButton" value="Delete" icon="ui-icon-trash" 
+						disabled="#{empty customerBean.listSelected}"
+						action="#{customerBean.delete}"
+						oncomplete="PF('customerView').filter()"/>
+					<p:commandButton value="Create" icon="ui-icon-plus" update=":f2:customerDialog" oncomplete="PF('customerDialog').show();">
+						<f:setPropertyActionListener value="#{customerBean.newCustomer}" target="#{customerBean.customer}"></f:setPropertyActionListener>
+					</p:commandButton>
+				</f:facet>
+				<p:column rowSelectMode="checkbox" selectionMode="multiple" style="width:1em">
+				</p:column>
+				<p:column style="text-align:center;width:2em">
+					<p:commandButton icon="ui-icon-pencil" process="customerView"
+						update=":f2:customerDialog" oncomplete="PF('customerDialog').show();">
+						<f:setPropertyActionListener value="#{customer}"
+							target="#{customerBean.customer}"/>
+					</p:commandButton>
+				</p:column>
+				<p:column headerText="Id" style="width:1em">
+					<h:outputText value="#{customer.customer_id}" />
+				</p:column>
+				<p:column headerText="Firstname" filterBy="#{customer.firstName}" sortBy="#{customer.firstName}" filterMatchMode="contains">
+					<h:outputText value="#{customer.firstName}" />
+				</p:column>
+				<p:column headerText="Lastname" filterBy="#{customer.lastName}" sortBy="#{customer.lastName}" filterMatchMode="contains">
+					<h:outputText value="#{customer.lastName}" />
+				</p:column>
+				<p:column headerText="Address" filterBy="#{customer.address}" filterMatchMode="contains">
+					<h:outputText value="#{customer.address}" />
+				</p:column>
+				<p:column headerText="Contact" filterBy="#{customer.contact}" filterMatchMode="contains">
+					<h:outputText value="#{customer.contact}" />
+				</p:column>
+				<p:column headerText="Register date" style="width:8em">
+					<h:outputText value="#{customer.registerDate}"/>
+				</p:column>
+				<p:column headerText="Note">
+					<h:outputText value="#{customer.note}" />
+				</p:column>
+			</p:dataTable>
+		</h:form>
+		
+		<h:form id="f2">
+		<p:dialog id="customerDialog" header="Customer Information" widgetVar="customerDialog" 
+				modal="true" showEffect="fade" hideEffect="fade" resizable="false" closable="false">
+				<p:panelGrid id="form">
+					<p:row rendered="#{customerBean.customer.customer_id!=0}">
+						<p:column>
+							<p:outputLabel for="id" value="Id"/>
+						</p:column>
+						<p:column>
+							<p:inputText id="id" value="#{customerBean.customer.customer_id}" readonly="true"/>
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column>
+							<p:outputLabel for="firstName" value="FirstName" rendered="true"/>
+						</p:column>
+						<p:column>
+							<p:inputText id="firstName" value="#{customerBean.customer.firstName}" required="true" requiredMessage="Required"/>
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column>
+							<p:outputLabel for="lastName" value="LastName"/>
+						</p:column>
+						<p:column>
+							<p:inputText id="lastName" value="#{customerBean.customer.lastName}" required="true" requiredMessage="Required"/>
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column>
+							<p:outputLabel for="address" value="Address"/>
+						</p:column>
+						<p:column>
+							<p:inputText id="address" value="#{customerBean.customer.address}" required="true" requiredMessage="Required"/>
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column>
+							<p:outputLabel for="contact" value="Contact"/>
+						</p:column>
+						<p:column>
+							<p:inputText id="contact" value="#{customerBean.customer.contact}" required="true" requiredMessage="Required"/>
+						</p:column>
+					</p:row>
+					<p:row rendered="#{customerBean.customer.customer_id!=0}">
+						<p:column>
+							<p:outputLabel value="Register date" for="registerDate"/>
+						</p:column>
+						<p:column>
+							<p:calendar id="registerDate" value="#{customerBean.customer.registerDate}" pattern="MM/dd/yyyy" readonlyInput="true"/>
+						</p:column>
+					</p:row>
+					
+					<p:row>
+						<p:column>
+							<p:outputLabel for="note" value="Note"/>
+						</p:column>
+						<p:column>
+							<p:inputTextarea id="note" value="#{customerBean.customer.note}" autoResize="true" maxlength="250"/>
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column colspan="2">
+							<p:commandButton value="Save" icon="ui-icon-disk" action="#{customerBean.save}" process="@form" update="form" 
+								oncomplete="if (!args.validationFailed){PF('customerDialog').hide(); PF('customerView').filter()}"/>
+							<p:commandButton value="Cancel" icon="ui-icon-close" type="button" onclick="PF('customerDialog').hide()"/>
+						</p:column>
+					</p:row>
+				
+				</p:panelGrid>
+			</p:dialog>
+		</h:form>
+	</ui:define>
+</ui:composition>
