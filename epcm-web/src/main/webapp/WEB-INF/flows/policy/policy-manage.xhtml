@@ -1,0 +1,115 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:sec="http://www.springframework.org/security/tags"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/layout/standard.xhtml">
+
+	<ui:define name="content">
+		<p:growl id="messages"/>
+		<h:form id="f">
+			<p:dataTable id="policyView" widgetVar="policyView" style="padding:5px" var="policy" rowSelectMode="checkbox"
+				value="#{consumePolicyBean.list}" selection="#{consumePolicyBean.listSelected}" filteredValue="#{consumePolicyBean.listFiltered}"
+				rowKey="#{policy.consumePolicy_id}" tableStyle="table-layout: auto;">
+				<p:ajax event="rowSelectCheckbox" update="deleteButton"/>
+				<p:ajax event="rowUnselectCheckbox" update="deleteButton"/>
+				<p:ajax event="toggleSelect" update="deleteButton"/>
+				<f:facet name="header">
+					<p:poll interval="5" oncomplete="PF('policyView').filter()"/>
+					
+					<p:commandButton value="Refresh" icon="ui-icon-refresh" 
+						oncomplete="PF('policyView').filter()" action="#{consumePolicyBean.refresh}" process="@this"/>
+					<p:commandButton id="deleteButton" value="Delete" icon="ui-icon-trash" 
+						disabled="#{empty consumePolicyBean.listSelected}"
+						action="#{consumePolicyBean.delete}"
+						oncomplete="PF('policyView').filter()"/>
+					<p:commandButton value="Create" icon="ui-icon-plus" update=":f2:policyDialog" oncomplete="PF('policyDialog').show();">
+						<f:setPropertyActionListener value="#{consumePolicyBean.newConsumePolicy}" target="#{consumePolicyBean.consumePolicy}"/>
+					</p:commandButton>
+				</f:facet>
+				<p:column rowSelectMode="checkbox" selectionMode="multiple" style="width:1em">
+				</p:column>
+				<p:column style="text-align:center;width:2em">
+					<p:commandButton icon="ui-icon-pencil" process="policyView"
+						update=":f2:policyDialog" oncomplete="PF('policyDialog').show();">
+						<f:setPropertyActionListener value="#{policy}"
+							target="#{consumePolicyBean.consumePolicy}"/>
+					</p:commandButton>
+				</p:column>
+				<p:column headerText="Id" style="width:1em">
+					<h:outputText value="#{policy.consumePolicy_id}" />
+				</p:column>
+				<p:column headerText="Group" filterBy="#{policy.group.group}" sortBy="#{policy.group.group}" filterMatchMode="contains">
+					<h:outputText value="#{policy.group.group}" />
+				</p:column>
+				<p:column headerText="From">
+					<h:outputText value="#{policy.fromConsume}" />
+				</p:column>
+				<p:column headerText="To">
+					<h:outputText value="#{policy.toConsume}" />
+				</p:column>
+				<p:column headerText="Price">
+					<h:outputText value="#{policy.price}" />
+				</p:column>
+			</p:dataTable>
+		</h:form>
+		
+		<h:form id="f2">
+			<p:dialog id="policyDialog" header="policy Information" widgetVar="policyDialog" 
+				modal="true" showEffect="fade" hideEffect="fade" resizable="false" closable="false">
+				<p:panelGrid id="form">
+					<p:row rendered="#{consumePolicyBean.consumePolicy.consumePolicy_id!=0}">
+						<p:column>
+							<p:outputLabel for="id" value="Id"/>
+						</p:column>
+						<p:column>
+							<p:inputText id="id" value="#{consumePolicyBean.consumePolicy.consumePolicy_id}" readonly="true"/>
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column>
+							<p:outputLabel for="group" value="Group"/>
+						</p:column>
+						<p:column>
+							<p:autoComplete id="group" value="#{consumePolicyBean.consumePolicy.group}" completeMethod="#{consumeGroupBean.completeMethod}"
+								converter="#{consumeGroupConverter}" var="gro" itemLabel="#{gro.group}" itemValue="#{gro}" dropdown="true"/>
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column>
+							<p:outputLabel for="fromConsume" value="From"/>
+						</p:column>
+						<p:column>
+							<p:spinner id="fromConsume" value="#{consumePolicyBean.consumePolicy.fromConsume}" min="1" stepFactor="50"/>
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column>
+							<p:outputLabel for="toConsume" value="To"/>
+						</p:column>
+						<p:column>
+							<p:spinner id="toConsume" value="#{consumePolicyBean.consumePolicy.toConsume}" min="0" stepFactor="50"/>
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column>
+							<p:outputLabel for="price" value="price"/>
+						</p:column>
+						<p:column>
+							<p:spinner id="price" value="#{consumePolicyBean.consumePolicy.price}" min="100" suffix="VND" stepFactor="100"/>
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column colspan="2">
+							<p:commandButton value="Save" icon="ui-icon-disk" action="#{consumePolicyBean.save}" process="@form" update="form" 
+								oncomplete="if (!args.validationFailed){PF('policyDialog').hide(); PF('policyView').filter()}"/>
+							<p:commandButton value="Cancel" icon="ui-icon-close" type="button" onclick="PF('policyDialog').hide()"/>
+						</p:column>
+					</p:row>
+				</p:panelGrid>
+			</p:dialog>
+		</h:form>
+	</ui:define>
+</ui:composition>

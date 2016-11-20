@@ -10,9 +10,14 @@
 		<id name="customerDevice_id" column="customerDevice_id" type="int">
 			<generator class="native"></generator>
 		</id>
-		<one-to-one name="customer" class="com.ntk.epcm.model.Customer"/>
-		<one-to-one name="device" class="com.ntk.epcm.model.Device"/>
-		<one-to-one name="consumeGroup" class="com.ntk.epcm.model.ConsumeGroup"/>
-		
+		<many-to-one name="customer" class="com.ntk.epcm.model.Customer" fetch="select" lazy="false" >
+			<column name="customer_id"/>
+		</many-to-one>
+		<many-to-one name="device" class="com.ntk.epcm.model.Device" fetch="select" lazy="false">
+			<column name="device_id"/>
+		</many-to-one>
+		<many-to-one name="consumeGroup" class="com.ntk.epcm.model.ConsumeGroup" fetch="select" lazy="false">
+			<column name="consumeGroup_id"/>
+		</many-to-one>
 	</class>
 </hibernate-mapping>

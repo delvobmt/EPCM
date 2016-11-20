@@ -10,6 +10,7 @@
 		<id name="consumePolicy_id" column="consumePolicy_id" type="int">
 			<generator class="native"></generator>
 		</id>
+		<many-to-one name="group" column="consumeGroup_id" lazy="false" fetch="select"/>
 		
 		<property name="fromConsume" column="fromConsume" type="int"/>
 		<property name="toConsume" column="toConsume" type="int"/>

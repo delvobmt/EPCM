@@ -14,14 +14,14 @@ import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ntk.epcm.jms.dataprocessor.DataProcessorRegistry;
 import com.ntk.epcm.manage.jms.EpcmDataMessage;
-import com.ntk.epcm.service.IDeviceService;
+import com.ntk.epcm.service.DeviceService;
 
 public class DeviceReportListener implements MessageListener {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(DeviceReportListener.class);
 
 	@Inject
-	IDeviceService deviceService;
+	DeviceService deviceService;
 	
 	@Inject
 	DataProcessorRegistry processorRegistry;

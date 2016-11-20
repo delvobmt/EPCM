@@ -7,9 +7,9 @@
 		<meta attribute="class-description">
 			This class contains consume group information
 		</meta>
-		<id name="customerGroup_id" column="customerGroup_id" type="int">
+		<id name="consumeGroup_id" column="consumeGroup_id" type="int">
 			<generator class="native"></generator>
 		</id>
-		<property name="group" column="group" type="string"/>
+		<property name="group" column="name" type="string"/>
 	</class>
 </hibernate-mapping>

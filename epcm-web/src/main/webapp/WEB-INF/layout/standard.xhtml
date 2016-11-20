@@ -16,9 +16,15 @@
 		<h:form id="form" style="display:fixed">
 			<p:menubar>
 				<p:menuitem value="Dashboard" url="/app/dashboard" icon="ui-icon-home"/>
-				<p:menuitem value="Devices" url="/app/device" icon="ui-icon-calculator"/>
-				<p:menuitem value="Notifications" url="/app/notification" icon="ui-icon-notice"/>
-				<p:menuitem value="Customers" url="/app/customer" icon="ui-icon-person"/>
+				<p:submenu label="Devices" icon="ui-icon-calculator">
+					<p:menuitem value="Device Manage" url="/app/device" icon="ui-icon-calculator"/>
+					<p:menuitem value="Notifications" url="/app/notification" icon="ui-icon-notice"/>
+				</p:submenu>
+				<p:submenu label="Customers" icon="ui-icon-person">
+					<p:menuitem value="Customer Manage" url="/app/customer" icon="ui-icon-person"/>
+					<p:menuitem value="Assign Devices" url="/app/customer-device" icon="ui-icon-link"/>
+				</p:submenu>
+				<p:menuitem value="Policy" url="/app/policy" icon="ui-icon-clipboard"/>
 				<f:facet name="options">
 					<p:commandButton type="submit" value="Logout" ajax="false"
 						onclick="document.getElementById('form').action='logout'" icon="ui-icon-power"/>

@@ -2,6 +2,7 @@ package com.ntk.epcm.model;
 
 public class ConsumePolicy {
 	private int consumePolicy_id;
+	private ConsumeGroup group;
 	private int fromConsume;
 	private int toConsume;
 	private int price;
@@ -64,6 +65,14 @@ public class ConsumePolicy {
 	public String toString() {
 		return "ConsumePolicy [consumePolicy_id=" + consumePolicy_id + ", fromConsume=" + fromConsume + ", toConsume="
 				+ toConsume + ", price=" + price + "]";
+	}
+
+	public ConsumeGroup getGroup() {
+		return group;
+	}
+
+	public void setGroup(ConsumeGroup group) {
+		this.group = group;
 	}
 
 }

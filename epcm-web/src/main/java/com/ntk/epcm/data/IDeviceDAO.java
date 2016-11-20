@@ -36,4 +36,6 @@ public interface IDeviceDAO {
 
 	long countStatus(boolean isOn);
 
+	List<Device> findFreeDevices();
+
 }

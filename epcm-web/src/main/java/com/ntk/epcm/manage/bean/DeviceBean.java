@@ -24,6 +24,7 @@ import com.ntk.epcm.manage.TaskManager;
 import com.ntk.epcm.manage.TaskReporter;
 import com.ntk.epcm.model.Device;
 import com.ntk.epcm.model.DeviceBuilder;
+import com.ntk.epcm.service.CustomerDeviceService;
 import com.ntk.epcm.service.DeviceNotificationService;
 import com.ntk.epcm.service.DeviceService;
 
@@ -36,6 +37,9 @@ public class DeviceBean implements InitializingBean, Observer {
 	
 	@Inject
 	DeviceNotificationService deviceNotificationService;
+	
+	@Inject
+	CustomerDeviceService customerDeviceService;
 
 	@Inject
 	private JmsTemplate jmsTemplate;
@@ -45,6 +49,7 @@ public class DeviceBean implements InitializingBean, Observer {
 	List<Device> listSelected;
 	Device selectedDevice = new DeviceBuilder().build();
 	List<String> executeList = new LinkedList<>();
+	List<Device> listFree;
 
 	@Inject
 	TaskReporter reporter;
@@ -54,17 +59,33 @@ public class DeviceBean implements InitializingBean, Observer {
 	public void afterPropertiesSet() throws Exception {
 		deviceService.addObserver(this);
 		deviceNotificationService.addObserver(this);
-		refresh();
+		customerDeviceService.addObserver(this);
+		loadDevices();
+		loadFreeDevices();
 	}
 	
 	@Override
 	public void update(Observable o, Object arg) {
 		LOGGER.debug("database changed, call refresh data");
-		refresh();
+		if(o instanceof CustomerDeviceService)
+			loadFreeDevices();
+		else{
+			loadDevices();
+			loadFreeDevices();
+		}
+		
 	}
 
 	public void refresh() {
+		loadDevices();
+	}
+	
+	private void loadDevices(){
 		list = deviceService.findAll();
+	}
+	
+	private void loadFreeDevices(){
+		listFree = deviceService.findFreeDevices();
 	}
 
 	public void poll() {
@@ -92,7 +113,7 @@ public class DeviceBean implements InitializingBean, Observer {
 
 	public void save() {
 		deviceService.save(selectedDevice);
-		// TODO device information is changed locally, then we need to send
+		// device information is changed locally, then we need to send
 		// message to request device changes.
 		TaskManager.instance()
 				.put(new UpdateTask(jmsTemplate, selectedDevice.getMacAddress(), selectedDevice, DataType.BASICINFO));
@@ -116,7 +137,6 @@ public class DeviceBean implements InitializingBean, Observer {
 		executeList.clear();
 		listSelected.clear();
 		reporter.reset();
-		// TODO handle on poll complete event from UI
 	}
 
 	public List<Device> getList() {
@@ -154,5 +174,9 @@ public class DeviceBean implements InitializingBean, Observer {
 
 	public void setListFiltered(List<Device> listFiltered) {
 		this.listFiltered = listFiltered;
+	}
+	
+	public List<Device> getListFree() {
+		return listFree;
 	}
 }

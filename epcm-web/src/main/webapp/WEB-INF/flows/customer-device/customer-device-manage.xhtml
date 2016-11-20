@@ -1,0 +1,132 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:sec="http://www.springframework.org/security/tags"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/layout/standard.xhtml">
+
+	<ui:define name="content">
+		<p:growl id="messages"/>
+		<h:form id="f">
+			<p:dataTable id="cdeviceView" widgetVar="cdeviceView" style="padding:5px" var="cdevice" rowSelectMode="checkbox"
+				value="#{customerDeviceBean.list}" selection="#{customerDeviceBean.listSelected}" filteredValue="#{customerDeviceBean.listFiltered}"
+				rowKey="#{cdevice.customerDevice_id}" tableStyle="table-layout: auto;">
+				<p:ajax event="rowSelectCheckbox" update="deleteButton"/>
+				<p:ajax event="rowUnselectCheckbox" update="deleteButton"/>
+				<p:ajax event="toggleSelect" update="deleteButton"/>
+				<f:facet name="header">
+					<p:poll interval="5" oncomplete="PF('cdeviceView').filter()"/>
+					
+					<p:commandButton value="Refresh" icon="ui-icon-refresh" 
+						oncomplete="PF('cdeviceView').filter()" action="#{customerDeviceBean.refresh}" process="@this"/>
+					<p:commandButton id="deleteButton" value="Delete" icon="ui-icon-trash" 
+						disabled="#{empty customerDeviceBean.listSelected}"
+						action="#{customerDeviceBean.delete}"
+						oncomplete="PF('cdeviceView').filter()"/>
+					<p:commandButton value="Create" icon="ui-icon-plus" update=":f2:cdeviceDialog" oncomplete="PF('cdeviceDialog').show();">
+						<f:setPropertyActionListener value="#{customerDeviceBean.newCustomerDevice}" target="#{customerDeviceBean.customerDevice}"/>
+					</p:commandButton>
+				</f:facet>
+				<p:column rowSelectMode="checkbox" selectionMode="multiple" style="width:1em">
+				</p:column>
+				<p:column style="text-align:center;width:2em">
+					<p:commandButton icon="ui-icon-pencil" process="cdeviceView"
+						update=":f2:cdeviceDialog" oncomplete="PF('cdeviceDialog').show();">
+						<f:setPropertyActionListener value="#{cdevice}"
+							target="#{customerDeviceBean.customerDevice}"/>
+					</p:commandButton>
+				</p:column>
+				<p:column headerText="Id" style="width:1em">
+					<h:outputText value="#{cdevice.customerDevice_id}" />
+				</p:column>
+				<p:column headerText="Device" filterBy="#{cdevice.device.device_id}" sortBy="#{cdevice.device.device_id}" filterMatchMode="contains">
+					<h:outputText value="#{cdevice.device.macAddress}" />
+				</p:column>
+				<p:column headerText="Customer" filterBy="#{cdevice.customer.firstName}" sortBy="#{cdevice.customer.firstName}" filterMatchMode="contains">
+					<h:outputText value="#{cdevice.customer}" >
+						<f:converter binding="#{customerConverter}"/>
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Consume Group" filterBy="#{cdevice.consumeGroup.group}" filterMatchMode="contains">
+					<h:outputText value="#{cdevice.consumeGroup.group}" />
+				</p:column>
+			</p:dataTable>
+		</h:form>
+		
+		<h:form id="f2">
+			<p:dialog id="cdeviceDialog" header="Information" widgetVar="cdeviceDialog" 
+				modal="true" showEffect="fade" hideEffect="fade" resizable="false" closable="false">
+				<p:messages id="msgs"/>
+				<p:panelGrid id="form">
+					<p:row rendered="#{customerDeviceBean.customerDevice.customerDevice_id!=0}">
+						<p:column>
+							<p:outputLabel for="id" value="Id"/>
+						</p:column>
+						<p:column>
+							<p:inputText id="id" value="#{customerDeviceBean.customerDevice.customerDevice_id}" readonly="true"/>
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column>
+							<p:outputLabel for="customer" value="Customer"/>
+						</p:column>
+						<p:column>
+							<p:selectOneListbox id="customer" value="#{customerDeviceBean.customerDevice.customer}" required="true"
+								converter="#{customerConverter}" var="c" filter="true" filterMatchMode="contains">
+								<f:selectItem itemLabel="#{customerDeviceBean.customerDevice.customer.customer_id}" 
+									itemValue="#{customerDeviceBean.customerDevice.customer}" />
+								<f:selectItems value="#{customerBean.listFree}" var="cus" itemLabel="#{cus.customer_id}" itemValue="#{cus}"/>
+								<p:column>
+									<h:outputText value="#{c}">
+										<f:converter binding="#{customerConverter}"/>
+									</h:outputText>
+								</p:column>
+							</p:selectOneListbox>
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column>
+							<p:outputLabel for="device" value="Device"/>
+						</p:column>
+						<p:column>
+							<p:selectOneListbox id="device" value="#{customerDeviceBean.customerDevice.device}" required="true"
+								converter="#{deviceConverter}" var="d" filter="true" filterMatchMode="contains">
+								<f:selectItem itemLabel="#{customerDeviceBean.customerDevice.device.device_id}" 
+									itemValue="#{customerDeviceBean.customerDevice.device}"/>
+								<f:selectItems value="#{deviceBean.listFree}" var="dev" itemLabel="#{dev.device_id}" itemValue="#{dev}"/>
+								<p:column>
+									<h:outputText value="#{d.macAddress}"/>
+								</p:column>
+							</p:selectOneListbox>
+							
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column>
+							<p:outputLabel for="group" value="Group"/>
+						</p:column>
+						<p:column>
+							<p:selectOneListbox id="group" value="#{customerDeviceBean.customerDevice.consumeGroup}" required="true"
+								converter="#{consumeGroupConverter}" var="g" filter="true" filterMatchMode="contains">
+								<f:selectItems value="#{consumeGroupBean.list}" var="gro" itemLabel="#{gro.group}" itemValue="#{gro}"/>
+								<p:column>
+									<h:outputText value="#{g.group}"/>
+								</p:column>
+							</p:selectOneListbox>
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column colspan="2">
+							<p:commandButton value="Save" icon="ui-icon-disk" action="#{customerDeviceBean.save}" process="@form" update="form msgs" 
+								oncomplete="if (!args.validationFailed){PF('cdeviceDialog').hide(); PF('cdeviceView').filter()}"/>
+							<p:commandButton value="Cancel" icon="ui-icon-close" type="button" onclick="PF('cdeviceDialog').hide()"/>
+						</p:column>
+					</p:row>
+				
+				</p:panelGrid>
+			</p:dialog>
+		</h:form>
+	</ui:define>
+</ui:composition>

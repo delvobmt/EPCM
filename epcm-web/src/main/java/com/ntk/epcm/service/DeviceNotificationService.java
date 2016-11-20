@@ -12,12 +12,11 @@ import com.ntk.epcm.data.IDeviceNotificationDAO;
 import com.ntk.epcm.model.DeviceNotification;
 
 @Service
-public class DeviceNotificationService extends Observable implements IDeviceNotificationService {
+public class DeviceNotificationService extends Observable {
 
 	@Inject
 	IDeviceNotificationDAO dao;
 
-	@Override
 	public int insert(DeviceNotification deviceNotification) {
 		int id = dao.insert(deviceNotification);
 		if (id != -1) {
@@ -27,7 +26,6 @@ public class DeviceNotificationService extends Observable implements IDeviceNoti
 		return id;
 	}
 
-	@Override
 	public boolean save(DeviceNotification deviceNotification) {
 		boolean success = dao.save(deviceNotification);
 		if (success) {
@@ -37,7 +35,6 @@ public class DeviceNotificationService extends Observable implements IDeviceNoti
 		return success;
 	}
 
-	@Override
 	public boolean remove(List<DeviceNotification> deviceNotification) {
 		boolean success = dao.remove(deviceNotification);
 		if (success) {
@@ -47,22 +44,18 @@ public class DeviceNotificationService extends Observable implements IDeviceNoti
 		return success;
 	}
 
-	@Override
 	public DeviceNotification findById(int id) {
 		return dao.findById(id);
 	}
 
-	@Override
 	public List<DeviceNotification> findByDeviceId(int device_id) {
 		return dao.findByDevice(device_id);
 	}
 
-	@Override
 	public List<DeviceNotification> findBySeverity(Severity severity) {
 		return dao.findBySeverity(severity);
 	}
 
-	@Override
 	public List<DeviceNotification> findByAll() {
 		return dao.findAll();
 	}

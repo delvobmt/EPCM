@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import com.ntk.epcm.constant.CustomerDeviceConstant;
 import com.ntk.epcm.constant.DeviceConstant;
 import com.ntk.epcm.model.Device;
 
@@ -178,4 +179,20 @@ public class DeviceDAO implements IDeviceDAO {
 		}
 	}
 
+	@Override
+	public List<Device> findFreeDevices() {
+		List<Device> list = Collections.emptyList();
+		Session session = factory.openSession();
+		try {
+			//QUERY
+			//select * from device where device_id not in (select distinct device_id from customer_device);
+			list = session.createQuery(String.format("from %s where %s not in (select distinct %s from %s)",
+					DeviceConstant.TABLE, DeviceConstant.KEY_ID, CustomerDeviceConstant.DEVICE_KEY, CustomerDeviceConstant.TABLE)
+					,Device.class).getResultList();
+		} catch (Exception e) {
+			LOGGER.error("ERROR while find free Customers",e);
+		}
+		session.close();
+		return list;
+	}
 }

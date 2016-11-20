@@ -65,5 +65,4 @@ public class CustomerDevice {
 		return "CustomerDevice [customerDevice_id=" + customerDevice_id + ", customer=" + customer + ", device="
 				+ device + ", consumeGroup=" + consumeGroup + "]";
 	}
-
 }

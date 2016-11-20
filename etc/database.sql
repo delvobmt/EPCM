@@ -53,7 +53,7 @@ CREATE TABLE IF NOT EXISTS `Customer`(
 DROP TABLE IF EXISTS `Consume_Group`;
 CREATE TABLE IF NOT EXISTS `Consume_Group`(
 	`consumeGroup_id` INT AUTO_INCREMENT,
-	`group` VARCHAR(50),
+	`name` VARCHAR(50),
 	PRIMARY KEY(`consumeGroup_id`)
 );
 

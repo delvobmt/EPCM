@@ -12,6 +12,7 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Component;
 
 import com.ntk.epcm.model.Customer;
+import com.ntk.epcm.service.CustomerDeviceService;
 import com.ntk.epcm.service.CustomerService;
 
 @Component
@@ -21,36 +22,56 @@ public class CustomerBean implements InitializingBean, Observer {
 	@Inject
 	CustomerService customerService;
 
+	@Inject
+	CustomerDeviceService customerDeviceService;
+
 	Customer customer = new Customer();
 
 	List<Customer> list;
 	List<Customer> listSelected;
 	List<Customer> listFiltered;
+	List<Customer> listFree;
 
 	@Override
 	public void update(Observable o, Object arg) {
 		LOGGER.debug("database is changed, call refresh");
-		refresh();
+		if (o instanceof CustomerDeviceService) {
+			loadFreeCustomers();
+		} else {
+			loadCustomers();
+			loadFreeCustomers();
+		}
 	}
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
 		customerService.addObserver(this);
-		refresh();
+		customerDeviceService.addObserver(this);
+		loadCustomers();
+		loadFreeCustomers();
 	}
 
-	private void refresh() {
+	public void refresh() {
+		loadCustomers();
+	}
+
+	private void loadCustomers() {
 		list = customerService.findAll();
 	}
 
+	private void loadFreeCustomers() {
+		listFree = customerService.findFreeCustomers();
+	}
+
 	public void save() {
+		// check whenever this is a new customer
 		if (customer.getCustomer_id() == 0) {
 			customerService.insert(customer);
 		} else {
 			customerService.save(customer);
 		}
 	}
-	
+
 	public void delete() {
 		customerService.remove(listSelected);
 	}
@@ -86,8 +107,13 @@ public class CustomerBean implements InitializingBean, Observer {
 	public void setListFiltered(List<Customer> listFiltered) {
 		this.listFiltered = listFiltered;
 	}
-	
+
 	public Customer getNewCustomer() {
 		return new Customer();
 	}
+
+	public List<Customer> getListFree() {
+		return listFree;
+	}
+
 }

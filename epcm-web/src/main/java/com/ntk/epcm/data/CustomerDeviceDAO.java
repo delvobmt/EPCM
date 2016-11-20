@@ -1,8 +1,10 @@
 package com.ntk.epcm.data;
 
+import java.util.Collections;
+import java.util.List;
+
 import javax.inject.Inject;
 
-import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
@@ -28,7 +30,7 @@ public class CustomerDeviceDAO implements ICustomerDeviceDAO {
 			session.getTransaction().begin();
 			id = (int) session.save(customerDevice);
 			session.getTransaction().commit();
-		} catch (HibernateException e) {
+		} catch (Exception e) {
 			LOGGER.error("ERROR while insert new CustomerDevice",e);
 			session.getTransaction().rollback();
 		}
@@ -44,7 +46,7 @@ public class CustomerDeviceDAO implements ICustomerDeviceDAO {
 			session.getTransaction().begin();
 			session.update(customerDevice);
 			session.getTransaction().commit();
-		} catch (HibernateException e) {
+		} catch (Exception e) {
 			LOGGER.error("ERROR while save CustomerDevice",e);
 			session.getTransaction().rollback();
 			error = true;
@@ -54,14 +56,14 @@ public class CustomerDeviceDAO implements ICustomerDeviceDAO {
 	}
 
 	@Override
-	public boolean remove(CustomerDevice customerDevice) {
+	public boolean remove(List<CustomerDevice> customerDevice) {
 		boolean error = false;
 		Session session = factory.openSession();
 		try {
 			session.getTransaction().begin();
-			session.remove(customerDevice);
+			customerDevice.forEach(session::remove);
 			session.getTransaction().commit();
-		} catch (HibernateException e) {
+		} catch (Exception e) {
 			LOGGER.error("ERROR while remove CustomerDevice",e);
 			session.getTransaction().rollback();
 			error = true;
@@ -77,10 +79,10 @@ public class CustomerDeviceDAO implements ICustomerDeviceDAO {
 		Session session = factory.openSession();
 		try {
 			customerDevice = session.createQuery(String.format("from %s where %s=:device_id",
-					CustomerDeviceConstant.TABLE, CustomerDeviceConstant.DEVICE_ID_KEY),CustomerDevice.class)
+					CustomerDeviceConstant.TABLE, CustomerDeviceConstant.DEVICE_KEY),CustomerDevice.class)
 					.setParameter("device_id", device_id)
 					.getSingleResult();
-		} catch (HibernateException e) {
+		} catch (Exception e) {
 			LOGGER.error("ERROR while find by Device Id",e);
 			session.getTransaction().rollback();
 		}
@@ -94,10 +96,10 @@ public class CustomerDeviceDAO implements ICustomerDeviceDAO {
 		Session session = factory.openSession();
 		try {
 			customerDevice = session.createQuery(String.format("from %s where %s=:customer_id",
-					CustomerDeviceConstant.TABLE, CustomerDeviceConstant.CUSTOMER_ID_KEY),CustomerDevice.class)
+					CustomerDeviceConstant.TABLE, CustomerDeviceConstant.CUSTOMER_KEY),CustomerDevice.class)
 					.setParameter("customer_id", customer_id)
 					.getSingleResult();
-		} catch (HibernateException e) {
+		} catch (Exception e) {
 			LOGGER.error("ERROR while find by customer Id",e);
 			session.getTransaction().rollback();
 		}
@@ -111,10 +113,10 @@ public class CustomerDeviceDAO implements ICustomerDeviceDAO {
 		Session session = factory.openSession();
 		try {
 			customerDevice = session.createQuery(String.format("from %s where %s=:consumeGroup_id",
-					CustomerDeviceConstant.TABLE, CustomerDeviceConstant.CONSUME_GROUP_ID_KEY),CustomerDevice.class)
+					CustomerDeviceConstant.TABLE, CustomerDeviceConstant.CONSUME_GROUP_KEY),CustomerDevice.class)
 					.setParameter("consumeGroup_id", consumeGroup_id)
 					.getSingleResult();
-		} catch (HibernateException e) {
+		} catch (Exception e) {
 			LOGGER.error("ERROR while find by consume group Id",e);
 			session.getTransaction().rollback();
 		}
@@ -128,7 +130,7 @@ public class CustomerDeviceDAO implements ICustomerDeviceDAO {
 		Session session = factory.openSession();
 		try {
 			customerDevice = session.load(CustomerDevice.class, id);
-		} catch (HibernateException e) {
+		} catch (Exception e) {
 			LOGGER.error("ERROR while find by id",e);
 			session.getTransaction().rollback();
 		}
@@ -136,4 +138,19 @@ public class CustomerDeviceDAO implements ICustomerDeviceDAO {
 		return customerDevice;
 	}
 
+	@Override
+	public List<CustomerDevice> findAll() {
+		List<CustomerDevice> list = Collections.emptyList();
+		Session session = factory.openSession();
+		try {
+			list = session.createQuery(String.format("from %s", CustomerDeviceConstant.TABLE),CustomerDevice.class).getResultList();
+		} catch (Exception e) {
+			LOGGER.error("ERROR while find all customer device",e);
+			session.getTransaction().rollback();
+		}
+		session.close();
+		return list;
+	}
+
+	
 }

@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import com.ntk.epcm.service.IAccountService;
+import com.ntk.epcm.service.AccountService;
 
 @Scope("request")
 @Component
@@ -20,7 +20,7 @@ public class AccountBean implements Serializable {
 	private static final long serialVersionUID = 5746869699117671009L;
 
 	@Inject
-	IAccountService accountService;
+	AccountService accountService;
 
 	@Inject
 	BCryptPasswordEncoder encoder;
