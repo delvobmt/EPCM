@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import com.ntk.epcm.constant.ConsumePolicyConstant;
+import com.ntk.epcm.model.ConsumeGroup;
 import com.ntk.epcm.model.ConsumePolicy;
 
 @Component
@@ -93,6 +94,21 @@ public class ConsumePolicyDAO implements IConsumePolicyDAO {
 		} catch (Exception e) {
 			LOGGER.error("ERROR while findAll ConsumePolicy", e);
 		}
+		session.close();
+		return list;
+	}
+
+	@Override
+	public List<ConsumePolicy> findByConsumeGroup(ConsumeGroup group) {
+		List<ConsumePolicy> list = Collections.emptyList();
+		Session session = factory.openSession();
+		try {
+			list = session.createQuery(String.format("from %s where %s=:group", ConsumePolicyConstant.TABLE,
+					ConsumePolicyConstant.CONSUME_GROUP_KEY), ConsumePolicy.class).setParameter("group", group).getResultList();
+		} catch (Exception e) {
+			LOGGER.error("ERROR while findAll ConsumePolicy", e);
+		}
+		session.close();
 		return list;
 	}
 

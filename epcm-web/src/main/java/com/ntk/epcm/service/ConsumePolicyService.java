@@ -8,6 +8,7 @@ import javax.inject.Inject;
 import org.springframework.stereotype.Service;
 
 import com.ntk.epcm.data.IConsumePolicyDAO;
+import com.ntk.epcm.model.ConsumeGroup;
 import com.ntk.epcm.model.ConsumePolicy;
 
 @Service
@@ -49,6 +50,11 @@ public class ConsumePolicyService extends Observable {
 
 	public List<ConsumePolicy> findAll() {
 		return dao.findAll();
+	}
+
+	public List<ConsumePolicy> findByConsumeGroup(ConsumeGroup group) {
+		return dao.findByConsumeGroup(group);
+		
 	}
 
 }

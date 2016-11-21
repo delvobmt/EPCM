@@ -12,7 +12,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import com.ntk.epcm.constant.CustomerDeviceConstant;
+import com.ntk.epcm.model.ConsumeGroup;
+import com.ntk.epcm.model.Customer;
 import com.ntk.epcm.model.CustomerDevice;
+import com.ntk.epcm.model.Device;
 
 @Component
 public class CustomerDeviceDAO implements ICustomerDeviceDAO {
@@ -74,13 +77,13 @@ public class CustomerDeviceDAO implements ICustomerDeviceDAO {
 	
 	
 	@Override
-	public CustomerDevice findByDeviceId(int device_id) {
+	public CustomerDevice findByDevice(Device device) {
 		CustomerDevice customerDevice = null;
 		Session session = factory.openSession();
 		try {
-			customerDevice = session.createQuery(String.format("from %s where %s=:device_id",
+			customerDevice = session.createQuery(String.format("from %s where %s=:device",
 					CustomerDeviceConstant.TABLE, CustomerDeviceConstant.DEVICE_KEY),CustomerDevice.class)
-					.setParameter("device_id", device_id)
+					.setParameter("device", device)
 					.getSingleResult();
 		} catch (Exception e) {
 			LOGGER.error("ERROR while find by Device Id",e);
@@ -91,13 +94,13 @@ public class CustomerDeviceDAO implements ICustomerDeviceDAO {
 	}
 
 	@Override
-	public CustomerDevice findByCustomerId(int customer_id) {
+	public CustomerDevice findByCustomer(Customer customer) {
 		CustomerDevice customerDevice = null;
 		Session session = factory.openSession();
 		try {
-			customerDevice = session.createQuery(String.format("from %s where %s=:customer_id",
+			customerDevice = session.createQuery(String.format("from %s where %s=:customer",
 					CustomerDeviceConstant.TABLE, CustomerDeviceConstant.CUSTOMER_KEY),CustomerDevice.class)
-					.setParameter("customer_id", customer_id)
+					.setParameter("customer", customer)
 					.getSingleResult();
 		} catch (Exception e) {
 			LOGGER.error("ERROR while find by customer Id",e);
@@ -108,13 +111,13 @@ public class CustomerDeviceDAO implements ICustomerDeviceDAO {
 	}
 
 	@Override
-	public CustomerDevice findByConsumeGroupId(int consumeGroup_id) {
+	public CustomerDevice findByConsumeGroup(ConsumeGroup consumeGroup) {
 		CustomerDevice customerDevice = null;
 		Session session = factory.openSession();
 		try {
-			customerDevice = session.createQuery(String.format("from %s where %s=:consumeGroup_id",
+			customerDevice = session.createQuery(String.format("from %s where %s=:consumeGroup",
 					CustomerDeviceConstant.TABLE, CustomerDeviceConstant.CONSUME_GROUP_KEY),CustomerDevice.class)
-					.setParameter("consumeGroup_id", consumeGroup_id)
+					.setParameter("consumeGroup", consumeGroup)
 					.getSingleResult();
 		} catch (Exception e) {
 			LOGGER.error("ERROR while find by consume group Id",e);

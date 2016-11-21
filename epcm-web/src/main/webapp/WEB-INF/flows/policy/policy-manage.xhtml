@@ -74,7 +74,7 @@
 						</p:column>
 						<p:column>
 							<p:autoComplete id="group" value="#{consumePolicyBean.consumePolicy.group}" completeMethod="#{consumeGroupBean.completeMethod}"
-								converter="#{consumeGroupConverter}" var="gro" itemLabel="#{gro.group}" itemValue="#{gro}" dropdown="true"/>
+								converter="#{consumeGroupConverter}" var="gro" itemLabel="#{gro.group}" itemValue="#{gro}" dropdown="true" required="true"/>
 						</p:column>
 					</p:row>
 					<p:row>
@@ -82,7 +82,7 @@
 							<p:outputLabel for="fromConsume" value="From"/>
 						</p:column>
 						<p:column>
-							<p:spinner id="fromConsume" value="#{consumePolicyBean.consumePolicy.fromConsume}" min="1" stepFactor="50"/>
+							<p:spinner id="fromConsume" value="#{consumePolicyBean.consumePolicy.fromConsume}" min="1" stepFactor="50" required="true"/>
 						</p:column>
 					</p:row>
 					<p:row>
@@ -90,7 +90,7 @@
 							<p:outputLabel for="toConsume" value="To"/>
 						</p:column>
 						<p:column>
-							<p:spinner id="toConsume" value="#{consumePolicyBean.consumePolicy.toConsume}" min="0" stepFactor="50"/>
+							<p:spinner id="toConsume" value="#{consumePolicyBean.consumePolicy.toConsume}" min="0" stepFactor="50" required="true"/>
 						</p:column>
 					</p:row>
 					<p:row>
@@ -98,7 +98,7 @@
 							<p:outputLabel for="price" value="price"/>
 						</p:column>
 						<p:column>
-							<p:spinner id="price" value="#{consumePolicyBean.consumePolicy.price}" min="100" suffix="VND" stepFactor="100"/>
+							<p:spinner id="price" value="#{consumePolicyBean.consumePolicy.price}" min="100" suffix="VND" stepFactor="100" required="true"/>
 						</p:column>
 					</p:row>
 					<p:row>

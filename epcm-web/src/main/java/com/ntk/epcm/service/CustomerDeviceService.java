@@ -8,7 +8,10 @@ import javax.inject.Inject;
 import org.springframework.stereotype.Service;
 
 import com.ntk.epcm.data.ICustomerDeviceDAO;
+import com.ntk.epcm.model.ConsumeGroup;
+import com.ntk.epcm.model.Customer;
 import com.ntk.epcm.model.CustomerDevice;
+import com.ntk.epcm.model.Device;
 
 @Service
 public class CustomerDeviceService extends Observable {
@@ -47,16 +50,16 @@ public class CustomerDeviceService extends Observable {
 		return dao.findById(id);
 	}
 
-	public CustomerDevice findByDeviceId(int device_id) {
-		return dao.findByDeviceId(device_id);
+	public CustomerDevice findByDevice(Device device) {
+		return dao.findByDevice(device);
 	}
 
-	public CustomerDevice findByCustomerId(int customer_id) {
-		return dao.findByCustomerId(customer_id);
+	public CustomerDevice findByCustomer(Customer customer) {
+		return dao.findByCustomer(customer);
 	}
 
-	public CustomerDevice findByConsumeGroupId(int consumeGroup_id) {
-		return dao.findByConsumeGroupId(consumeGroup_id);
+	public CustomerDevice findByConsumeGroup(ConsumeGroup consumeGroup) {
+		return dao.findByConsumeGroup(consumeGroup);
 	}
 
 	public List<CustomerDevice> findAll() {

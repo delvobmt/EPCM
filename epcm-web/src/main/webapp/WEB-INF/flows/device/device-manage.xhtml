@@ -32,10 +32,11 @@
 				<p:column rowSelectMode="checkbox" selectionMode="multiple" style="width:1em">
 				</p:column>
 				<p:column style="text-align:center;width:2em">
-					<p:commandButton icon="ui-icon-pencil" process="deviceView"
+					<p:commandButton icon="ui-icon-pencil" process="deviceView" 
 						update=":f:deviceInfo" oncomplete="PF('deviceInfoDialog').show();">
 						<f:setPropertyActionListener value="#{device}"
 							target="#{deviceBean.selectedDevice}"/>
+						<f:setPropertyActionListener value="#{device}" target="#{calculatorBean.device}"/>
 					</p:commandButton>
 				</p:column>
 				<p:column headerText="Id" style="width:1em">
@@ -138,6 +139,14 @@
 						<p:column>
 							<p:inputNumber id="oldNumber" value="#{deviceBean.selectedDevice.oldNumber}" 
 							decimalPlaces="0" readonly="true"/>
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column>
+							<p:outputLabel for="payment" value="Payment"/>
+						</p:column>
+						<p:column>
+							<p:inputText id="payment" value="#{calculatorBean.payment}" readonly="true"/>
 						</p:column>
 					</p:row>
 					<p:row>
